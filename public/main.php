@@ -2,6 +2,59 @@
 include("inc/top.php");
 ?>
 
+<!-- Banner quảng cáo trang chủ -->
+<div class="position-relative mt-3 mb-4 rounded-3 overflow-hidden shadow-sm banner-quang-cao">
+    <img src="../images/carousel/h4.jpg" class="w-100 d-block banner-img" alt="Chương trình khuyến mãi">
+    <a href="#danh-sach-san-pham" class="btn btn-danger btn-buy-now position-absolute fw-bold text-uppercase rounded-pill shadow text-white">
+        MUA NGAY <i class="bi bi-cart-plus-fill ms-1"></i>
+    </a>
+</div>
+
+<style>
+html {
+    scroll-behavior: smooth;
+}
+#danh-sach-san-pham {
+    scroll-margin-top: 80px;
+}
+.banner-quang-cao .banner-img {
+    height: 300px;
+    max-height: 300px;
+    object-fit: cover;
+    object-position: center;
+}
+.btn-buy-now {
+    left: 73%;
+    bottom: 14px;
+    padding: 6px 20px;
+    font-size: 0.9rem;
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    border: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+.btn-buy-now:hover {
+    transform: scale(1.08) !important;
+    box-shadow: 0 8px 20px rgba(255, 65, 108, 0.5) !important;
+    color: #fff !important;
+}
+@media (max-width: 576px) {
+    .banner-quang-cao .banner-img {
+        height: 140px;
+        max-height: 140px;
+    }
+    .btn-buy-now {
+        left: 65%;
+        bottom: 8px;
+        font-size: 0.75rem !important;
+        padding: 4px 14px !important;
+    }
+}
+</style>
+
+<!-- Danh sách sản phẩm bắt đầu từ Apple -->
+<div id="danh-sach-san-pham" style="scroll-margin-top: 80px;">
 <?php 
 foreach($danhmuc as $d){ 
     $i = 0;
@@ -64,6 +117,7 @@ foreach($danhmuc as $d){
 <?php
 } 
 ?>
+</div>
 
 <?php
 include("inc/bottom.php");
