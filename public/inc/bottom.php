@@ -1,4 +1,4 @@
-﻿            </div>
+            </div>
         </section>
         
         <!-- Top products -->
@@ -18,6 +18,12 @@
 
         <!-- Footer-->
         <footer class="py-5 bg-navy">
+            <style>
+            .footer-link { transition: color 0.18s, padding-left 0.18s; }
+            .footer-link:hover { color: #fff !important; padding-left: 4px; }
+            footer hr { border-color: rgba(255,255,255,0.15); }
+            </style>
+
             <div class="text-center mb-5"><a class="text-warning" href="#top"><i class="bi bi-chevron-up"  style="font-size: 3rem; font-weight: bold; color:white;"></i></a></div>
             
             <div class="container">
@@ -33,24 +39,34 @@
                             <b><i>Điện thoại:</i></b> 076 3841190<br> 
                             <b><i>Email:</i></b> abc@abc.com</p>
                     </div>
-                    <div class="col-md-3 text-muted">
-                        <h4>DANH MỤC HÀNG</h4>                        
+                    <div class="col-md-3">
+                        <h4 class="text-white fw-bold mb-3">DANH MỤC HÀNG</h4>
                         <?php foreach ($danhmuc as $d): ?>
-                            <a class="list-group-item text-decoration-none" href="?action=group&id=<?php echo $d["id"]; ?>">
-							<?php echo $d["tendanhmuc"]; ?>
-							</a>
+                            <a class="d-block text-decoration-none text-white-50 footer-link mb-1"
+                               href="?action=group&id=<?php echo $d["id"]; ?>">
+                                <i class="bi bi-chevron-right me-1" style="font-size:0.75rem;"></i><?php echo $d["tendanhmuc"]; ?>
+                            </a>
                         <?php endforeach; ?>
                     </div>
-                    <div class="col-md-3 text-muted">
-                        <h4>DỊCH VỤ KHÁCH HÀNG</h4>
-                        <a href="#" class="list-group-item text-decoration-none">Hướng dẫn mua hàng</a>
-                        <a href="#" class="list-group-item text-decoration-none">Câu hỏi thường gặp</a>
-                        <a href="#" class="list-group-item text-decoration-none">Liên hệ với chúng tôi</a>
-                        <a href="../admin/index.php" class="list-group-item text-decoration-none text-secondary"><i class="bi bi-shield-lock"></i> Quản trị hệ thống</a>
+                    <div class="col-md-3">
+                        <h4 class="text-white fw-bold mb-3">DỊCH VỤ KHÁCH HÀNG</h4>
+                        <a href="#" class="d-block text-decoration-none text-white-50 footer-link mb-1">
+                            <i class="bi bi-chevron-right me-1" style="font-size:0.75rem;"></i>Hướng dẫn mua hàng
+                        </a>
+                        <a href="#" class="d-block text-decoration-none text-white-50 footer-link mb-1">
+                            <i class="bi bi-chevron-right me-1" style="font-size:0.75rem;"></i>Câu hỏi thường gặp
+                        </a>
+                        <a href="#" class="d-block text-decoration-none text-white-50 footer-link mb-1">
+                            <i class="bi bi-chevron-right me-1" style="font-size:0.75rem;"></i>Liên hệ với chúng tôi
+                        </a>
+                        <a href="../admin/index.php" class="d-block text-decoration-none text-white-50 footer-link mb-1">
+                            <i class="bi bi-shield-lock me-1"></i>Quản trị hệ thống
+                        </a>
                     </div>
                 </div>
                 <hr>
-                <p class="m-0 text-center text-warning fw-bolder">Copyright &copy; Thanh Thảo Shop 2026</p></div>
+                <p class="m-0 text-center text-warning fw-bolder">Copyright &copy; Thanh Thảo Shop 2026</p>
+            </div>
         </footer>
 
     </body>
