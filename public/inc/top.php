@@ -29,7 +29,7 @@ if(isset($_SESSION["khachhang"])){
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-info shadow">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="index.php"><i class="bi bi-shop-window"></i> ABC Shop</a>
+                <a class="navbar-brand" href="index.php"><i class="bi bi-shop-window"></i> Thanh Thảo Shop</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -45,16 +45,16 @@ if(isset($_SESSION["khachhang"])){
                             </ul>
                         </li>
                     </ul>
-                    <div class="d-flex">
+                    <div class="d-flex align-items-center">
                         <?php if(isset($_SESSION["khachhang"]) && !empty($_SESSION["khachhang"]["id"])){ ?>
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 me-2">
                             <li class="nav-item"><a class="nav-link text-warning" href="index.php?action=thongtin" >Chào <?php echo $_SESSION["khachhang"]["hoten"]; ?></a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?action=dangxuat">Đăng xuất</a></li>
+                            <li class="nav-item"><a class="nav-link" href="index.php?action=dangxuat" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');">Đăng xuất</a></li>
                         </ul>
                         <?php } else{ ?>
-                            <a href="index.php?action=dangnhap" class="btn btn-outline-light"><i class="bi bi-person"></i> Đăng nhập</a>
+                            <a href="index.php?action=dangnhap" class="btn btn-outline-light me-2"><i class="bi bi-person"></i> Đăng nhập</a>
                         <?php } ?>
-                        &nbsp;<a href="index.php?action=giohang" class="btn btn-outline-light" ><i class="bi bi-cart3"></i> Giỏ hàng <span class="badge bg-danger text-white ms-1 rounded-pill"><?php 
+                        <a href="index.php?action=giohang" class="btn btn-outline-light" ><i class="bi bi-cart3"></i> Giỏ hàng <span class="badge bg-danger text-white ms-1 rounded-pill"><?php 
                             if(isset($_SESSION["khachhang"]["id"]) && !empty($_SESSION["khachhang"]["id"])){
                                 $gh_top = new GIOHANG();
                                 echo $gh_top->demmathang((int)$_SESSION["khachhang"]["id"]);
@@ -62,6 +62,16 @@ if(isset($_SESSION["khachhang"])){
                                 echo 0;
                             }
                         ?></span></a>
+                        <?php 
+                        $quyen_quantri = false;
+                        if((isset($_SESSION["khachhang"]) && in_array($_SESSION["khachhang"]["loai"] ?? null, [1, 2])) || 
+                           (isset($_SESSION["nguoidung"]) && in_array($_SESSION["nguoidung"]["loai"] ?? null, [1, 2]))){
+                            $quyen_quantri = true;
+                        }
+                        if($quyen_quantri){
+                        ?>
+                            <a href="../admin/index.php" class="btn btn-warning text-dark ms-2 fw-semibold"><i class="bi bi-gear-fill"></i> Quản trị</a>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

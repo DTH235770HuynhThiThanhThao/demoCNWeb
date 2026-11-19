@@ -46,9 +46,7 @@
                 <div class="row">
                     <div class="col-md-6 text-light">
                         <a href="index.php" class="text-decoration-none text-white">
-                        <h4><span class="badge text-white bg-success">A</span>
-                            <span class="badge text-white bg-danger">B</span>
-                            <span class="badge text-white bg-warning">C</span> Shop - Cửa hàng văn phòng phẩm</h4></a>
+                        <h4>Thanh Thảo Shop - Cửa hàng văn phòng phẩm</h4></a>
                         <p><b><i>Địa chỉ:</i></b> 18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang<br>
                             <b><i>Điện thoại:</i></b> 076 3841190<br> 
                             <b><i>Email:</i></b> abc@abc.com</p>
@@ -66,10 +64,11 @@
                         <a href="#" class="list-group-item">Hướng dẫn mua hàng</a>
                         <a href="#" class="list-group-item">Câu hỏi thường gặp</a>
                         <a href="#" class="list-group-item">Liên hệ với chúng tôi</a>
+                        <a href="../admin/index.php" class="list-group-item text-secondary"><i class="bi bi-shield-lock"></i> Quản trị hệ thống</a>
                     </div>
                 </div>
                 <hr>
-                <p class="m-0 text-center text-warning fw-bolder">Copyright &copy; ABC Shop 2023</p></div>
+                <p class="m-0 text-center text-warning fw-bolder">Copyright &copy; Thanh Thảo Shop 2023</p></div>
         </footer>
 
     </body>

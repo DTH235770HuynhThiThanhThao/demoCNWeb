@@ -8,7 +8,7 @@
 	
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 
-	<title>Trang quản trị - ABC Shop</title>
+	<title>Trang quản trị - Thanh Thảo Shop</title>
 
 	<link href="../inc/css/app.css" rel="stylesheet">
 	<script src="../inc/js/app.js"></script>
@@ -20,8 +20,8 @@
 	<div class="wrapper">
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
-				<a class="sidebar-brand" href="">
-          <span class="align-middle">ABC Shop</span>
+				<a class="sidebar-brand" href="../../public/index.php">
+          <span class="align-middle">Thanh Thảo Shop</span>
         </a>
 
 				<ul class="sidebar-nav">
@@ -180,6 +180,11 @@
 								</div>
 							</div>
 						</li>
+						<li class="nav-item d-flex align-items-center me-2">
+							<a class="btn btn-outline-primary btn-sm" href="../../public/index.php" title="Xem trang bán hàng">
+								<i class="align-middle me-1" data-feather="shopping-cart"></i> Xem cửa hàng
+							</a>
+						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
                 <i class="align-middle" data-feather="settings"></i>
@@ -191,6 +196,10 @@
 							</a>
 							<div class="dropdown-menu dropdown-menu-end">
 							
+								<a class="dropdown-item" href="../../public/index.php">
+									<i class="align-middle me-1" data-feather="external-link"></i> Xem cửa hàng
+								</a>
+								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="../ktnguoidung/index.php?action=hoso">
 									<i class="align-middle me-1" data-feather="user"></i> Hồ sơ cá nhân
 								</a>								
@@ -199,7 +208,7 @@
 								</a>
 								
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="../ktnguoidung/index.php?action=dangxuat"><i class="align-middle me-1" data-feather="log-out"></i> Đăng xuất</a>
+								<a class="dropdown-item" href="../ktnguoidung/index.php?action=dangxuat" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');"><i class="align-middle me-1" data-feather="log-out"></i> Đăng xuất</a>
 							</div>
 						</li>
 					</ul>

@@ -5,8 +5,13 @@ if (session_status() == PHP_SESSION_NONE) {
 require("../../model/database.php");
 require("../../model/nguoidung.php");
 
+// Đồng bộ session nếu đã đăng nhập ngoài public với quyền Quản trị (1) hoặc Nhân viên (2)
+if (!isset($_SESSION["nguoidung"]) && isset($_SESSION["khachhang"]) && in_array($_SESSION["khachhang"]["loai"] ?? null, [1, 2])) {
+    $_SESSION["nguoidung"] = $_SESSION["khachhang"];
+}
+
 // Biến $isLogin cho biết người dùng đăng nhập chưa
-$isLogin = isset($_SESSION["nguoidung"]);
+$isLogin = isset($_SESSION["nguoidung"]) && in_array($_SESSION["nguoidung"]["loai"] ?? null, [1, 2]);
 
 
 // Xét xem có thao tác nào được chọn
@@ -34,15 +39,25 @@ switch($action){
         $email = $_REQUEST["txtemail"];
         $matkhau = $_REQUEST["txtmatkhau"];
         if($nd->kiemtranguoidunghople($email,$matkhau)==TRUE){
-            $_SESSION["nguoidung"] = $nd->laythongtinnguoidung($email); // đặt biến session
-            include("main.php");
+            $user_info = $nd->laythongtinnguoidung($email);
+            if(in_array($user_info["loai"] ?? null, [1, 2])){
+                $_SESSION["nguoidung"] = $user_info; // đặt biến session
+                $_SESSION["khachhang"] = $user_info; // đồng bộ sang public
+                include("main.php");
+            }
+            else{
+                $tb = "Tài khoản không có quyền quản trị hệ thống!";
+                include("login.php");
+            }
         }
         else{
+            $tb = "Email hoặc mật khẩu không chính xác!";
             include("login.php");
         }
         break;
     case "dangxuat":
         unset($_SESSION["nguoidung"]);  // hủy biến session
+        unset($_SESSION["khachhang"]);  // hủy biến session khách hàng
         //include("login.php");         // hiển thị trang login
         header("location:../../index.php");     // hoặc chuyển hướng ra bên ngoài (trang dành cho khách)
         break;  

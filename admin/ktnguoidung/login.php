@@ -7,7 +7,7 @@
 	
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	
-	<title>Đăng nhập - ABC Shop</title>
+	<title>Đăng nhập - Thanh Thảo Shop</title>
 
 	<link href="../inc/css/app.css" rel="stylesheet">
 	<script src="../inc/js/app.js"></script>
@@ -31,6 +31,9 @@
 						<div class="card">
 							<div class="card-body">
 								<div class="m-sm-3">
+									<?php if(isset($tb)){ ?>
+										<div class="alert alert-danger py-2 mb-3 text-center"><?php echo $tb; ?></div>
+									<?php } ?>
 									<form action="index.php" method="post">
 										<div class="mb-3">
 											<label class="form-label">Email</label>
@@ -55,7 +58,7 @@
 							</div>
 						</div>
 						<div class="text-center mb-3">
-							Chưa có tài khoản? <a href="#">Đăng ký</a>
+							<a href="../../public/index.php" class="text-decoration-none text-muted"><i class="align-middle me-1" data-feather="arrow-left"></i> Quay về trang bán hàng</a>
 						</div>
 					</div>
 				</div>

@@ -11,6 +11,11 @@ require("../model/diachi.php");
 require("../model/donhang.php");
 require("../model/donhangct.php");
 
+// Tự động đồng bộ session nếu đã đăng nhập bên admin
+if(!isset($_SESSION["khachhang"]) && isset($_SESSION["nguoidung"])){
+    $_SESSION["khachhang"] = $_SESSION["nguoidung"];
+}
+
 
 $dm = new DANHMUC();
 $danhmuc = $dm->laydanhmuc();
@@ -233,6 +238,10 @@ switch($action){
             $khachhang = $kh->laythongtinkhachhang($email);
             if($khachhang && isset($khachhang["id"]) && (int)$khachhang["id"] > 0){
                 $_SESSION["khachhang"] = $khachhang;
+                // Nếu là Quản trị (1) hoặc Nhân viên (2), đồng bộ sang admin
+                if(in_array($khachhang["loai"] ?? null, [1, 2])){
+                    $_SESSION["nguoidung"] = $khachhang;
+                }
                 header("Location: index.php");
                 exit();
             }
@@ -341,6 +350,7 @@ switch($action){
         break;
     case "dangxuat":
         unset($_SESSION["khachhang"]);
+        unset($_SESSION["nguoidung"]);
         // chuyển về trang chủ
 /*        // xử lý phân trang
         $tongmh = $mh->demtongsomathang();   // tổng số mặt hàng
