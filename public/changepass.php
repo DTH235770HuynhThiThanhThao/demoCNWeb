@@ -1,11 +1,11 @@
-<?php include("inc/top.php"); ?>
+﻿<?php include("inc/top.php"); ?>
 
 <!-- Form cập nhật thông tin ng dùng-->
   <div class="row">
     <div class="col-12 col-md-10 m-auto">
       <div class="card p-5 shadow-sm">
         <div class="card-header">          
-          <h4 class="text-info text-center">ĐỔI MẬT KHẨU</h4> 
+          <h4 class="text-navy text-center">ĐỔI MẬT KHẨU</h4> 
         </div>
         <div class="card-body">
           

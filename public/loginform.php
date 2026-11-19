@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 include("inc/top.php");
 ?>
 <div class="row">
 	<div class="col-sm-4"></div>
 	<div class="col-sm-4">
 		<div class="p-3 shadow">
-		<h3 class="text-center text-info">ĐĂNG NHẬP</h3>
+		<h3 class="text-center text-navy">ĐĂNG NHẬP</h3>
 		
 		<?php if(isset($thongbao)): ?>
 			<div class="alert alert-warning" role="alert">
@@ -32,7 +32,7 @@ include("inc/top.php");
 
 		<input type="hidden" name="action" value="xldangnhap">
 		<div class="d-grid">
-		<input class="btn btn-info text-white btn-block" type="submit" value="Đăng nhập">
+		<input class="btn btn-navy text-white btn-block" type="submit" value="Đăng nhập">
 		</div>
 		</form>
 		<div class="text-center p-3">

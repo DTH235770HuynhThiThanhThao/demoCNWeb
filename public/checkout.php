@@ -1,10 +1,10 @@
-<?php include("inc/top.php"); ?>
+﻿<?php include("inc/top.php"); ?>
 
 <div class="container">    
   <div class="row"> 
     <h3>Vui lòng nhập đầy đủ thông tin</h3>
 	<div class="col-sm-6">
-	<h4 class="text-info">Thông tin khách hàng</h4>
+	<h4 class="text-navy">Thông tin khách hàng</h4>
 	<?php 
 	if(isset($_SESSION["khachhang"])){
 	?>
@@ -62,7 +62,7 @@
 	?>
 	</div>
 	<div class="col-sm-6">
-	<h4 class="text-info">Thông tin đơn hàng</h4>
+	<h4 class="text-navy">Thông tin đơn hàng</h4>
 		<table class="table table-bordered">
 		<tr class="table-info">
 		<th>Sản phẩm</th> 

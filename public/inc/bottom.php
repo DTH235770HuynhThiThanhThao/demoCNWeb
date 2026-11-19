@@ -1,4 +1,4 @@
-            </div>
+﻿            </div>
         </section>
         
         <!-- Top products -->
@@ -17,7 +17,7 @@
         </section> 
 
         <!-- Footer-->
-        <footer class="py-5 bg-info">
+        <footer class="py-5 bg-navy">
             <div class="text-center mb-5"><a class="text-warning" href="#top"><i class="bi bi-chevron-up"  style="font-size: 3rem; font-weight: bold; color:white;"></i></a></div>
             
             <div class="container">

@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 include("inc/top.php");
 ?>
 <div class="row">
 	<div class="col-sm-4"></div>
 	<div class="col-sm-4">
 		<div class="p-3 shadow">
-		<h3 class="text-center text-info">QUÊN MẬT KHẨU</h3>
+		<h3 class="text-center text-navy">QUÊN MẬT KHẨU</h3>
 		
 		<?php if(isset($tb)): ?>
 			<div class="alert alert-danger" role="alert">
@@ -24,7 +24,7 @@ include("inc/top.php");
 
 		<input type="hidden" name="action" value="xlquenmatkhau">
 		<div class="d-grid">
-		<input class="btn btn-info text-white btn-block" type="submit" value="Đặt lại mật khẩu">
+		<input class="btn btn-navy text-white btn-block" type="submit" value="Đặt lại mật khẩu">
 		</div>
 		</form>
 		<div class="text-center p-3">

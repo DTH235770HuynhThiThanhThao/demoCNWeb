@@ -1,14 +1,14 @@
-<?php
+﻿<?php
 include("inc/top.php");
 ?>
 <?php if(demhangtronggio()==0){ ?>
-<h3 class="text-info">Giỏ hàng rỗng!</h3>
+<h3 class="text-navy">Giỏ hàng rỗng!</h3>
 <p>Vui lòng chọn sản phẩm...</p>    
 <?php 
 } 
 else{ 
 ?>
-<h3 class="text-info">Giỏ hàng của bạn:</h3>
+<h3 class="text-navy">Giỏ hàng của bạn:</h3>
 <form action="index.php">
 <table class="table table-hover">
     <tr><th>Hình ảnh</th><th>Tên hàng</th><th>Đơn giá</th><th>Số lượng</th><th>Thành tiền</th></tr>

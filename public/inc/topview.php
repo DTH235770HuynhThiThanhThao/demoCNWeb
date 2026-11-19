@@ -1,4 +1,4 @@
-<!-- Nav tabs -->
+﻿<!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
   <li class="nav-item">
     <a class="nav-link active fw-bold" data-bs-toggle="tab" href="#tab-noibat">Nổi bật</a>
@@ -23,7 +23,7 @@
         <a class="text-decoration-none d-flex align-items-center text-dark" href="index.php?action=detail&id=<?php echo $x["id"]; ?>">
           <img class="img-thumbnail me-3 rounded flex-shrink-0" style="width: 55px; height: 55px; object-fit: contain;" src="../<?php echo $x["hinhanh"]; ?>" alt="<?php echo $x["tenmathang"]; ?>">
           <div class="flex-grow-1 text-truncate">
-            <h6 class="card-title text-info mb-1 fw-bold text-truncate" title="<?php echo $x["tenmathang"]; ?>"><?php echo $x["tenmathang"]; ?></h6>
+            <h6 class="card-title text-navy mb-1 fw-bold text-truncate" title="<?php echo $x["tenmathang"]; ?>"><?php echo $x["tenmathang"]; ?></h6>
             <div class="d-flex align-items-center justify-content-between">
               <span class="card-text text-danger fw-bold"><?php echo number_format($x["giaban"]); ?>đ</span>
               <span class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i> Nổi bật</span>
@@ -41,7 +41,7 @@
         <a class="text-decoration-none d-flex align-items-center text-dark" href="index.php?action=detail&id=<?php echo $x["id"]; ?>">
           <img class="img-thumbnail me-3 rounded flex-shrink-0" style="width: 55px; height: 55px; object-fit: contain;" src="../<?php echo $x["hinhanh"]; ?>" alt="<?php echo $x["tenmathang"]; ?>">
           <div class="flex-grow-1 text-truncate">
-            <h6 class="card-title text-info mb-1 fw-bold text-truncate" title="<?php echo $x["tenmathang"]; ?>"><?php echo $x["tenmathang"]; ?></h6>
+            <h6 class="card-title text-navy mb-1 fw-bold text-truncate" title="<?php echo $x["tenmathang"]; ?>"><?php echo $x["tenmathang"]; ?></h6>
             <div class="d-flex align-items-center justify-content-between">
               <span class="card-text text-danger fw-bold"><?php echo number_format($x["giaban"]); ?>đ</span>
               <small class="text-muted"><i class="bi bi-eye"></i> <?php echo $x["luotxem"]; ?> lượt xem</small>
@@ -59,7 +59,7 @@
         <a class="text-decoration-none d-flex align-items-center text-dark" href="index.php?action=detail&id=<?php echo $x["id"]; ?>">
           <img class="img-thumbnail me-3 rounded flex-shrink-0" style="width: 55px; height: 55px; object-fit: contain;" src="../<?php echo $x["hinhanh"]; ?>" alt="<?php echo $x["tenmathang"]; ?>">
           <div class="flex-grow-1 text-truncate">
-            <h6 class="card-title text-info mb-1 fw-bold text-truncate" title="<?php echo $x["tenmathang"]; ?>"><?php echo $x["tenmathang"]; ?></h6>
+            <h6 class="card-title text-navy mb-1 fw-bold text-truncate" title="<?php echo $x["tenmathang"]; ?>"><?php echo $x["tenmathang"]; ?></h6>
             <div class="d-flex align-items-center justify-content-between">
               <span class="card-text text-danger fw-bold"><?php echo number_format($x["giaban"]); ?>đ</span>
               <small class="text-success fw-semibold"><i class="bi bi-bag-check-fill"></i> Đã bán <?php echo $x["luotmua"]; ?></small>
@@ -77,7 +77,7 @@
         <a class="text-decoration-none d-flex align-items-center text-dark" href="index.php?action=detail&id=<?php echo $x["id"]; ?>">
           <img class="img-thumbnail me-3 rounded flex-shrink-0" style="width: 55px; height: 55px; object-fit: contain;" src="../<?php echo $x["hinhanh"]; ?>" alt="<?php echo $x["tenmathang"]; ?>">
           <div class="flex-grow-1 text-truncate">
-            <h6 class="card-title text-info mb-1 fw-bold text-truncate" title="<?php echo $x["tenmathang"]; ?>"><?php echo $x["tenmathang"]; ?></h6>
+            <h6 class="card-title text-navy mb-1 fw-bold text-truncate" title="<?php echo $x["tenmathang"]; ?>"><?php echo $x["tenmathang"]; ?></h6>
             <div class="d-flex align-items-center justify-content-between">
               <span class="card-text text-danger fw-bold"><?php echo number_format($x["giaban"]); ?>đ</span>
               <span class="badge bg-danger">Mới</span>

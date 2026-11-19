@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 include("inc/top.php");
 ?>
 <div class="row">
 	<div class="col-sm-4"></div>
 	<div class="col-sm-4">
 		<div class="p-3 shadow">
-		<h3 class="text-center text-info">ĐĂNG KÝ TÀI KHOẢN</h3>
+		<h3 class="text-center text-navy">ĐĂNG KÝ TÀI KHOẢN</h3>
 		
 		<?php if(isset($tb)): ?>
 			<div class="alert alert-danger" role="alert">
@@ -23,7 +23,7 @@ include("inc/top.php");
 
 		<input type="hidden" name="action" value="xldangky">
 		<div class="d-grid">
-		<input class="btn btn-info text-white btn-block" type="submit" value="Đăng ký tài khoản">
+		<input class="btn btn-navy text-white btn-block" type="submit" value="Đăng ký tài khoản">
 		</div>
 		</form>
 		<div class="text-center p-3">

@@ -4,7 +4,7 @@ include("inc/top.php");
 
 <style>
 .about-hero {
-    background: linear-gradient(135deg, #e0f7fc 0%, #ffffff 100%);
+    background: linear-gradient(135deg, #e8edf4 0%, #ffffff 100%);
     border-radius: 16px;
     padding: 40px 32px;
     box-shadow: 0 4px 24px rgba(0,196,235,0.10);
@@ -14,7 +14,7 @@ include("inc/top.php");
     height: 110px;
     object-fit: cover;
     border-radius: 16px;
-    border: 4px solid #0dcaf0;
+    border: 4px solid #142B4A;
     box-shadow: 0 4px 16px rgba(0,196,235,0.25);
 }
 .commit-card {
@@ -32,7 +32,7 @@ include("inc/top.php");
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0dcaf0 0%, #00aacc 100%);
+    background: linear-gradient(135deg, #142B4A 0%, #0d1f35 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,12 +53,12 @@ include("inc/top.php");
 .brand-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 24px rgba(0,196,235,0.18);
-    border-color: #0dcaf0;
+    border-color: #142B4A;
 }
 .brand-name {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #0dcaf0;
+    color: #142B4A;
     margin-bottom: 8px;
 }
 .brand-desc {
@@ -69,13 +69,13 @@ include("inc/top.php");
 .section-title {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #0dcaf0;
-    border-left: 5px solid #0dcaf0;
+    color: #142B4A;
+    border-left: 5px solid #142B4A;
     padding-left: 12px;
     margin-bottom: 24px;
 }
 .contact-box {
-    background: linear-gradient(135deg, #0dcaf0 0%, #0aa8cc 100%);
+    background: linear-gradient(135deg, #142B4A 0%, #0d1f35 100%);
     border-radius: 16px;
     color: #fff;
     padding: 36px 32px;
@@ -100,7 +100,7 @@ include("inc/top.php");
     <div class="d-flex flex-column flex-md-row align-items-center gap-4">
         <img src="../images/logo/logo.jpg" alt="Thanh Thảo Shop" class="hero-logo flex-shrink-0">
         <div>
-            <h2 class="fw-bold text-info mb-2" style="font-size:1.6rem;">
+            <h2 class="fw-bold text-navy mb-2" style="font-size:1.6rem;">
                 VỀ THANH THẢO SHOP – CỬA HÀNG ĐIỆN THOẠI CHÍNH HÃNG
             </h2>
             <p class="text-secondary mb-0" style="font-size:1.02rem; line-height:1.75;">
@@ -172,13 +172,13 @@ include("inc/top.php");
         ?>
         <div class="col-md-3 col-sm-6">
             <div class="brand-card d-flex flex-column">
-                <div class="mb-2" style="font-size:2.2rem; color:#0dcaf0;">
+                <div class="mb-2" style="font-size:2.2rem; color:#142B4A;">
                     <i class="bi <?php echo $icon; ?>"></i>
                 </div>
                 <div class="brand-name"><?php echo htmlspecialchars($ten); ?></div>
                 <p class="brand-desc flex-grow-1"><?php echo $desc; ?></p>
                 <a href="index.php?action=group&id=<?php echo $d["id"]; ?>"
-                   class="btn btn-outline-info btn-sm mt-2 rounded-pill fw-semibold">
+                   class="btn btn-outline-navy btn-sm mt-2 rounded-pill fw-semibold">
                     <i class="bi bi-grid me-1"></i>Xem sản phẩm <?php echo htmlspecialchars($ten); ?>
                 </a>
             </div>
@@ -210,7 +210,7 @@ include("inc/top.php");
                 </div>
                 <div class="contact-info-row">
                     <i class="bi bi-clock-fill"></i>
-                    <span>08:00 – 21:30 &nbsp;<span class="badge bg-white text-info fw-semibold">Tất cả các ngày trong tuần</span></span>
+                    <span>08:00 – 21:30 &nbsp;<span class="badge bg-white text-navy fw-semibold">Tất cả các ngày trong tuần</span></span>
                 </div>
             </div>
             <div class="col-md-5 text-center">
@@ -219,7 +219,7 @@ include("inc/top.php");
                      style="width:100px; height:100px; object-fit:cover; border:3px solid rgba(255,255,255,0.6);">
                 <p class="mb-3 small" style="opacity:0.9;">Chúng tôi luôn sẵn sàng phục vụ bạn với thái độ nhiệt tình và chuyên nghiệp nhất!</p>
                 <a href="index.php" class="btn btn-light fw-bold rounded-pill px-4 shadow-sm">
-                    <i class="bi bi-bag-heart-fill me-2 text-info"></i>Khám phá sản phẩm ngay
+                    <i class="bi bi-bag-heart-fill me-2 text-navy"></i>Khám phá sản phẩm ngay
                 </a>
             </div>
         </div>

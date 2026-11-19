@@ -1,11 +1,11 @@
-<?php include("inc/top.php"); ?>
+﻿<?php include("inc/top.php"); ?>
 
 <!-- Form cập nhật thông tin ng dùng-->
   <div class="row">
     <div class="col-12 col-md-10 m-auto">
       <div class="card p-5 shadow-sm">
         <div class="card-header">          
-          <h4 class="text-info text-center">HỒ SƠ NGƯỜI DÙNG</h4> 
+          <h4 class="text-navy text-center">HỒ SƠ NGƯỜI DÙNG</h4> 
         </div>
         <div class="card-body">
           <?php if(isset($tb_thanhcong)): ?>
@@ -61,7 +61,7 @@
   <br><br>
   <div class="row">
     <div class="col-12 col-md-10 m-auto">
-      <h4 class="text-info">Danh sách đơn hàng</h4>
+      <h4 class="text-navy">Danh sách đơn hàng</h4>
       <table class="table table-hover">
         <tr><th>STT</th><th>Mã đơn hàng</th><th>Ngày đặt</th><th>Số tiền</th><th>Chi tiết đơn hàng</th></tr>
         <?php foreach($donhang as $d){ ?>

@@ -27,7 +27,7 @@ if(isset($_SESSION["khachhang"])){
     <body id="top">
         
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-info shadow">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-navy shadow">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand d-flex align-items-center fw-bold" href="index.php"><img src="../images/logo/logo.jpg" alt="Thanh Thảo Shop" class="rounded-2 me-2 shadow-sm" style="height: 48px; width: 48px; object-fit: cover;"> Thanh Thảo Shop</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -82,15 +82,24 @@ if(isset($_SESSION["khachhang"])){
                         background: #fff;
                         border: none;
                         border-radius: 0 50px 50px 0 !important;
-                        color: #0dcaf0;
+                        color: #142B4A;
                         padding: 7px 14px;
                         font-size: 1rem;
                         transition: background 0.2s, color 0.2s;
                     }
-                    .navbar-search-btn:hover { background: #0dcaf0; color: #fff; }
+                    .navbar-search-btn:hover { background: #142B4A; color: #fff; }
                     @media (max-width: 991px) {
                         .navbar-search-form { flex: 1 1 100%; margin: 6px 0 !important; }
                     }
+                    /* ── Navy theme ── */
+                    .bg-navy            { background-color: #142B4A !important; }
+                    .text-navy          { color: #142B4A !important; }
+                    .btn-navy           { background-color: #142B4A; border-color: #142B4A; color: #fff; }
+                    .btn-navy:hover     { background-color: #0d1f35; border-color: #0d1f35; color: #fff; }
+                    .btn-outline-navy           { color: #142B4A; border-color: #142B4A; background: transparent; }
+                    .btn-outline-navy:hover     { background-color: #142B4A; color: #fff; }
+                    .border-navy        { border-color: #142B4A !important; }
+                    a.text-navy:hover   { color: #0d1f35 !important; }
                     </style>
                     <div class="d-flex align-items-center">
                         <a href="index.php?action=giohang" class="btn btn-outline-light me-2"><i class="bi bi-cart3"></i> Giỏ hàng <span class="badge bg-danger text-white ms-1 rounded-pill"><?php 
