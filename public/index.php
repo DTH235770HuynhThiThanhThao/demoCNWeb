@@ -165,18 +165,93 @@ switch($action){
         include("loginform.php");
         break;
     case "xldangnhap":
-        $email = $_POST["txtemail"];
-        $matkhau = $_POST["txtmatkhau"];
+        $email = trim($_POST["txtemail"] ?? "");
+        $matkhau = trim($_POST["txtmatkhau"] ?? "");
         $kh = new KHACHHANG();
-        if($kh->kiemtrakhachhanghople($email,$matkhau)==TRUE){
+        if(!empty($email) && !empty($matkhau) && $kh->kiemtrakhachhanghople($email,$matkhau)==TRUE){
             $_SESSION["khachhang"] = $kh->laythongtinkhachhang($email);
-            // đọc thông tin (đơn hàng) của kh
-            $dh = new DONHANG();
-            $donhang = $dh->laydanhsachdonhangtheokh($_SESSION["khachhang"]["id"]);
-            include("info.php");
+            header("Location: index.php");
+            exit();
         }
         else{
-            //$tb = "Đăng nhập không thành công!";
+            $tb = "Email (hoặc số điện thoại) hoặc mật khẩu không chính xác, hoặc tài khoản đã bị khóa!";
+            include("loginform.php");
+        }
+        break;
+    case "dangky":
+        include("registerform.php");
+        break;
+    case "xldangky":
+        $hoten = trim($_POST["txthoten"] ?? "");
+        $email = trim($_POST["txtemail"] ?? "");
+        $sodienthoai = trim($_POST["txtsodienthoai"] ?? "");
+        $matkhau = trim($_POST["txtmatkhau"] ?? "");
+        $matkhauxacnhan = trim($_POST["txtmatkhauxacnhan"] ?? "");
+
+        $kh = new KHACHHANG();
+        if(empty($hoten) || empty($email) || empty($sodienthoai) || empty($matkhau)){
+            $tb = "Vui lòng nhập đầy đủ các trường thông tin!";
+            include("registerform.php");
+        }
+        elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $tb = "Địa chỉ email không hợp lệ!";
+            include("registerform.php");
+        }
+        elseif(!preg_match('/^[0-9]{10}$/', $sodienthoai)){
+            $tb = "Số điện thoại phải gồm đúng 10 chữ số!";
+            include("registerform.php");
+        }
+        elseif(strlen($matkhau) < 6){
+            $tb = "Mật khẩu phải có độ dài từ 6 ký tự trở lên!";
+            include("registerform.php");
+        }
+        elseif($matkhau !== $matkhauxacnhan){
+            $tb = "Mật khẩu xác nhận không trùng khớp!";
+            include("registerform.php");
+        }
+        elseif($kh->kiemtraemailtontai($email)){
+            $tb = "Email này đã được sử dụng. Vui lòng dùng email khác!";
+            include("registerform.php");
+        }
+        elseif($kh->kiemtrasdtontai($sodienthoai)){
+            $tb = "Số điện thoại này đã được sử dụng. Vui lòng dùng số khác!";
+            include("registerform.php");
+        }
+        else{
+            $kh->dangkykhachhang($email, $sodienthoai, $hoten, $matkhau);
+            $tb_thanhcong = "Đăng ký tài khoản thành công! Vui lòng đăng nhập.";
+            include("loginform.php");
+        }
+        break;
+    case "quenmatkhau":
+        include("forgotpass.php");
+        break;
+    case "xlquenmatkhau":
+        $email = trim($_POST["txtemail"] ?? "");
+        $sodienthoai = trim($_POST["txtsodienthoai"] ?? "");
+        $matkhaumoi = trim($_POST["txtmatkhaumoi"] ?? "");
+        $xacnhanmatkhau = trim($_POST["txtxacnhanmatkhau"] ?? "");
+
+        $kh = new KHACHHANG();
+        if(empty($email) || empty($sodienthoai) || empty($matkhaumoi)){
+            $tb = "Vui lòng nhập đầy đủ thông tin!";
+            include("forgotpass.php");
+        }
+        elseif(strlen($matkhaumoi) < 6){
+            $tb = "Mật khẩu mới phải có ít nhất 6 ký tự!";
+            include("forgotpass.php");
+        }
+        elseif($matkhaumoi !== $xacnhanmatkhau){
+            $tb = "Mật khẩu xác nhận không khớp!";
+            include("forgotpass.php");
+        }
+        elseif(!$kh->kiemtraemailvasdt($email, $sodienthoai)){
+            $tb = "Email và số điện thoại không khớp với bất kỳ tài khoản nào hoặc tài khoản bị khóa!";
+            include("forgotpass.php");
+        }
+        else{
+            $kh->datlaimatkhau($email, $sodienthoai, $matkhaumoi);
+            $tb_thanhcong = "Đặt lại mật khẩu thành công! Vui lòng đăng nhập với mật khẩu mới.";
             include("loginform.php");
         }
         break;

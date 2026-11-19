@@ -30,12 +30,13 @@ class NGUOIDUNG{
 	public function kiemtranguoidunghople($email,$matkhau){
 		$db = DATABASE::connect();
 		try{
-			$sql = "SELECT * FROM nguoidung WHERE email=:email AND matkhau=:matkhau AND trangthai=1";
+			$sql = "SELECT * FROM nguoidung WHERE (email=:email OR sodienthoai=:email OR email=CONCAT(:email_exact, '@shop.com')) AND matkhau=:matkhau AND trangthai=1";
 			$cmd = $db->prepare($sql);
 			$cmd->bindValue(":email", $email);
+			$cmd->bindValue(":email_exact", $email);
 			$cmd->bindValue(":matkhau", md5($matkhau));
 			$cmd->execute();
-			$valid = ($cmd->rowCount () == 1);
+			$valid = ($cmd->rowCount () >= 1);
 			$cmd->closeCursor ();
 			return $valid;			
 		}
@@ -46,13 +47,14 @@ class NGUOIDUNG{
 		}
 	}
 	
-	// lấy thông tin người dùng có $email
+	// lấy thông tin người dùng có $email hoặc $sodienthoai
 	public function laythongtinnguoidung($email){
 		$db = DATABASE::connect();
 		try{
-			$sql = "SELECT * FROM nguoidung WHERE email=:email";
+			$sql = "SELECT * FROM nguoidung WHERE email=:email OR sodienthoai=:email OR email=CONCAT(:email_exact, '@shop.com')";
 			$cmd = $db->prepare($sql);
 			$cmd->bindValue(":email", $email);
+			$cmd->bindValue(":email_exact", $email);
 			$cmd->execute();
 			$ketqua = $cmd->fetch();
 			$cmd->closeCursor();
@@ -174,6 +176,104 @@ class NGUOIDUNG{
 			$cmd->bindValue(':trangthai',$trangthai);
 			$ketqua = $cmd->execute();            
             return $ketqua;
+		}
+		catch(PDOException $e){
+			$error_message=$e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Đăng ký khách hàng mới (loai = 3, trangthai = 1)
+	public function dangkykhachhang($email, $sodt, $hoten, $matkhau){
+		$db = DATABASE::connect();
+		try{
+			$sql = "INSERT INTO nguoidung(email,matkhau,sodienthoai,hoten,loai,trangthai) VALUES(:email,:matkhau,:sodt,:hoten,3,1)";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(':email', $email);
+			$cmd->bindValue(':matkhau', md5($matkhau));
+			$cmd->bindValue(':sodt', $sodt);
+			$cmd->bindValue(':hoten', $hoten);
+			$cmd->execute();
+			$id = $db->lastInsertId();
+			return $id;
+		}
+		catch(PDOException $e){
+			$error_message=$e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Kiểm tra email tồn tại
+	public function kiemtraemailtontai($email){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT id FROM nguoidung WHERE email=:email";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(":email", $email);
+			$cmd->execute();
+			$tontai = ($cmd->rowCount() > 0);
+			$cmd->closeCursor();
+			return $tontai;
+		}
+		catch(PDOException $e){
+			$error_message=$e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Kiểm tra số điện thoại tồn tại
+	public function kiemtrasdtontai($sodt){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT id FROM nguoidung WHERE sodienthoai=:sodt";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(":sodt", $sodt);
+			$cmd->execute();
+			$tontai = ($cmd->rowCount() > 0);
+			$cmd->closeCursor();
+			return $tontai;
+		}
+		catch(PDOException $e){
+			$error_message=$e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Kiểm tra email và số điện thoại có khớp không
+	public function kiemtraemailvasdt($email, $sodt){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT id FROM nguoidung WHERE email=:email AND sodienthoai=:sodt AND trangthai=1";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(":email", $email);
+			$cmd->bindValue(":sodt", $sodt);
+			$cmd->execute();
+			$valid = ($cmd->rowCount() > 0);
+			$cmd->closeCursor();
+			return $valid;
+		}
+		catch(PDOException $e){
+			$error_message=$e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Đặt lại mật khẩu mới
+	public function datlaimatkhau($email, $sodt, $matkhaumoi){
+		$db = DATABASE::connect();
+		try{
+			$sql = "UPDATE nguoidung SET matkhau=:matkhau WHERE email=:email AND sodienthoai=:sodt";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(":matkhau", md5($matkhaumoi));
+			$cmd->bindValue(":email", $email);
+			$cmd->bindValue(":sodt", $sodt);
+			$ketqua = $cmd->execute();
+			return $ketqua;
 		}
 		catch(PDOException $e){
 			$error_message=$e->getMessage();

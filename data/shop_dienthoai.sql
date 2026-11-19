@@ -289,13 +289,14 @@ CREATE TABLE `nguoidung` (
   `hinhanh` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Mật khẩu tất cả: 'abc123' => md5 = 'e99a18c428cb38d5f260853678922e03'
+-- Mật khẩu tất cả tài khoản mặc định: 'abc123' => md5 = 'e99a18c428cb38d5f260853678922e03'
 INSERT INTO `nguoidung` (`id`, `email`, `sodienthoai`, `matkhau`, `hoten`, `loai`, `trangthai`, `hinhanh`) VALUES
-(1, 'admin@shop.com',  '0901234567', 'e99a18c428cb38d5f260853678922e03', 'Nguyễn Quản Trị',   1, 1, NULL),
-(2, 'nv1@shop.com',    '0912345678', 'e99a18c428cb38d5f260853678922e03', 'Trần Nhân Viên',    2, 1, NULL),
-(3, 'nv2@shop.com',    '0923456789', 'e99a18c428cb38d5f260853678922e03', 'Lê Thị Nhân Viên',  2, 1, NULL),
-(4, 'kh1@gmail.com',   '0934567890', 'e99a18c428cb38d5f260853678922e03', 'Nguyễn Thị Thu An', 3, 1, NULL),
-(5, 'kh2@gmail.com',   '0945678901', 'e99a18c428cb38d5f260853678922e03', 'Hồ Xuân Minh',      3, 1, NULL);
+(1, 'admin@shop.com',     '0901234567', 'e99a18c428cb38d5f260853678922e03', 'Nguyễn Quản Trị',   1, 1, NULL),
+(2, 'nv1@shop.com',       '0912345678', 'e99a18c428cb38d5f260853678922e03', 'Trần Nhân Viên',    2, 1, NULL),
+(3, 'nv2@shop.com',       '0923456789', 'e99a18c428cb38d5f260853678922e03', 'Lê Thị Nhân Viên',  2, 1, NULL),
+(4, 'kh1@gmail.com',      '0934567890', 'e99a18c428cb38d5f260853678922e03', 'Nguyễn Thị Thu An', 3, 1, NULL),
+(5, 'kh2@gmail.com',      '0945678901', 'e99a18c428cb38d5f260853678922e03', 'Hồ Xuân Minh',      3, 1, NULL),
+(6, 'admin_duc@shop.com', '0988888888', 'e99a18c428cb38d5f260853678922e03', 'Admin Đức',         1, 1, NULL);
 
 -- --------------------------------------------------------
 -- Indexes
@@ -315,7 +316,7 @@ ALTER TABLE `diachi`    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREM
 ALTER TABLE `donhang`   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 ALTER TABLE `donhangct` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 ALTER TABLE `mathang`   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
-ALTER TABLE `nguoidung` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `nguoidung` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 -- --------------------------------------------------------
 -- Foreign Keys
