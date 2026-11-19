@@ -182,7 +182,36 @@ switch($action){
 
         $khachhang_id = (int)$_SESSION["khachhang"]["id"];
         $gh = new GIOHANG();
-        $giohang = $gh->laygiohangtheonguoidung($khachhang_id);
+        $giohang_toanbo = $gh->laygiohangtheonguoidung($khachhang_id);
+
+        if(isset($_REQUEST["chon_mathang"]) && is_array($_REQUEST["chon_mathang"])){
+            $_SESSION["ds_chon_mua"] = array_map("intval", $_REQUEST["chon_mathang"]);
+        }
+
+        if(empty($_SESSION["ds_chon_mua"])){
+            $thongbao = "Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán!";
+            $giohang = $giohang_toanbo;
+            include("cart.php");
+            break;
+        }
+
+        // Lọc giỏ hàng chỉ lấy các mặt hàng đã được tích chọn
+        $giohang = array();
+        $tongtien = 0;
+        foreach($_SESSION["ds_chon_mua"] as $chon_id){
+            if(isset($giohang_toanbo[$chon_id])){
+                $giohang[$chon_id] = $giohang_toanbo[$chon_id];
+                $tongtien += $giohang_toanbo[$chon_id]["thanhtien"];
+            }
+        }
+
+        if(empty($giohang)){
+            $thongbao = "Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán!";
+            $giohang = $giohang_toanbo;
+            include("cart.php");
+            break;
+        }
+
         $dc = new DIACHI();
         $diachi = $dc->laydiachikhachhang($khachhang_id);
         include("checkout.php");
@@ -207,26 +236,63 @@ switch($action){
             $diachi_id = $dc->themdiachi($khachhang_id, $diachi);
         }
         
+        $gh = new GIOHANG();
+        $giohang_toanbo = $gh->laygiohangtheonguoidung($khachhang_id);
+
+        // Lấy danh sách mặt hàng được tích chọn mua từ POST hoặc SESSION
+        $ds_chon = array();
+        if(isset($_POST["chon_mathang"]) && is_array($_POST["chon_mathang"])){
+            $ds_chon = array_map("intval", $_POST["chon_mathang"]);
+        }
+        elseif(isset($_SESSION["ds_chon_mua"]) && is_array($_SESSION["ds_chon_mua"])){
+            $ds_chon = array_map("intval", $_SESSION["ds_chon_mua"]);
+        }
+
+        $giohang_mua = array();
+        $tongtien = 0;
+
+        if(!empty($ds_chon)){
+            foreach($ds_chon as $chon_id){
+                if(isset($giohang_toanbo[$chon_id])){
+                    $giohang_mua[$chon_id] = $giohang_toanbo[$chon_id];
+                    $tongtien += $giohang_toanbo[$chon_id]["thanhtien"];
+                }
+            }
+        }
+        else{
+            $giohang_mua = $giohang_toanbo;
+            $tongtien = $gh->tinhtiengiohang($khachhang_id);
+        }
+
+        if(empty($giohang_mua)){
+            $thongbao = "Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán!";
+            $giohang = $giohang_toanbo;
+            include("cart.php");
+            break;
+        }
+
         // lưu đơn hàng
         $dh = new DONHANG();
-        $gh = new GIOHANG();
-        $tongtien = $gh->tinhtiengiohang($khachhang_id);
         $donhang_id = $dh->themdonhang($khachhang_id, $diachi_id, $tongtien);
         
         // lưu chi tiết đơn hàng
         $ct = new DONHANGCT();      
-        $giohang = $gh->laygiohangtheonguoidung($khachhang_id);
         $mh_model = new MATHANG();
-        foreach($giohang as $id => $mh_item){
+        $ds_xoa = array();
+        foreach($giohang_mua as $id => $mh_item){
             $dongia = $mh_item["giaban"];
             $soluong = $mh_item["soluong"];
             $thanhtien = $mh_item["thanhtien"];
             $ct->themchitietdonhang($donhang_id, (int)$id, $dongia, $soluong, $thanhtien);
             $mh_model->capnhatsoluong((int)$id, $soluong);
+            $ds_xoa[] = (int)$id;
         }
         
-        // xóa giỏ hàng
-        $gh->xoatoanbogiohang($khachhang_id);
+        // Chỉ xóa khỏi bảng giohang những sản phẩm đã thanh toán
+        $gh->xoacacmathang($khachhang_id, $ds_xoa);
+
+        // Xóa danh sách đã chọn mua trong session sau khi đặt hàng thành công
+        unset($_SESSION["ds_chon_mua"]);
         
         // chuyển đến trang cảm ơn
         include("message.php");
@@ -342,16 +408,7 @@ switch($action){
             include("loginform.php");
             break;
         }
-        $khachhang_id = (int)$_SESSION["khachhang"]["id"];
-        // đọc thông tin các đơn của khách
-        $dh = new DONHANG();
-        $donhang = $dh->laydanhsachdonhangtheokh($khachhang_id);
-        
-        if(isset($_REQUEST["dhid"])){
-            $dhct = new DONHANGCT();
-            $donhangct = $dhct->laychitietdonhang((int)$_REQUEST["dhid"]);
-        }
-        include("info.php"); // trang info.php hiển thị thông tin hồ sơ và các đơn đã đặt
+        include("info.php");
         break;
     case "xlhoso":
         if(!kiemtra_khachhang_hople()){
@@ -382,9 +439,41 @@ switch($action){
         }
 
         $tb_thanhcong = "Cập nhật thông tin hồ sơ thành công!";
-        $dh = new DONHANG();
-        $donhang = $dh->laydanhsachdonhangtheokh((int)$_SESSION["khachhang"]["id"]);
         include("info.php");
+        break;
+    case "lichsumuahang":
+        if(!kiemtra_khachhang_hople()){
+            $thongbao = "Vui lòng đăng nhập để xem lịch sử mua hàng!";
+            include("loginform.php");
+            break;
+        }
+        $khachhang_id = (int)$_SESSION["khachhang"]["id"];
+        $dh = new DONHANG();
+        $danhsach_donhang = $dh->laydanhsachdonhangtheokh($khachhang_id);
+        include("orders.php");
+        break;
+    case "chitietdonhang":
+        if(!kiemtra_khachhang_hople()){
+            $thongbao = "Vui lòng đăng nhập để xem chi tiết đơn hàng!";
+            include("loginform.php");
+            break;
+        }
+        $khachhang_id = (int)$_SESSION["khachhang"]["id"];
+        $dh_id = isset($_GET["id"]) ? (int)$_GET["id"] : 0;
+        
+        $dh = new DONHANG();
+        $donhang = $dh->laydonhangtheoid($dh_id);
+
+        if(!$donhang || (int)$donhang["nguoidung_id"] !== $khachhang_id){
+            $thongbao = "Không tìm thấy đơn hàng hoặc bạn không có quyền xem đơn hàng này!";
+            $danhsach_donhang = $dh->laydanhsachdonhangtheokh($khachhang_id);
+            include("orders.php");
+            break;
+        }
+
+        $dhct = new DONHANGCT();
+        $chitiet_donhang = $dhct->laychitietdonhang($dh_id);
+        include("orderdetail.php");
         break;
     case "doimatkhau":
         if(!kiemtra_khachhang_hople()){

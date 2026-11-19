@@ -286,5 +286,38 @@ class MATHANG{
         }
     }
 
+    // Đếm tổng số mặt hàng
+    public function demmathang(){
+        $dbcon = DATABASE::connect();
+        try{
+            $sql = "SELECT COUNT(*) FROM mathang";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->execute();
+            return $cmd->fetchColumn();
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
+    // Lấy các mặt hàng sắp hết hàng (tồn kho thấp nhất)
+    public function laymathangsaphethang($soluong = 5){
+        $dbcon = DATABASE::connect();
+        try{
+            $sql = "SELECT * FROM mathang ORDER BY soluongton ASC LIMIT :soluong";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(':soluong', (int)$soluong, PDO::PARAM_INT);
+            $cmd->execute();
+            return $cmd->fetchAll();
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
 }
 ?>

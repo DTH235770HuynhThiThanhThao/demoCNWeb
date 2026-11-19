@@ -4,7 +4,7 @@ include("inc/top.php");
 
 <!-- Banner quảng cáo trang chủ -->
 <div class="position-relative mt-3 mb-4 rounded-3 overflow-hidden shadow-sm banner-quang-cao">
-    <img src="../images/carousel/h4.jpg" class="w-100 d-block banner-img" alt="Chương trình khuyến mãi">
+    <img src="../images/carousel/h7.jpg" class="w-100 d-block banner-img" alt="Chương trình khuyến mãi">
     <a href="#danh-sach-san-pham" class="btn btn-danger btn-buy-now position-absolute fw-bold text-uppercase rounded-pill shadow text-white">
         MUA NGAY <i class="bi bi-cart-plus-fill ms-1"></i>
     </a>

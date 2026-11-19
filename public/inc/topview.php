@@ -1,16 +1,46 @@
-﻿<!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
+<style>
+  .topview-tabs .nav-link {
+    font-weight: 700 !important;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+  }
+  .topview-tabs .tab-noibat:not(.active) {
+    color: #d97706 !important;
+  }
+  .topview-tabs .tab-xemnhieu:not(.active) {
+    color: #0284c7 !important;
+  }
+  .topview-tabs .tab-banchay:not(.active) {
+    color: #dc2626 !important;
+  }
+  .topview-tabs .tab-moi:not(.active) {
+    color: #16a34a !important;
+  }
+  .topview-tabs .nav-link.active {
+    color: #000000 !important;
+    font-weight: 700 !important;
+    border-color: #dee2e6 #dee2e6 #fff !important;
+    border-top: 3px solid #000000 !important;
+    background-color: #ffffff !important;
+  }
+  .topview-tabs .nav-link:hover:not(.active) {
+    background-color: #f8f9fa;
+  }
+</style>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs topview-tabs" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active fw-bold" data-bs-toggle="tab" href="#tab-noibat">Nổi bật</a>
+    <a class="nav-link active fw-bold tab-noibat" data-bs-toggle="tab" href="#tab-noibat">Nổi bật</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link fw-bold text-secondary" data-bs-toggle="tab" href="#tab-xemnhieu">Xem nhiều</a>
+    <a class="nav-link fw-bold tab-xemnhieu" data-bs-toggle="tab" href="#tab-xemnhieu">Xem nhiều</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link fw-bold text-secondary" data-bs-toggle="tab" href="#tab-banchay">Bán chạy</a>
+    <a class="nav-link fw-bold tab-banchay" data-bs-toggle="tab" href="#tab-banchay">Bán chạy</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link fw-bold text-secondary" data-bs-toggle="tab" href="#tab-moi">Sản phẩm mới</a>
+    <a class="nav-link fw-bold tab-moi" data-bs-toggle="tab" href="#tab-moi">Sản phẩm mới</a>
   </li>
 </ul>
 

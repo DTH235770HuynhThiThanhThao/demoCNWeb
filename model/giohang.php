@@ -179,6 +179,38 @@ class GIOHANG{
         }
     }
 
+    // Xóa các mặt hàng được chọn khỏi giỏ của người dùng
+    public function xoacacmathang($nguoidung_id, $ds_mathang_id){
+        $nguoidung_id = (int)$nguoidung_id;
+        if($nguoidung_id <= 0 || empty($ds_mathang_id) || !is_array($ds_mathang_id)){
+            return false;
+        }
+        $ids = array();
+        foreach($ds_mathang_id as $mid){
+            $mid = (int)$mid;
+            if($mid > 0){
+                $ids[] = $mid;
+            }
+        }
+        if(empty($ids)){
+            return false;
+        }
+        $db = DATABASE::connect();
+        try{
+            $in_clause = implode(",", $ids);
+            $sql = "DELETE FROM giohang WHERE nguoidung_id = :nguoidung_id AND mathang_id IN ($in_clause)";
+            $cmd = $db->prepare($sql);
+            $cmd->bindValue(":nguoidung_id", $nguoidung_id, PDO::PARAM_INT);
+            $result = $cmd->execute();
+            return $result;
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
     // Đếm số loại mặt hàng khác nhau trong giỏ của người dùng (hiển thị trên badge Giỏ hàng)
     public function demtongsoluong($nguoidung_id){
         $nguoidung_id = (int)$nguoidung_id;
@@ -276,5 +308,13 @@ function xoagiohang(){
         $gh = new GIOHANG();
         return $gh->xoatoanbogiohang((int)$_SESSION['khachhang']['id']);
     }
+}
+
+function xoacacmathangtronggio($ds_mathang_id){
+    if(isset($_SESSION['khachhang']['id']) && (int)$_SESSION['khachhang']['id'] > 0){
+        $gh = new GIOHANG();
+        return $gh->xoacacmathang((int)$_SESSION['khachhang']['id'], $ds_mathang_id);
+    }
+    return false;
 }
 ?>

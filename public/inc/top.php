@@ -132,6 +132,11 @@ if(isset($_SESSION["khachhang"])){
                                     </a>
                                 </li>
                                 <li>
+                                    <a class="dropdown-item" href="index.php?action=lichsumuahang">
+                                        <i class="bi bi-clock-history me-2"></i>Lịch sử mua hàng
+                                    </a>
+                                </li>
+                                <li>
                                     <a class="dropdown-item" href="index.php?action=doimatkhau">
                                         <i class="bi bi-key me-2"></i>Đổi mật khẩu
                                     </a>

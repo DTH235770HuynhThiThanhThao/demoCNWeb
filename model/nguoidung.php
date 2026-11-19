@@ -300,5 +300,21 @@ class NGUOIDUNG{
 			exit();
 		}
 	}
+
+	// Đếm tổng số khách hàng (loại = 3)
+	public function demkhachhang(){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT COUNT(*) FROM nguoidung WHERE loai = 3";
+			$cmd = $db->prepare($sql);
+			$cmd->execute();
+			return $cmd->fetchColumn();
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
 }
 ?>

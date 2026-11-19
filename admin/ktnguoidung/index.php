@@ -4,6 +4,8 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require("../../model/database.php");
 require("../../model/nguoidung.php");
+require("../../model/mathang.php");
+require("../../model/donhang.php");
 
 // Đồng bộ session nếu đã đăng nhập ngoài public với quyền Quản trị (1) hoặc Nhân viên (2)
 if (!isset($_SESSION["nguoidung"]) && isset($_SESSION["khachhang"]) && in_array($_SESSION["khachhang"]["loai"] ?? null, [1, 2])) {
@@ -30,6 +32,14 @@ $nd = new NGUOIDUNG();
 
 switch($action){
     case "macdinh":               
+        $dh = new DONHANG();
+        $mh = new MATHANG();
+        $tongdoanhthu = $dh->tinhdoanhthu();
+        $tongdonhang = $dh->demdonhang();
+        $donhangmoinhat = $dh->laydonhangmoinhat(5);
+        $tongmathang = $mh->demmathang();
+        $mathangsaphet = $mh->laymathangsaphethang(5);
+        $tongkhachhang = $nd->demkhachhang();
         include("main.php");
         break;
     case "dangnhap":
@@ -43,7 +53,8 @@ switch($action){
             if(in_array($user_info["loai"] ?? null, [1, 2])){
                 $_SESSION["nguoidung"] = $user_info; // đặt biến session
                 $_SESSION["khachhang"] = $user_info; // đồng bộ sang public
-                include("main.php");
+                header("location:index.php");
+                exit();
             }
             else{
                 $tb = "Tài khoản không có quyền quản trị hệ thống!";
@@ -82,7 +93,8 @@ switch($action){
         $nd->capnhatnguoidung($ndcapnhat);
 
         $_SESSION["nguoidung"] = $nd->laythongtinnguoidung($ndcapnhat->getemail());
-        include("main.php");        
+        header("location:index.php");
+        exit();        
         break;
 
        
@@ -94,9 +106,19 @@ switch($action){
         $ndcapnhat->setemail($_POST["txtemail"]);
         $ndcapnhat->setmatkhau($_POST["txtmatkhaumoi"]);
         $nd->doimatkhau($ndcapnhat);
-        include("main.php");
+        header("location:index.php");
+        exit();
         break; 
     default:
+        $dh = new DONHANG();
+        $mh = new MATHANG();
+        $tongdoanhthu = $dh->tinhdoanhthu();
+        $tongdonhang = $dh->demdonhang();
+        $donhangmoinhat = $dh->laydonhangmoinhat(5);
+        $tongmathang = $mh->demmathang();
+        $mathangsaphet = $mh->laymathangsaphethang(5);
+        $tongkhachhang = $nd->demkhachhang();
+        include("main.php");
         break;
 }
 ?>
