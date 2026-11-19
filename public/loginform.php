@@ -7,6 +7,12 @@ include("inc/top.php");
 		<div class="p-3 shadow">
 		<h3 class="text-center text-info">ĐĂNG NHẬP</h3>
 		
+		<?php if(isset($thongbao)): ?>
+			<div class="alert alert-warning" role="alert">
+				<i class="bi bi-exclamation-triangle-fill"></i> <?php echo $thongbao; ?>
+			</div>
+		<?php endif; ?>
+
 		<?php if(isset($tb)): ?>
 			<div class="alert alert-danger" role="alert">
 				<i class="bi bi-exclamation-triangle-fill"></i> <?php echo $tb; ?>

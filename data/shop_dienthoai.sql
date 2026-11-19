@@ -334,6 +334,21 @@ ALTER TABLE `donhangct`
 ALTER TABLE `mathang`
   ADD CONSTRAINT `mathang_ibfk_1` FOREIGN KEY (`danhmuc_id`) REFERENCES `danhmuc` (`id`) ON UPDATE CASCADE;
 
+-- --------------------------------------------------------
+-- Table: giohang
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `giohang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nguoidung_id` int(11) NOT NULL,
+  `mathang_id` int(11) NOT NULL,
+  `soluong` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_nguoidung_mathang` (`nguoidung_id`, `mathang_id`),
+  KEY `mathang_id` (`mathang_id`),
+  CONSTRAINT `giohang_ibfk_1` FOREIGN KEY (`nguoidung_id`) REFERENCES `nguoidung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `giohang_ibfk_2` FOREIGN KEY (`mathang_id`) REFERENCES `mathang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

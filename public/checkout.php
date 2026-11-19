@@ -25,7 +25,7 @@
 		</div>
 		<div class="my-3">
 			<label>Địa chỉ giao hàng</label>
-			<textarea class="form-control" name="txtdiachi" required><?php echo $diachi["diachi"]; ?></textarea>
+			<textarea class="form-control" name="txtdiachi" required><?php echo isset($diachi["diachi"]) ? $diachi["diachi"] : ""; ?></textarea>
 		</div>
 		<div class="my-3">
 			<input type="submit" value="Hoàn tất đơn hàng" class="btn btn-primary">

@@ -73,7 +73,26 @@ class KHACHHANG{
 			$cmd->bindValue(":email", $email);
 			$cmd->bindValue(":email_exact", $email);
 			$cmd->execute();
-			$ketqua = $cmd->fetch();
+			$ketqua = $cmd->fetch(PDO::FETCH_ASSOC);
+			$cmd->closeCursor();
+			return $ketqua;
+		}
+		catch(PDOException $e){
+			$error_message=$e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Lấy thông tin khách hàng theo id (chỉ lấy tài khoản đang kích hoạt trangthai=1)
+	public function laythongtinkhachhangtheoid($id){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT * FROM nguoidung WHERE id=:id AND trangthai=1";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+			$cmd->execute();
+			$ketqua = $cmd->fetch(PDO::FETCH_ASSOC);
 			$cmd->closeCursor();
 			return $ketqua;
 		}

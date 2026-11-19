@@ -1,3 +1,16 @@
+<?php
+if(isset($_SESSION["khachhang"])){
+    if(empty($_SESSION["khachhang"]["id"])){
+        unset($_SESSION["khachhang"]);
+    }
+    else if(class_exists("KHACHHANG")){
+        $kh_top_check = new KHACHHANG();
+        if(!$kh_top_check->laythongtinkhachhangtheoid($_SESSION["khachhang"]["id"])){
+            unset($_SESSION["khachhang"]);
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -33,7 +46,7 @@
                         </li>
                     </ul>
                     <div class="d-flex">
-                        <?php if(isset($_SESSION["khachhang"])){ ?>
+                        <?php if(isset($_SESSION["khachhang"]) && !empty($_SESSION["khachhang"]["id"])){ ?>
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                             <li class="nav-item"><a class="nav-link text-warning" href="index.php?action=thongtin" >Chào <?php echo $_SESSION["khachhang"]["hoten"]; ?></a></li>
                             <li class="nav-item"><a class="nav-link" href="index.php?action=dangxuat">Đăng xuất</a></li>
@@ -41,7 +54,14 @@
                         <?php } else{ ?>
                             <a href="index.php?action=dangnhap" class="btn btn-outline-light"><i class="bi bi-person"></i> Đăng nhập</a>
                         <?php } ?>
-                        &nbsp;<a href="index.php?action=giohang" class="btn btn-outline-light" ><i class="bi bi-cart3"></i> Giỏ hàng <span class="badge bg-danger text-white ms-1 rounded-pill"><?php echo demhangtronggio(); ?></span></a>
+                        &nbsp;<a href="index.php?action=giohang" class="btn btn-outline-light" ><i class="bi bi-cart3"></i> Giỏ hàng <span class="badge bg-danger text-white ms-1 rounded-pill"><?php 
+                            if(isset($_SESSION["khachhang"]["id"]) && !empty($_SESSION["khachhang"]["id"])){
+                                $gh_top = new GIOHANG();
+                                echo $gh_top->demmathang((int)$_SESSION["khachhang"]["id"]);
+                            } else {
+                                echo 0;
+                            }
+                        ?></span></a>
                     </div>
                 </div>
             </div>
