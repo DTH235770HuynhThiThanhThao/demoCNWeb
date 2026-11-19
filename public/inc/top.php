@@ -32,11 +32,11 @@ if(isset($_SESSION["khachhang"])){
                 <a class="navbar-brand d-flex align-items-center fw-bold" href="index.php"><img src="../images/logo/logo.jpg" alt="Thanh Thảo Shop" class="rounded-2 me-2 shadow-sm" style="height: 48px; width: 48px; object-fit: cover;"> Thanh Thảo Shop</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php">Trang chính</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Giới thiệu</a></li>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-2" style="white-space:nowrap; flex-wrap:nowrap;">
+                        <li class="nav-item"><a class="nav-link active px-2" aria-current="page" href="index.php">Trang chính</a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="#!">Giới thiệu</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Danh mục sản phẩm</a>
+                            <a class="nav-link dropdown-toggle px-2" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Danh mục sản phẩm</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                                
                                 <?php foreach ($danhmuc as $d): ?>
                                     <li><a class="dropdown-item" href="?action=group&id=<?php echo $d["id"]; ?>">
@@ -45,6 +45,53 @@ if(isset($_SESSION["khachhang"])){
                             </ul>
                         </li>
                     </ul>
+                    <!-- Ô tìm kiếm sản phẩm -->
+                    <form class="d-flex mx-lg-3 my-2 my-lg-0 navbar-search-form" action="index.php" method="GET" role="search" autocomplete="off">
+                        <input type="hidden" name="action" value="timkiem">
+                        <div class="input-group navbar-search-group">
+                            <input
+                                class="form-control navbar-search-input"
+                                type="search"
+                                name="q"
+                                placeholder="Tìm kiếm điện thoại..."
+                                aria-label="Tìm kiếm"
+                                value="<?php echo htmlspecialchars(trim($_REQUEST['q'] ?? '')); ?>"
+                            >
+                            <button class="btn navbar-search-btn" type="submit" title="Tìm kiếm">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <style>
+                    .navbar-search-form { flex: 0 0 220px; }
+                    .navbar-search-group { border-radius: 50px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.12); }
+                    .navbar-search-input {
+                        border: none;
+                        border-radius: 50px 0 0 50px !important;
+                        padding: 7px 16px;
+                        font-size: 0.88rem;
+                        background: #fff;
+                        color: #333;
+                        outline: none;
+                        box-shadow: none !important;
+                        transition: background 0.2s;
+                    }
+                    .navbar-search-input::placeholder { color: #aaa; }
+                    .navbar-search-input:focus { background: #f0faff; }
+                    .navbar-search-btn {
+                        background: #fff;
+                        border: none;
+                        border-radius: 0 50px 50px 0 !important;
+                        color: #0dcaf0;
+                        padding: 7px 14px;
+                        font-size: 1rem;
+                        transition: background 0.2s, color 0.2s;
+                    }
+                    .navbar-search-btn:hover { background: #0dcaf0; color: #fff; }
+                    @media (max-width: 991px) {
+                        .navbar-search-form { flex: 1 1 100%; margin: 6px 0 !important; }
+                    }
+                    </style>
                     <div class="d-flex align-items-center">
                         <a href="index.php?action=giohang" class="btn btn-outline-light me-2"><i class="bi bi-cart3"></i> Giỏ hàng <span class="badge bg-danger text-white ms-1 rounded-pill"><?php 
                             if(isset($_SESSION["khachhang"]["id"]) && !empty($_SESSION["khachhang"]["id"])){

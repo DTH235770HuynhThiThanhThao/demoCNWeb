@@ -18,8 +18,8 @@ html {
     scroll-margin-top: 80px;
 }
 .banner-quang-cao .banner-img {
-    height: 270px;
-    max-height: 270px;
+    height: 280px;
+    max-height: 280px;
     object-fit: cover;
     object-position: center;
 }

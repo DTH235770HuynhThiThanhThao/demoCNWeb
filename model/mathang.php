@@ -50,6 +50,25 @@ class MATHANG{
             exit();
         }
     }
+    // Tìm kiếm mặt hàng theo từ khóa (tên, mô tả)
+    public function timkiemmathang($tukhoa){
+        $dbcon = DATABASE::connect();
+        try{
+            $sql = "SELECT * FROM mathang WHERE tenmathang LIKE :tukhoa OR mota LIKE :tukhoa2 ORDER BY luotxem DESC";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":tukhoa", "%" . $tukhoa . "%");
+            $cmd->bindValue(":tukhoa2", "%" . $tukhoa . "%");
+            $cmd->execute();
+            $result = $cmd->fetchAll();
+            return $result;
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
 	// Lấy danh sách mặt hàng thuộc 1 danh mục
     public function laymathangtheodanhmuc($danhmuc_id){
         $dbcon = DATABASE::connect();

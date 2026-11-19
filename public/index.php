@@ -408,6 +408,15 @@ switch($action){
         $tb_thanhcong = "Đổi mật khẩu thành công!";
         include("changepass.php");
         break;
+    case "timkiem":
+        $tukhoa = trim($_REQUEST["q"] ?? "");
+        if($tukhoa !== ""){
+            $mathang = $mh->timkiemmathang($tukhoa);
+        } else {
+            $mathang = [];
+        }
+        include("search.php");
+        break;
     case "dangxuat":
         unset($_SESSION["khachhang"]);
         unset($_SESSION["nguoidung"]);
