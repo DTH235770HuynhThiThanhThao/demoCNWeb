@@ -1,0 +1,231 @@
+<?php
+include("inc/top.php");
+?>
+
+<style>
+.about-hero {
+    background: linear-gradient(135deg, #e0f7fc 0%, #ffffff 100%);
+    border-radius: 16px;
+    padding: 40px 32px;
+    box-shadow: 0 4px 24px rgba(0,196,235,0.10);
+}
+.about-hero .hero-logo {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 4px solid #0dcaf0;
+    box-shadow: 0 4px 16px rgba(0,196,235,0.25);
+}
+.commit-card {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 2px 14px rgba(0,196,235,0.12);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    height: 100%;
+}
+.commit-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 28px rgba(0,196,235,0.22);
+}
+.commit-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0dcaf0 0%, #00aacc 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px auto;
+    font-size: 1.7rem;
+    color: #fff;
+}
+.brand-card {
+    border: 2px solid #e8f9fd;
+    border-radius: 14px;
+    padding: 24px 16px 20px 16px;
+    text-align: center;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,196,235,0.09);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    height: 100%;
+}
+.brand-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,196,235,0.18);
+    border-color: #0dcaf0;
+}
+.brand-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0dcaf0;
+    margin-bottom: 8px;
+}
+.brand-desc {
+    font-size: 0.88rem;
+    color: #666;
+    min-height: 44px;
+}
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0dcaf0;
+    border-left: 5px solid #0dcaf0;
+    padding-left: 12px;
+    margin-bottom: 24px;
+}
+.contact-box {
+    background: linear-gradient(135deg, #0dcaf0 0%, #0aa8cc 100%);
+    border-radius: 16px;
+    color: #fff;
+    padding: 36px 32px;
+    box-shadow: 0 4px 24px rgba(0,196,235,0.22);
+}
+.contact-box .contact-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.97rem;
+}
+.contact-box .contact-info-row i {
+    font-size: 1.1rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+</style>
+
+<!-- ===== HERO ===== -->
+<div class="about-hero mb-5 mt-2">
+    <div class="d-flex flex-column flex-md-row align-items-center gap-4">
+        <img src="../images/logo/logo.jpg" alt="Thanh Thảo Shop" class="hero-logo flex-shrink-0">
+        <div>
+            <h2 class="fw-bold text-info mb-2" style="font-size:1.6rem;">
+                VỀ THANH THẢO SHOP – CỬA HÀNG ĐIỆN THOẠI CHÍNH HÃNG
+            </h2>
+            <p class="text-secondary mb-0" style="font-size:1.02rem; line-height:1.75;">
+                Thanh Thảo Shop là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp
+                các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: <strong>Apple</strong>, <strong>Samsung</strong>,
+                <strong>OPPO</strong> và <strong>Xiaomi</strong> với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 4 CAM KẾT ===== -->
+<div class="mb-5">
+    <div class="section-title">Cam Kết Dịch Vụ</div>
+    <div class="row g-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card commit-card text-center p-3">
+                <div class="commit-icon"><i class="bi bi-patch-check-fill"></i></div>
+                <h6 class="fw-bold mb-2">100% Hàng Chính Hãng</h6>
+                <p class="text-muted small mb-0">Nguyên seal, đầy đủ hóa đơn, nguồn gốc rõ ràng – không lo hàng nhái hàng giả.</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card commit-card text-center p-3">
+                <div class="commit-icon"><i class="bi bi-shield-check"></i></div>
+                <h6 class="fw-bold mb-2">Bảo Hành Uy Tín</h6>
+                <p class="text-muted small mb-0">Bảo hành chính hãng 12 tháng, hỗ trợ <strong>1 đổi 1</strong> trong 30 ngày nếu lỗi nhà sản xuất.</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card commit-card text-center p-3">
+                <div class="commit-icon"><i class="bi bi-tags-fill"></i></div>
+                <h6 class="fw-bold mb-2">Giá Tốt & Nhiều Ưu Đãi</h6>
+                <p class="text-muted small mb-0">Cập nhật giá tốt mỗi ngày kèm nhiều chương trình giảm giá trực tiếp hấp dẫn.</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card commit-card text-center p-3">
+                <div class="commit-icon"><i class="bi bi-truck"></i></div>
+                <h6 class="fw-bold mb-2">Giao Hàng Nhanh Toàn Quốc</h6>
+                <p class="text-muted small mb-0">Đóng gói cẩn thận, kiểm tra hàng trước khi thanh toán – giao tận nơi nhanh chóng.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== THƯƠNG HIỆU PHÂN PHỐI ===== -->
+<div class="mb-5">
+    <div class="section-title">Các Thương Hiệu Phân Phối Chính</div>
+    <div class="row g-4">
+        <?php
+        // Map tên danh mục → mô tả ngắn
+        $brand_desc = [
+            "Apple"   => "Dòng iPhone cao cấp, hệ sinh thái Apple bảo mật và mượt mà. Luôn có các phiên bản mới nhất.",
+            "Samsung" => "Smartphone đa dạng từ phân khúc phổ thông đến cao cấp Galaxy S/Z, màn hình sắc nét.",
+            "OPPO"    => "Thiết kế thời trang, camera selfie hàng đầu, pin trâu với sạc nhanh SUPERVOOC.",
+            "Xiaomi"  => "Hiệu năng mạnh mẽ, giá tối ưu – lựa chọn lý tưởng cho người dùng thực dụng.",
+        ];
+        $brand_icon = [
+            "Apple"   => "bi-apple",
+            "Samsung" => "bi-phone-fill",
+            "OPPO"    => "bi-camera-fill",
+            "Xiaomi"  => "bi-lightning-charge-fill",
+        ];
+        foreach ($danhmuc as $d):
+            $ten = $d["tendanhmuc"];
+            $desc = $brand_desc[$ten] ?? "Các sản phẩm chính hãng, chất lượng cao.";
+            $icon = $brand_icon[$ten] ?? "bi-phone";
+        ?>
+        <div class="col-md-3 col-sm-6">
+            <div class="brand-card d-flex flex-column">
+                <div class="mb-2" style="font-size:2.2rem; color:#0dcaf0;">
+                    <i class="bi <?php echo $icon; ?>"></i>
+                </div>
+                <div class="brand-name"><?php echo htmlspecialchars($ten); ?></div>
+                <p class="brand-desc flex-grow-1"><?php echo $desc; ?></p>
+                <a href="index.php?action=group&id=<?php echo $d["id"]; ?>"
+                   class="btn btn-outline-info btn-sm mt-2 rounded-pill fw-semibold">
+                    <i class="bi bi-grid me-1"></i>Xem sản phẩm <?php echo htmlspecialchars($ten); ?>
+                </a>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<!-- ===== THÔNG TIN CỬA HÀNG & LIÊN HỆ ===== -->
+<div class="mb-4">
+    <div class="section-title">Thông Tin Cửa Hàng & Liên Hệ</div>
+    <div class="contact-box">
+        <div class="row align-items-center g-4">
+            <div class="col-md-7">
+                <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-shop"></i> Thanh Thảo Shop – Cửa hàng điện thoại
+                </h5>
+                <div class="contact-info-row">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang</span>
+                </div>
+                <div class="contact-info-row">
+                    <i class="bi bi-telephone-fill"></i>
+                    <span>076 3841190</span>
+                </div>
+                <div class="contact-info-row">
+                    <i class="bi bi-envelope-fill"></i>
+                    <span>abc@abc.com</span>
+                </div>
+                <div class="contact-info-row">
+                    <i class="bi bi-clock-fill"></i>
+                    <span>08:00 – 21:30 &nbsp;<span class="badge bg-white text-info fw-semibold">Tất cả các ngày trong tuần</span></span>
+                </div>
+            </div>
+            <div class="col-md-5 text-center">
+                <img src="../images/logo/logo.jpg" alt="Thanh Thảo Shop"
+                     class="rounded-3 shadow mb-3"
+                     style="width:100px; height:100px; object-fit:cover; border:3px solid rgba(255,255,255,0.6);">
+                <p class="mb-3 small" style="opacity:0.9;">Chúng tôi luôn sẵn sàng phục vụ bạn với thái độ nhiệt tình và chuyên nghiệp nhất!</p>
+                <a href="index.php" class="btn btn-light fw-bold rounded-pill px-4 shadow-sm">
+                    <i class="bi bi-bag-heart-fill me-2 text-info"></i>Khám phá sản phẩm ngay
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+include("inc/bottom.php");
+?>

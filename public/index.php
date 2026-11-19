@@ -408,6 +408,9 @@ switch($action){
         $tb_thanhcong = "Đổi mật khẩu thành công!";
         include("changepass.php");
         break;
+    case "gioithieu":
+        include("about.php");
+        break;
     case "timkiem":
         $tukhoa = trim($_REQUEST["q"] ?? "");
         if($tukhoa !== ""){

@@ -34,7 +34,7 @@ if(isset($_SESSION["khachhang"])){
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-2" style="white-space:nowrap; flex-wrap:nowrap;">
                         <li class="nav-item"><a class="nav-link active px-2" aria-current="page" href="index.php">Trang chính</a></li>
-                        <li class="nav-item"><a class="nav-link px-2" href="#!">Giới thiệu</a></li>
+                        <li class="nav-item"><a class="nav-link px-2<?php if(isset($action) && $action=='gioithieu') echo ' active'; ?>" href="index.php?action=gioithieu">Giới thiệu</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle px-2" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Danh mục sản phẩm</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">                                
