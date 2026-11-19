@@ -1,13 +1,68 @@
 <?php include("inc/top.php"); ?>
 
-<br><br>
-<div class="container">  
-<div class="row"> 
-    <h4 class="text-info">Thông tin khách hàng</h4> 
-    <?php if(isset($_SESSION["khachhang"])){ $i = 1; ?> 
-    <p class="text-danger fw-bold"><?php echo $_SESSION["khachhang"]["hoten"]; ?></p>
-	<h4 class="text-info">Danh sách đơn hàng</h4>
-    <table class="table table-hover">
+<!-- Form cập nhật thông tin ng dùng-->
+  <div class="row">
+    <div class="col-12 col-md-10 m-auto">
+      <div class="card p-5 shadow-sm">
+        <div class="card-header">          
+          <h4 class="text-info text-center">HỒ SƠ NGƯỜI DÙNG</h4> 
+        </div>
+        <div class="card-body">
+          <?php if(isset($tb_thanhcong)): ?>
+            <div class="alert alert-success" role="alert">
+              <i class="bi bi-check-circle-fill"></i> <?php echo $tb_thanhcong; ?>
+            </div>
+          <?php endif; ?>
+
+          <?php if(isset($tb)): ?>
+            <div class="alert alert-danger" role="alert">
+              <i class="bi bi-exclamation-triangle-fill"></i> <?php echo $tb; ?>
+            </div>
+          <?php endif; ?>
+
+          <?php if(isset($_SESSION["khachhang"])): ?>
+          <form method="post" enctype="multipart/form-data" action="index.php">
+          	<input type="hidden" name="txtid" value="<?php echo $_SESSION["khachhang"]["id"]; ?>">
+          	<input type="hidden" name="txthinhanh" value="<?php echo $_SESSION["khachhang"]["hinhanh"]; ?>">
+            <input type="hidden" name="action" value="xlhoso">
+            <div class="text-center">
+              <img class="img-thumbnail" src="<?php if ($_SESSION["khachhang"]["hinhanh"]==NULL) echo "../images/users/user.png"; else echo "../images/users/" . $_SESSION["khachhang"]["hinhanh"]; ?>" alt="<?php echo $_SESSION["khachhang"]["hoten"]; ?>" width="100px">
+            </div>
+            <div class="my-3">    
+            <label class="form-label">Email</label>    
+            <input class="form-control" type="email" name="txtemail" placeholder="Email" value="<?php echo $_SESSION["khachhang"]["email"]; ?>" readonly>
+            </div>
+            <div class="my-3">    
+            <label class="form-label">Số điện thoại</label>    
+            <input class="form-control" type="number" name="txtdienthoai" placeholder="Số điện thoại" value="<?php echo $_SESSION["khachhang"]["sodienthoai"]; ?>" required>
+            </div>            
+            <div class="my-3">
+            <label class="form-label">Họ tên</label>
+            <input class="form-control" type="text" name="txthoten" placeholder="Họ tên" value="<?php echo $_SESSION["khachhang"]["hoten"]; ?>" required></div>
+            <div class="my-3">
+              <label class="form-label">Đổi hình đại diện</label>
+              <input class="form-control" type="file" name="fhinh">
+            </div>
+            <div class="my-3 text-center">            
+            <input class="btn btn-primary" type="submit" value="Cập nhật">
+            <input class="btn btn-warning" type="reset" value="Không">
+        	</div>
+          </form>
+          <?php else: ?>
+            <p class="text-center">Bạn chưa đăng nhập. Vui lòng <a href="index.php?action=dangnhap">đăng nhập</a> để xem thông tin tài khoản.</p>
+          <?php endif; ?>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <?php if(isset($_SESSION["khachhang"]) && isset($donhang)){ $i = 1; ?>
+  <br><br>
+  <div class="row">
+    <div class="col-12 col-md-10 m-auto">
+      <h4 class="text-info">Danh sách đơn hàng</h4>
+      <table class="table table-hover">
         <tr><th>STT</th><th>Mã đơn hàng</th><th>Ngày đặt</th><th>Số tiền</th><th>Chi tiết đơn hàng</th></tr>
         <?php foreach($donhang as $d){ ?>
         <tr>
@@ -32,17 +87,9 @@
                     </table>
             </td></tr>
         <?php }} ?>
-    </table>
-    <?php 
-    }
-    else{
-    ?>
-    <p>Bạn chưa đăng nhập. Vui lòng <a href="index.php?action=dangnhap">đăng nhập</a> để xem danh sách đơn hàng.</p>
-
-    <?php
-    }
-    ?>
-</div>
-</div>
+      </table>
+    </div>
+  </div>
+  <?php } ?>
 
 <?php include("inc/bottom.php"); ?>

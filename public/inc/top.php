@@ -46,15 +46,7 @@ if(isset($_SESSION["khachhang"])){
                         </li>
                     </ul>
                     <div class="d-flex align-items-center">
-                        <?php if(isset($_SESSION["khachhang"]) && !empty($_SESSION["khachhang"]["id"])){ ?>
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 me-2">
-                            <li class="nav-item"><a class="nav-link text-warning" href="index.php?action=thongtin" >Chào <?php echo $_SESSION["khachhang"]["hoten"]; ?></a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?action=dangxuat" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');">Đăng xuất</a></li>
-                        </ul>
-                        <?php } else{ ?>
-                            <a href="index.php?action=dangnhap" class="btn btn-outline-light me-2"><i class="bi bi-person"></i> Đăng nhập</a>
-                        <?php } ?>
-                        <a href="index.php?action=giohang" class="btn btn-outline-light" ><i class="bi bi-cart3"></i> Giỏ hàng <span class="badge bg-danger text-white ms-1 rounded-pill"><?php 
+                        <a href="index.php?action=giohang" class="btn btn-outline-light me-2"><i class="bi bi-cart3"></i> Giỏ hàng <span class="badge bg-danger text-white ms-1 rounded-pill"><?php 
                             if(isset($_SESSION["khachhang"]["id"]) && !empty($_SESSION["khachhang"]["id"])){
                                 $gh_top = new GIOHANG();
                                 echo $gh_top->demmathang((int)$_SESSION["khachhang"]["id"]);
@@ -62,15 +54,42 @@ if(isset($_SESSION["khachhang"])){
                                 echo 0;
                             }
                         ?></span></a>
-                        <?php 
-                        $quyen_quantri = false;
-                        if((isset($_SESSION["khachhang"]) && in_array($_SESSION["khachhang"]["loai"] ?? null, [1, 2])) || 
-                           (isset($_SESSION["nguoidung"]) && in_array($_SESSION["nguoidung"]["loai"] ?? null, [1, 2]))){
-                            $quyen_quantri = true;
-                        }
-                        if($quyen_quantri){
-                        ?>
-                            <a href="../admin/index.php" class="btn btn-warning text-dark ms-2 fw-semibold"><i class="bi bi-gear-fill"></i> Quản trị</a>
+
+                        <?php if(isset($_SESSION["khachhang"]) && !empty($_SESSION["khachhang"]["id"])){ ?>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle text-white d-flex align-items-center py-1 px-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="<?php if ($_SESSION["khachhang"]["hinhanh"]==NULL) echo "../images/users/user.png"; else echo "../images/users/" . $_SESSION["khachhang"]["hinhanh"]; ?>" class="rounded-circle border border-white me-2" width="34" height="34" style="object-fit: cover;">
+                                <span>Chào <?php echo $_SESSION["khachhang"]["hoten"]; ?></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                <?php if(isset($_SESSION["khachhang"]["loai"]) && in_array($_SESSION["khachhang"]["loai"], [1, 2])){ ?>
+                                <li>
+                                    <a class="dropdown-item fw-semibold text-primary" href="../admin/index.php">
+                                        <i class="bi bi-gear-fill me-2"></i>Quản trị hệ thống
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <?php } ?>
+                                <li>
+                                    <a class="dropdown-item" href="index.php?action=thongtin">
+                                        <i class="bi bi-person me-2"></i>Hồ sơ cá nhân
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="index.php?action=doimatkhau">
+                                        <i class="bi bi-key me-2"></i>Đổi mật khẩu
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="index.php?action=dangxuat" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <?php } else{ ?>
+                            <a href="index.php?action=dangnhap" class="btn btn-outline-light"><i class="bi bi-person"></i> Đăng nhập</a>
                         <?php } ?>
                     </div>
                 </div>

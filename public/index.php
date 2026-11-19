@@ -10,6 +10,7 @@ require("../model/khachhang.php");
 require("../model/diachi.php");
 require("../model/donhang.php");
 require("../model/donhangct.php");
+require("../model/nguoidung.php");
 
 // Tự động đồng bộ session nếu đã đăng nhập bên admin
 if(!isset($_SESSION["khachhang"]) && isset($_SESSION["nguoidung"])){
@@ -334,19 +335,75 @@ switch($action){
         break;
     case "thongtin":
         if(!kiemtra_khachhang_hople()){
-            $thongbao = "Vui lòng đăng nhập để xem thông tin đơn hàng!";
+            $thongbao = "Vui lòng đăng nhập để xem thông tin tài khoản!";
             include("loginform.php");
             break;
         }
+        $khachhang_id = (int)$_SESSION["khachhang"]["id"];
         // đọc thông tin các đơn của khách
         $dh = new DONHANG();
-        $donhang = $dh->laydanhsachdonhangtheokh((int)$_SESSION["khachhang"]["id"]);
+        $donhang = $dh->laydanhsachdonhangtheokh($khachhang_id);
         
         if(isset($_REQUEST["dhid"])){
             $dhct = new DONHANGCT();
             $donhangct = $dhct->laychitietdonhang((int)$_REQUEST["dhid"]);
         }
-        include("info.php"); // trang info.php hiển thị các đơn đã đặt
+        include("info.php"); // trang info.php hiển thị thông tin hồ sơ và các đơn đã đặt
+        break;
+    case "xlhoso":
+        if(!kiemtra_khachhang_hople()){
+            $thongbao = "Vui lòng đăng nhập để cập nhật hồ sơ!";
+            include("loginform.php");
+            break;
+        }
+        $nd = new NGUOIDUNG();
+        $ndcapnhat = new NGUOIDUNG();
+        $ndcapnhat->setid($_POST["txtid"]);
+        $ndcapnhat->setemail($_POST["txtemail"]);        
+        $ndcapnhat->setsodienthoai($_POST["txtdienthoai"]);
+        $ndcapnhat->sethoten($_POST["txthoten"]);
+        $ndcapnhat->sethinhanh($_POST["txthinhanh"]);
+
+        if(isset($_FILES["fhinh"]) && $_FILES["fhinh"]["name"] != null){
+            $hinhanh = basename($_FILES["fhinh"]["name"]);
+            $duongdan = "../images/users/" . $hinhanh;
+            move_uploaded_file($_FILES["fhinh"]["tmp_name"], $duongdan);
+            $ndcapnhat->sethinhanh($hinhanh);
+        }
+        
+        $nd->capnhatnguoidung($ndcapnhat);
+
+        $_SESSION["khachhang"] = $nd->laythongtinnguoidung($ndcapnhat->getemail());
+        if(isset($_SESSION["nguoidung"])){
+            $_SESSION["nguoidung"] = $_SESSION["khachhang"];
+        }
+
+        $tb_thanhcong = "Cập nhật thông tin hồ sơ thành công!";
+        $dh = new DONHANG();
+        $donhang = $dh->laydanhsachdonhangtheokh((int)$_SESSION["khachhang"]["id"]);
+        include("info.php");
+        break;
+    case "doimatkhau":
+        if(!kiemtra_khachhang_hople()){
+            $thongbao = "Vui lòng đăng nhập để đổi mật khẩu!";
+            include("loginform.php");
+            break;
+        }
+        include("changepass.php");
+        break;
+    case "xldoimatkhau":
+        if(!kiemtra_khachhang_hople()){
+            $thongbao = "Vui lòng đăng nhập để đổi mật khẩu!";
+            include("loginform.php");
+            break;
+        }
+        $nd = new NGUOIDUNG();
+        $ndcapnhat = new NGUOIDUNG();
+        $ndcapnhat->setemail($_POST["txtemail"]);
+        $ndcapnhat->setmatkhau($_POST["txtmatkhaumoi"]);
+        $nd->doimatkhau($ndcapnhat);
+        $tb_thanhcong = "Đổi mật khẩu thành công!";
+        include("changepass.php");
         break;
     case "dangxuat":
         unset($_SESSION["khachhang"]);

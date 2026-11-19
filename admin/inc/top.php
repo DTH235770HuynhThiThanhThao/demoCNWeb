@@ -180,23 +180,18 @@
 								</div>
 							</div>
 						</li>
-						<li class="nav-item d-flex align-items-center me-2">
-							<a class="btn btn-outline-primary btn-sm" href="../../public/index.php" title="Xem trang bán hàng">
-								<i class="align-middle me-1" data-feather="shopping-cart"></i> Xem cửa hàng
-							</a>
-						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
                 <i class="align-middle" data-feather="settings"></i>
               </a>
 
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-								<img src="<?php if ($_SESSION["nguoidung"]["hinhanh"]==NULL) echo "../../images/users/user.png"; else echo "../../images/users/" . $_SESSION["nguoidung"]["hinhanh"]; ?>" class="avatar img-fluid rounded me-1" /> 
+								<img src="<?php if ($_SESSION["nguoidung"]["hinhanh"]==NULL) echo "../../images/users/user.png"; else echo "../../images/users/" . $_SESSION["nguoidung"]["hinhanh"]; ?>" class="avatar img-fluid rounded-circle me-1" width="36" height="36" style="object-fit: cover;" /> 
 								<span class="text-dark">Chào <?php if(isset($_SESSION["nguoidung"])) echo $_SESSION["nguoidung"]["hoten"]; else echo "bạn"; ?></span>
 							</a>
 							<div class="dropdown-menu dropdown-menu-end">
 							
-								<a class="dropdown-item" href="../../public/index.php">
+								<a class="dropdown-item fw-semibold text-primary" href="../../public/index.php">
 									<i class="align-middle me-1" data-feather="external-link"></i> Xem cửa hàng
 								</a>
 								<div class="dropdown-divider"></div>
@@ -208,7 +203,7 @@
 								</a>
 								
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="../ktnguoidung/index.php?action=dangxuat" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');"><i class="align-middle me-1" data-feather="log-out"></i> Đăng xuất</a>
+								<a class="dropdown-item text-danger" href="../ktnguoidung/index.php?action=dangxuat" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');"><i class="align-middle me-1" data-feather="log-out"></i> Đăng xuất</a>
 							</div>
 						</li>
 					</ul>
