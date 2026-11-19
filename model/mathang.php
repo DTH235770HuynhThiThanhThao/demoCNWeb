@@ -105,7 +105,7 @@ class MATHANG{
     public function laymathangxemnhieu(){
         $dbcon = DATABASE::connect();
         try{
-            $sql = "SELECT * FROM mathang ORDER BY luotxem DESC LIMIT 3";
+            $sql = "SELECT * FROM mathang ORDER BY luotxem DESC LIMIT 4";
             $cmd = $dbcon->prepare($sql);
             $cmd->execute();
             $result = $cmd->fetchAll();
@@ -116,6 +116,62 @@ class MATHANG{
             echo "<p>Lỗi truy vấn: $error_message</p>";
             exit();
         }
+    }
+
+    // Lấy mặt hàng nổi bật
+    public function laymathangnoibat(){
+        $dbcon = DATABASE::connect();
+        try{
+            $sql = "SELECT * FROM mathang ORDER BY luotxem DESC, luotmua DESC LIMIT 4";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->execute();
+            $result = $cmd->fetchAll();
+            return $result;
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
+    // Lấy mặt hàng bán chạy nhất (theo lượt mua)
+    public function laymathangbanchay(){
+        $dbcon = DATABASE::connect();
+        try{
+            $sql = "SELECT * FROM mathang ORDER BY luotmua DESC LIMIT 4";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->execute();
+            $result = $cmd->fetchAll();
+            return $result;
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
+    // Lấy mặt hàng mới nhất (1 flagship đại diện từng hãng)
+    public function laymathangmoi(){
+        $dbcon = DATABASE::connect();
+        try{
+            $sql = "SELECT * FROM mathang WHERE id IN (1, 11, 21, 31) ORDER BY giaban DESC";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->execute();
+            $result = $cmd->fetchAll();
+            return $result;
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
+    // Lấy mặt hàng mua nhiều
+    public function laymathangmuanhieu(){
+        return $this->laymathangbanchay();
     }
 
     // Thêm mới

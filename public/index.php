@@ -22,6 +22,9 @@ $dm = new DANHMUC();
 $danhmuc = $dm->laydanhmuc();
 $mh = new MATHANG();
 $mathangxemnhieu = $mh->laymathangxemnhieu();
+$mathangnoibat = $mh->laymathangnoibat();
+$mathangbanchay = $mh->laymathangbanchay();
+$mathangmoi = $mh->laymathangmoi();
 
 // Kiểm tra khách hàng đã đăng nhập và tài khoản còn hợp lệ trong CSDL
 function kiemtra_khachhang_hople(){

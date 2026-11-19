@@ -1,5 +1,5 @@
         <!-- Carousel -->
-        <div id="demo" class="carousel slide shadow" data-bs-ride="carousel">
+        <div id="demo" class="carousel slide shadow rounded overflow-hidden h-100" data-bs-ride="carousel">
 
             <!-- Indicators/dots -->
             <div class="carousel-indicators">
@@ -9,15 +9,15 @@
             </div>
         
             <!-- The slideshow/carousel -->
-            <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="../images/carousel/h1.jpg" alt="Dụng cụ văn phòng" class="d-block w-100">
+            <div class="carousel-inner h-100">
+            <div class="carousel-item active h-100">
+                <img src="../images/carousel/h1.jpg" alt="Điện thoại chính hãng" class="d-block w-100" style="height: 100%; min-height: 365px; object-fit: cover; object-position: center;">
             </div>
-            <div class="carousel-item">
-                <img src="../images/carousel/h2.jpg" alt="Dụng cụ học tập" class="d-block w-100">
+            <div class="carousel-item h-100">
+                <img src="../images/carousel/h2.jpg" alt="Siêu ưu đãi" class="d-block w-100" style="height: 100%; min-height: 365px; object-fit: cover; object-position: center;">
             </div>
-            <div class="carousel-item">
-                <img src="../images/carousel/h3.jpg" alt="Văn phòng phẩm" class="d-block w-100">
+            <div class="carousel-item h-100">
+                <img src="../images/carousel/h3.jpg" alt="Thanh Thảo Shop" class="d-block w-100" style="height: 100%; min-height: 365px; object-fit: cover; object-position: center;">
             </div>
             </div>
         
