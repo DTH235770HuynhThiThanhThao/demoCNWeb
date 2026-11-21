@@ -134,7 +134,7 @@
                                 <?php foreach ($donhangmoinhat as $dh): ?>
                                     <tr>
                                         <td class="ps-3">
-                                            <span class="badge bg-light text-primary border">#<?php echo $dh["id"]; ?></span>
+                                            <span class="badge bg-light text-primary border fw-bold"><?php echo sprintf("DH%06d", $dh["id"]); ?></span>
                                         </td>
                                         <td>
                                             <span class="fw-semibold text-dark"><?php echo htmlspecialchars($dh["hoten"] ?? 'Khách vãng lai'); ?></span>

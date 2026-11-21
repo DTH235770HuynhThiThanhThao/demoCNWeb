@@ -2,20 +2,27 @@
 
 <div class="row my-4">
   <div class="col-12 col-md-11 col-lg-10 m-auto">
-    
-    <!-- Nút quay lại ở góc trên -->
-    <div class="mb-3 d-flex justify-content-between align-items-center">
-      <a href="index.php?action=lichsumuahang" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-arrow-left me-1"></i> Quay lại lịch sử mua hàng
-      </a>
-      <span class="text-muted small">Mã đơn hàng: <strong class="text-navy"><?= sprintf("DH%06d", $donhang["id"]) ?></strong></span>
-    </div>
-
     <div class="card shadow-sm mb-4">
-      <div class="card-header bg-white py-3 border-bottom">
+      <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
         <h4 class="text-navy fw-bold mb-0">
           <i class="bi bi-receipt-cutoff me-2"></i>CHI TIẾT ĐƠN HÀNG #<?= sprintf("DH%06d", $donhang["id"]) ?>
         </h4>
+        <div>
+          <?php 
+          $tt = (int)($donhang["trangthai"] ?? 0);
+          if($tt === 0){
+            echo '<span class="badge bg-warning text-dark fs-6 px-3 py-2"><i class="bi bi-clock me-1"></i>Chờ xác nhận</span>';
+          } elseif($tt === 1){
+            echo '<span class="badge bg-primary fs-6 px-3 py-2"><i class="bi bi-check-circle me-1"></i>Đã duyệt</span>';
+          } elseif($tt === 2){
+            echo '<span class="badge bg-info text-dark fs-6 px-3 py-2"><i class="bi bi-truck me-1"></i>Đang giao</span>';
+          } elseif($tt === 3){
+            echo '<span class="badge bg-success fs-6 px-3 py-2"><i class="bi bi-check2-all me-1"></i>Hoàn thành</span>';
+          } elseif($tt === 4){
+            echo '<span class="badge bg-danger fs-6 px-3 py-2"><i class="bi bi-x-circle me-1"></i>Đã hủy</span>';
+          }
+          ?>
+        </div>
       </div>
       <div class="card-body p-4">
 
@@ -28,6 +35,15 @@
           </div>
           <div class="col-12 col-md-6">
             <p class="mb-2"><strong>Địa chỉ giao hàng:</strong> <?= htmlspecialchars(!empty($donhang["diachi"]) ? $donhang["diachi"] : "Địa chỉ mặc định của khách hàng") ?></p>
+            <p class="mb-2"><strong>Trạng thái:</strong> 
+              <?php 
+              if($tt === 0) echo '<strong class="text-warning">Chờ xác nhận</strong>';
+              elseif($tt === 1) echo '<strong class="text-primary">Đã duyệt</strong>';
+              elseif($tt === 2) echo '<strong class="text-info">Đang giao</strong>';
+              elseif($tt === 3) echo '<strong class="text-success">Hoàn thành</strong>';
+              elseif($tt === 4) echo '<strong class="text-danger">Đã hủy</strong>';
+              ?>
+            </p>
             <p class="mb-0"><strong>Tổng tiền thanh toán:</strong> <span class="text-danger fw-bold fs-5"><?= number_format($donhang["tongtien"]) ?>đ</span></p>
           </div>
         </div>
@@ -87,11 +103,16 @@
           </table>
         </div>
 
-        <!-- Nút quay lại ở góc dưới -->
-        <div class="mt-4 text-end">
+        <!-- Nút thao tác ở góc dưới -->
+        <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
           <a href="index.php?action=lichsumuahang" class="btn btn-navy px-4">
             <i class="bi bi-arrow-left me-1"></i> Quay lại lịch sử mua hàng
           </a>
+          <?php if($tt === 0): ?>
+          <a href="index.php?action=huydonhang&id=<?= $donhang["id"] ?>" class="btn btn-danger px-4" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
+            <i class="bi bi-x-circle me-1"></i> Hủy đơn
+          </a>
+          <?php endif; ?>
         </div>
 
       </div>

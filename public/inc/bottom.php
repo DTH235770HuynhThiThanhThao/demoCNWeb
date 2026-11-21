@@ -35,9 +35,9 @@
                                 <h5 class="mb-0 fw-bold">Thanh Thảo Shop - Cửa hàng điện thoại</h5>
                             </div>
                         </a>
-                        <p><b><i>Địa chỉ:</i></b> 18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang<br>
-                            <b><i>Điện thoại:</i></b> 076 3841190<br> 
-                            <b><i>Email:</i></b> abc@abc.com</p>
+                        <p><b><i>Địa chỉ:</i></b> 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp<br>
+                            <b><i>Điện thoại:</i></b> 0357185269<br> 
+                            <b><i>Email:</i></b> thaohuynh1092005@gmail.com</p>
                     </div>
                     <div class="col-md-3">
                         <h4 class="text-white fw-bold mb-3">DANH MỤC HÀNG</h4>

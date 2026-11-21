@@ -21,6 +21,26 @@ class DONHANG{
 			exit();
 		}
 	}
+	// Đọc tất cả đơn hàng (cho Admin)
+	public function laydanhsachdonhang(){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT d.*, n.hoten, n.email, n.sodienthoai, dc.diachi 
+					FROM donhang d 
+					LEFT JOIN nguoidung n ON d.nguoidung_id = n.id 
+					LEFT JOIN diachi dc ON d.diachi_id = dc.id 
+					ORDER BY d.id DESC";
+			$cmd = $db->prepare($sql);
+			$cmd->execute();
+			return $cmd->fetchAll();
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
 	// Đọc ds đơn hàng của 1 khách
 	public function laydanhsachdonhangtheokh($id){
         $dbcon = DATABASE::connect();
@@ -39,18 +59,37 @@ class DONHANG{
         }
     }
 
-	// Lấy thông tin 1 đơn hàng theo id (kèm địa chỉ giao hàng)
+	// Lấy thông tin 1 đơn hàng theo id (kèm thông tin khách hàng và địa chỉ giao hàng)
 	public function laydonhangtheoid($id){
 		$db = DATABASE::connect();
 		try{
-			$sql = "SELECT d.*, dc.diachi 
+			$sql = "SELECT d.*, n.hoten, n.email, n.sodienthoai, dc.diachi 
 					FROM donhang d 
+					LEFT JOIN nguoidung n ON d.nguoidung_id = n.id 
 					LEFT JOIN diachi dc ON d.diachi_id = dc.id 
 					WHERE d.id = :id";
 			$cmd = $db->prepare($sql);
 			$cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
 			$cmd->execute();
 			$result = $cmd->fetch();
+			return $result;
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Cập nhật trạng thái đơn hàng (0: Chờ xác nhận, 1: Đã duyệt, 2: Đang giao, 3: Hoàn thành, 4: Đã hủy)
+	public function capnhattrangthai($id, $trangthai){
+		$db = DATABASE::connect();
+		try{
+			$sql = "UPDATE donhang SET trangthai = :trangthai WHERE id = :id";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(':id', (int)$id, PDO::PARAM_INT);
+			$cmd->bindValue(':trangthai', (int)$trangthai, PDO::PARAM_INT);
+			$result = $cmd->execute();
 			return $result;
 		}
 		catch(PDOException $e){

@@ -475,6 +475,32 @@ switch($action){
         $chitiet_donhang = $dhct->laychitietdonhang($dh_id);
         include("orderdetail.php");
         break;
+    case "huydonhang":
+        if(!kiemtra_khachhang_hople()){
+            $thongbao = "Vui lòng đăng nhập để thực hiện thao tác!";
+            include("loginform.php");
+            break;
+        }
+        $khachhang_id = (int)$_SESSION["khachhang"]["id"];
+        $dh_id = isset($_GET["id"]) ? (int)$_GET["id"] : 0;
+
+        $dh = new DONHANG();
+        $donhang = $dh->laydonhangtheoid($dh_id);
+
+        if($donhang && (int)$donhang["nguoidung_id"] === $khachhang_id){
+            if((int)($donhang["trangthai"] ?? 0) === 0){
+                $dh->capnhattrangthai($dh_id, 4);
+                $tb_thanhcong = "Hủy đơn hàng #" . sprintf("DH%06d", $dh_id) . " thành công!";
+            } else {
+                $thongbao = "Đơn hàng đang được xử lý hoặc đã hoàn tất, không thể hủy!";
+            }
+        } else {
+            $thongbao = "Không tìm thấy đơn hàng hoặc bạn không có quyền hủy đơn hàng này!";
+        }
+
+        $danhsach_donhang = $dh->laydanhsachdonhangtheokh($khachhang_id);
+        include("orders.php");
+        break;
     case "doimatkhau":
         if(!kiemtra_khachhang_hople()){
             $thongbao = "Vui lòng đăng nhập để đổi mật khẩu!";

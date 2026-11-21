@@ -60,7 +60,8 @@ CREATE TABLE `donhang` (
   `diachi_id` int(11) DEFAULT NULL,
   `ngay` datetime NOT NULL DEFAULT current_timestamp(),
   `tongtien` float NOT NULL DEFAULT 0,
-  `ghichu` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `ghichu` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `trangthai` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0: Chờ xác nhận, 1: Đã duyệt, 2: Đang giao, 3: Hoàn thành, 4: Đã hủy'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `donhang` (`id`, `nguoidung_id`, `diachi_id`, `ngay`, `tongtien`, `ghichu`) VALUES
