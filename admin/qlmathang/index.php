@@ -31,10 +31,32 @@ switch($action){
 		include("addform.php");
         break;
 	case "xulythem":	
-		// xử lý file upload
-		$hinhanh = "images/products/" . basename($_FILES["filehinhanh"]["name"]); // đường dẫn ảnh lưu trong db
-		$duongdan = "../../" . $hinhanh; // nơi lưu file upload (đường dẫn tính theo vị trí hiện hành)
-		move_uploaded_file($_FILES["filehinhanh"]["tmp_name"], $duongdan);
+		// xử lý file upload ảnh chính
+		$hinhanh = "";
+		if(!empty($_FILES["filehinhanh"]["name"])){
+			$hinhanh = "images/products/" . basename($_FILES["filehinhanh"]["name"]); // đường dẫn ảnh lưu trong db
+			$duongdan = "../../" . $hinhanh; // nơi lưu file upload
+			move_uploaded_file($_FILES["filehinhanh"]["tmp_name"], $duongdan);
+		}
+
+		// xử lý upload ảnh các màu sắc khác (thư viện ảnh)
+		$ds_thuvien = array();
+		if(isset($_FILES["filethuvienanh"]) && !empty($_FILES["filethuvienanh"]["name"][0])){
+			$total_files = count($_FILES["filethuvienanh"]["name"]);
+			for($i = 0; $i < $total_files; $i++){
+				if(!empty($_FILES["filethuvienanh"]["name"][$i])){
+					$ten_file = basename($_FILES["filethuvienanh"]["name"][$i]);
+					$duongdan_tv = "../../images/products/" . $ten_file;
+					if(move_uploaded_file($_FILES["filethuvienanh"]["tmp_name"][$i], $duongdan_tv)){
+						$ds_thuvien[] = $ten_file;
+					}
+				}
+			}
+		}
+		$thuvienanh = !empty($ds_thuvien) ? implode(", ", $ds_thuvien) : null;
+		$phienban = isset($_POST["txtphienban"]) ? trim($_POST["txtphienban"]) : null;
+		$mausac = isset($_POST["txtmausac"]) ? trim($_POST["txtmausac"]) : null;
+
 		// xử lý thêm		
         $mathanghh = new MATHANG();
 		$mathanghh->settenmathang($_POST["txttenmathang"]);
@@ -44,6 +66,9 @@ switch($action){
 		$mathanghh->setsoluongton($_POST["txtsoluong"]);
 		$mathanghh->setdanhmuc_id($_POST["optdanhmuc"]);
         $mathanghh->sethinhanh($hinhanh);
+        $mathanghh->setphienban($phienban);
+        $mathanghh->setmausac($mausac);
+        $mathanghh->setthuvienanh($thuvienanh);
 		$mh->themmathang($mathanghh);
 		$mathang = $mh->laymathang();
 		include("main.php");
@@ -91,14 +116,54 @@ switch($action){
         $mathanghh->setluotmua($_POST["txtluotmua"]);
         $mathanghh->sethinhanh($_POST["txthinhcu"]);
 
-        // upload file mới (nếu có)
-        if($_FILES["filehinhanh"]["name"]!=""){
-            // xử lý file upload -- Cần bổ dung kiểm tra: dung lượng, kiểu file, ...       
-            $hinhanh = "images/" . basename($_FILES["filehinhanh"]["name"]);// đường dẫn lưu csdl
+        // upload file ảnh chính mới (nếu có)
+        if(!empty($_FILES["filehinhanh"]["name"])){
+            $hinhanh = "images/products/" . basename($_FILES["filehinhanh"]["name"]);
             $mathanghh->sethinhanh($hinhanh);
-            $duongdan = "../../" . $hinhanh; // đường dẫn lưu upload file        
+            $duongdan = "../../" . $hinhanh;
             move_uploaded_file($_FILES["filehinhanh"]["tmp_name"], $duongdan);
         }
+
+        // xử lý danh sách ảnh thư viện cũ còn lại sau khi xóa
+        $thuvienanh_cu_str = isset($_POST["txtthuvienanhcu"]) ? trim($_POST["txtthuvienanhcu"]) : "";
+        $ds_tong_thuvien = array();
+        if(!empty($thuvienanh_cu_str)){
+            $arr_cu = explode(",", $thuvienanh_cu_str);
+            foreach($arr_cu as $item_cu){
+                $item_cu = trim($item_cu);
+                if(!empty($item_cu)){
+                    $ds_tong_thuvien[] = $item_cu;
+                }
+            }
+        }
+
+        // loại bỏ các ảnh được tick chọn xóa qua checkbox (nếu có)
+        if(isset($_POST["chk_xoa_anh"]) && is_array($_POST["chk_xoa_anh"])){
+            $ds_tong_thuvien = array_values(array_diff($ds_tong_thuvien, $_POST["chk_xoa_anh"]));
+        }
+
+        // xử lý upload thêm ảnh màu mới (nếu có)
+        if(isset($_FILES["filethuvienanh"]) && !empty($_FILES["filethuvienanh"]["name"][0])){
+            $total_files = count($_FILES["filethuvienanh"]["name"]);
+            for($i = 0; $i < $total_files; $i++){
+                if(!empty($_FILES["filethuvienanh"]["name"][$i])){
+                    $ten_file = basename($_FILES["filethuvienanh"]["name"][$i]);
+                    $duongdan_tv = "../../images/products/" . $ten_file;
+                    if(move_uploaded_file($_FILES["filethuvienanh"]["tmp_name"][$i], $duongdan_tv)){
+                        if(!in_array($ten_file, $ds_tong_thuvien)){
+                            $ds_tong_thuvien[] = $ten_file;
+                        }
+                    }
+                }
+            }
+        }
+        $thuvienanh_moi = !empty($ds_tong_thuvien) ? implode(", ", $ds_tong_thuvien) : null;
+        $phienban_moi = isset($_POST["txtphienban"]) ? trim($_POST["txtphienban"]) : null;
+        $mausac_moi = isset($_POST["txtmausac"]) ? trim($_POST["txtmausac"]) : null;
+
+        $mathanghh->setthuvienanh($thuvienanh_moi);
+        $mathanghh->setphienban($phienban_moi);
+        $mathanghh->setmausac($mausac_moi);
         
         // sửa mặt hàng
         $mh->suamathang($mathanghh);         

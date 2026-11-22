@@ -105,6 +105,9 @@ CREATE TABLE `mathang` (
   `giaban` float NOT NULL DEFAULT 0,
   `soluongton` int(11) NOT NULL DEFAULT 0,
   `hinhanh` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phienban` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mausac` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `thuvienanh` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `danhmuc_id` int(11) NOT NULL,
   `luotxem` int(11) NOT NULL DEFAULT 0,
   `luotmua` int(11) NOT NULL DEFAULT 0

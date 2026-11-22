@@ -59,6 +59,28 @@ class DONHANG{
         }
     }
 
+	// Lấy danh sách tất cả đơn hàng của 1 khách hàng/người dùng (kèm địa chỉ giao)
+	public function laydonhangtheonguoidung($id){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT d.*, dc.diachi 
+					FROM donhang d 
+					LEFT JOIN diachi dc ON d.diachi_id = dc.id 
+					WHERE d.nguoidung_id = :id 
+					ORDER BY d.id DESC";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+			$cmd->execute();
+			$result = $cmd->fetchAll();
+			return $result;
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
 	// Lấy thông tin 1 đơn hàng theo id (kèm thông tin khách hàng và địa chỉ giao hàng)
 	public function laydonhangtheoid($id){
 		$db = DATABASE::connect();
@@ -144,6 +166,170 @@ class DONHANG{
 			$cmd->bindValue(':soluong', (int)$soluong, PDO::PARAM_INT);
 			$cmd->execute();
 			return $cmd->fetchAll();
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// 1. Thống kê tổng hợp doanh thu theo khoảng ngày lọc
+	public function thongkedoanhthu($tungay = '', $denngay = ''){
+		$db = DATABASE::connect();
+		try{
+			$where = "";
+			$params = array();
+			if(!empty($tungay) && !empty($denngay)){
+				$where = " WHERE DATE(ngay) BETWEEN :tungay AND :denngay";
+				$params[':tungay'] = $tungay;
+				$params[':denngay'] = $denngay;
+			} elseif(!empty($tungay)){
+				$where = " WHERE DATE(ngay) >= :tungay";
+				$params[':tungay'] = $tungay;
+			} elseif(!empty($denngay)){
+				$where = " WHERE DATE(ngay) <= :denngay";
+				$params[':denngay'] = $denngay;
+			}
+
+			$sql = "SELECT 
+						COALESCE(SUM(CASE WHEN trangthai = 3 THEN tongtien ELSE 0 END), 0) AS doanhthuthucte,
+						COALESCE(SUM(CASE WHEN trangthai IN (0, 1, 2) THEN tongtien ELSE 0 END), 0) AS doanhthuchoxuly,
+						COALESCE(SUM(CASE WHEN trangthai = 4 THEN tongtien ELSE 0 END), 0) AS tongtienhuy,
+						COALESCE(SUM(CASE WHEN trangthai = 3 THEN 1 ELSE 0 END), 0) AS sodonhoanthanh,
+						COALESCE(COUNT(*), 0) AS tongsodon
+					FROM donhang" . $where;
+			$cmd = $db->prepare($sql);
+			foreach($params as $k => $v){
+				$cmd->bindValue($k, $v);
+			}
+			$cmd->execute();
+			$result = $cmd->fetch(PDO::FETCH_ASSOC);
+			if(!$result){
+				return array(
+					"doanhthuthucte" => 0,
+					"doanhthuchoxuly" => 0,
+					"tongtienhuy" => 0,
+					"sodonhoanthanh" => 0,
+					"tongsodon" => 0
+				);
+			}
+			return $result;
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// 2. Thống kê doanh thu theo 12 tháng trong năm
+	public function doanhthutheothang($nam = null){
+		if(empty($nam)){
+			$nam = (int)date("Y");
+		}
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT MONTH(ngay) AS thang, COALESCE(SUM(tongtien), 0) AS doanhthu 
+					FROM donhang 
+					WHERE trangthai = 3 AND YEAR(ngay) = :nam 
+					GROUP BY MONTH(ngay) 
+					ORDER BY thang ASC";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(':nam', (int)$nam, PDO::PARAM_INT);
+			$cmd->execute();
+			$rows = $cmd->fetchAll(PDO::FETCH_ASSOC);
+
+			$data = array_fill(1, 12, 0);
+			foreach($rows as $r){
+				$thang = (int)$r["thang"];
+				$data[$thang] = (float)$r["doanhthu"];
+			}
+			return $data;
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// 3. Thống kê doanh thu và số máy bán ra theo từng hãng điện thoại
+	public function doanhthutheohang($tungay = '', $denngay = ''){
+		$db = DATABASE::connect();
+		try{
+			$date_condition = "";
+			$params = array();
+			if(!empty($tungay) && !empty($denngay)){
+				$date_condition = " AND DATE(d.ngay) BETWEEN :tungay AND :denngay";
+				$params[':tungay'] = $tungay;
+				$params[':denngay'] = $denngay;
+			} elseif(!empty($tungay)){
+				$date_condition = " AND DATE(d.ngay) >= :tungay";
+				$params[':tungay'] = $tungay;
+			} elseif(!empty($denngay)){
+				$date_condition = " AND DATE(d.ngay) <= :denngay";
+				$params[':denngay'] = $denngay;
+			}
+
+			$sql = "SELECT dm.id, dm.tendanhmuc AS tenhang, 
+						   COALESCE(SUM(CASE WHEN d.trangthai = 3 THEN ct.soluong ELSE 0 END), 0) AS somay, 
+						   COALESCE(SUM(CASE WHEN d.trangthai = 3 THEN ct.thanhtien ELSE 0 END), 0) AS doanhthu 
+					FROM danhmuc dm
+					LEFT JOIN mathang m ON dm.id = m.danhmuc_id 
+					LEFT JOIN donhangct ct ON m.id = ct.mathang_id 
+					LEFT JOIN donhang d ON ct.donhang_id = d.id" . $date_condition . "
+					GROUP BY dm.id, dm.tendanhmuc 
+					ORDER BY doanhthu DESC";
+			$cmd = $db->prepare($sql);
+			foreach($params as $k => $v){
+				$cmd->bindValue($k, $v);
+			}
+			$cmd->execute();
+			return $cmd->fetchAll(PDO::FETCH_ASSOC);
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// 4. Lấy Top 5 sản phẩm bán chạy nhất mang lại doanh thu cao nhất
+	public function topsanphambanchay($tungay = '', $denngay = ''){
+		$db = DATABASE::connect();
+		try{
+			$where = " WHERE d.trangthai = 3";
+			$params = array();
+			if(!empty($tungay) && !empty($denngay)){
+				$where .= " AND DATE(d.ngay) BETWEEN :tungay AND :denngay";
+				$params[':tungay'] = $tungay;
+				$params[':denngay'] = $denngay;
+			} elseif(!empty($tungay)){
+				$where .= " AND DATE(d.ngay) >= :tungay";
+				$params[':tungay'] = $tungay;
+			} elseif(!empty($denngay)){
+				$where .= " AND DATE(d.ngay) <= :denngay";
+				$params[':denngay'] = $denngay;
+			}
+
+			$sql = "SELECT m.id, m.tenmathang, m.hinhanh, dm.tendanhmuc AS tenhang, 
+						   SUM(ct.soluong) AS tongsoluong, 
+						   SUM(ct.thanhtien) AS tongdoanhthu 
+					FROM donhangct ct 
+					INNER JOIN donhang d ON ct.donhang_id = d.id 
+					INNER JOIN mathang m ON ct.mathang_id = m.id 
+					LEFT JOIN danhmuc dm ON m.danhmuc_id = dm.id 
+					$where 
+					GROUP BY m.id, m.tenmathang, m.hinhanh, dm.tendanhmuc 
+					ORDER BY tongdoanhthu DESC 
+					LIMIT 5";
+			$cmd = $db->prepare($sql);
+			foreach($params as $k => $v){
+				$cmd->bindValue($k, $v);
+			}
+			$cmd->execute();
+			return $cmd->fetchAll(PDO::FETCH_ASSOC);
 		}
 		catch(PDOException $e){
 			$error_message = $e->getMessage();

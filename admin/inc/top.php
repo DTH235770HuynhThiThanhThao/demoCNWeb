@@ -63,8 +63,8 @@
 						KINH DOANH
 					</li>
 					
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="">
+					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qlkhachhang") != false) echo "active"; ?>">
+						<a class="sidebar-link" href="../qlkhachhang/index.php">
 						<i class="align-middle" data-feather="users"></i> <span class="align-middle">Quản lý khách hàng</span>
 						</a>
 					</li>
@@ -75,15 +75,15 @@
 						</a>
 					</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="">
+					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qldoanhthu") != false) echo "active"; ?>">
+						<a class="sidebar-link" href="../qldoanhthu/index.php">
 						<i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Quản lý doanh thu</span>
 						</a>
 					</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="">
-						<i class="align-middle" data-feather="shopping-bag"></i> <span class="align-middle">Chương trình khuyến mãi</span>
+					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qlkhuyenmai") != false) echo "active"; ?>">
+						<a class="sidebar-link" href="../qlkhuyenmai/index.php">
+						<i class="align-middle" data-feather="tag"></i> <span class="align-middle">Chương trình khuyến mãi</span>
 						</a>
 					</li>
 

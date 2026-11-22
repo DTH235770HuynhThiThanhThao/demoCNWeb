@@ -1,71 +1,102 @@
             </div>
         </section>
         
-        <!-- Top products -->
-
-        <section class="mb-3">            
-            <div class="container-fluid">
-                <div class="row align-items-stretch">                    
-                    <div class="col-md-6 mb-3 mb-md-0 d-flex flex-column">
+        <!-- Top Products & Promo Section -->
+        <section class="mb-5">            
+            <div class="container">
+                <div class="row align-items-stretch g-4">                    
+                    <div class="col-lg-6 mb-3 mb-lg-0 d-flex flex-column">
                         <?php include("inc/carousel.php"); ?>    
                     </div>
-                    <div class="col-md-6 d-flex flex-column">
+                    <div class="col-lg-6 d-flex flex-column">
                         <?php include("inc/topview.php"); ?>
                     </div>
                 </div>
             </div>
         </section> 
 
-        <!-- Footer-->
-        <footer class="py-5 bg-navy">
-            <style>
-            .footer-link { transition: color 0.18s, padding-left 0.18s; }
-            .footer-link:hover { color: #fff !important; padding-left: 4px; }
-            footer hr { border-color: rgba(255,255,255,0.15); }
-            </style>
-
-            <div class="text-center mb-5"><a class="text-warning" href="#top"><i class="bi bi-chevron-up"  style="font-size: 3rem; font-weight: bold; color:white;"></i></a></div>
-            
+        <!-- Modern Tech Footer (CellphoneS Style) -->
+        <footer class="site-footer">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-light">
-                        <a href="index.php" class="text-decoration-none text-white">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="../images/logo/logo.jpg" alt="Thanh Thảo Shop" class="rounded-3 me-3 shadow-sm" style="height: 64px; width: 64px; object-fit: cover;">
-                                <h5 class="mb-0 fw-bold">Thanh Thảo Shop - Cửa hàng điện thoại</h5>
+                <!-- Nút cuộn lên đầu trang -->
+                <div class="text-center mb-4">
+                    <a href="#top" class="btn-scroll-top text-decoration-none" title="Lên đầu trang">
+                        <i class="bi bi-chevron-up"></i>
+                    </a>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Cột 1: Thông tin thương hiệu & Liên hệ -->
+                    <div class="col-lg-5 col-md-6">
+                        <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3">
+                            <img src="../images/logo/logo1.jpg" alt="Thảo Mobile" class="rounded-3 me-3 shadow-sm" style="height: 52px; width: 52px; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
+                            <div>
+                                <h5 class="mb-0 fw-bold text-white">Thảo Mobile</h5>
+                                <small class="text-white-50">Hệ thống bán lẻ điện thoại chính hãng</small>
                             </div>
                         </a>
-                        <p><b><i>Địa chỉ:</i></b> 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp<br>
-                            <b><i>Điện thoại:</i></b> 0357185269<br> 
-                            <b><i>Email:</i></b> thaohuynh1092005@gmail.com</p>
+                        <p class="text-white-50 small mb-3">Chuyên cung cấp các dòng điện thoại cao cấp từ Apple, Samsung, OPPO, Xiaomi với chính sách giá và hậu mãi hàng đầu.</p>
+                        
+                        <div class="footer-contact-item">
+                            <i class="bi bi-geo-alt-fill"></i>
+                            <span><b>Địa chỉ:</b> 18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="bi bi-telephone-fill"></i>
+                            <span><b>Điện thoại:</b> <a href="tel:0763841190" class="text-white text-decoration-none">076 3841190</a> (Hỗ trợ 8:00 - 21:30)</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="bi bi-envelope-fill"></i>
+                            <span><b>Email:</b> <a href="mailto:abc@abc.com" class="text-white-50 text-decoration-none">abc@abc.com</a></span>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <h4 class="text-white fw-bold mb-3">DANH MỤC HÀNG</h4>
-                        <?php foreach ($danhmuc as $d): ?>
-                            <a class="d-block text-decoration-none text-white-50 footer-link mb-1"
-                               href="?action=group&id=<?php echo $d["id"]; ?>">
-                                <i class="bi bi-chevron-right me-1" style="font-size:0.75rem;"></i><?php echo $d["tendanhmuc"]; ?>
+
+                    <!-- Cột 2: Danh mục hãng -->
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="footer-title">DANH MỤC HÃNG</h5>
+                        <?php if(!empty($danhmuc)): foreach ($danhmuc as $d): ?>
+                            <a class="footer-link" href="?action=group&id=<?php echo $d["id"]; ?>">
+                                <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Điện thoại <?php echo $d["tendanhmuc"]; ?>
                             </a>
-                        <?php endforeach; ?>
+                        <?php endforeach; endif; ?>
                     </div>
-                    <div class="col-md-3">
-                        <h4 class="text-white fw-bold mb-3">DỊCH VỤ KHÁCH HÀNG</h4>
-                        <a href="#" class="d-block text-decoration-none text-white-50 footer-link mb-1">
-                            <i class="bi bi-chevron-right me-1" style="font-size:0.75rem;"></i>Hướng dẫn mua hàng
+
+                    <!-- Cột 3: Hỗ trợ khách hàng -->
+                    <div class="col-lg-4 col-md-12">
+                        <h5 class="footer-title">HỖ TRỢ KHÁCH HÀNG</h5>
+                        <a href="#" class="footer-link">
+                            <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Hướng dẫn mua hàng trực tuyến
                         </a>
-                        <a href="#" class="d-block text-decoration-none text-white-50 footer-link mb-1">
-                            <i class="bi bi-chevron-right me-1" style="font-size:0.75rem;"></i>Câu hỏi thường gặp
+                        <a href="#" class="footer-link">
+                            <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Chính sách bảo hành & đổi trả 30 ngày
                         </a>
-                        <a href="#" class="d-block text-decoration-none text-white-50 footer-link mb-1">
-                            <i class="bi bi-chevron-right me-1" style="font-size:0.75rem;"></i>Liên hệ với chúng tôi
+                        <a href="index.php?action=gioithieu" class="footer-link">
+                            <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Giới thiệu & Liên hệ cửa hàng
                         </a>
-                        <a href="../admin/index.php" class="d-block text-decoration-none text-white-50 footer-link mb-1">
-                            <i class="bi bi-shield-lock me-1"></i>Quản trị hệ thống
+                        <a href="../admin/index.php" class="footer-link text-warning">
+                            <i class="bi bi-shield-lock me-1"></i>Quản trị hệ thống (Dành cho Admin / NV)
                         </a>
+                        
+                        <div class="mt-3 pt-2">
+                            <div class="d-flex gap-2">
+                                <span class="badge bg-secondary p-2"><i class="bi bi-credit-card-2-front me-1"></i> Visa / Master</span>
+                                <span class="badge bg-secondary p-2"><i class="bi bi-qr-code-scan me-1"></i> VNPAY-QR</span>
+                                <span class="badge bg-secondary p-2"><i class="bi bi-cash me-1"></i> COD</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
                 <hr>
-                <p class="m-0 text-center text-warning fw-bolder">Copyright &copy; Thanh Thảo Shop 2026</p>
+
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                        <p class="m-0 text-white-50 small">&copy; 2026 <b>Thanh Thảo Shop</b>. Tất cả quyền được bảo lưu.</p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <small class="text-white-50">Thương hiệu bán lẻ công nghệ uy tín hàng đầu</small>
+                    </div>
+                </div>
             </div>
         </footer>
 

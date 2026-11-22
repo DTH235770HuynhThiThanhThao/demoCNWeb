@@ -18,11 +18,23 @@
 	<?php foreach($mathang as $m): ?>
 	<tr>
 		<td>
-			<a href="index.php?action=chitiet&id=<?php echo $m["id"]; ?>">
+			<a href="index.php?action=chitiet&id=<?php echo $m["id"]; ?>" class="fw-bold text-dark text-decoration-none">
 				<?php echo $m["tenmathang"]; ?>
 			</a>
+			<div class="mt-1 d-flex flex-wrap gap-1">
+				<?php if(!empty($m["phienban"])): ?>
+					<span class="badge bg-light text-primary border" title="Phiên bản dung lượng">
+						<i class="align-middle me-1" data-feather="hard-drive" style="width: 12px; height: 12px;"></i><?php echo htmlspecialchars($m["phienban"]); ?>
+					</span>
+				<?php endif; ?>
+				<?php if(!empty($m["mausac"])): ?>
+					<span class="badge bg-light text-secondary border" title="Màu sắc">
+						<i class="align-middle me-1" data-feather="disc" style="width: 12px; height: 12px;"></i><?php echo htmlspecialchars($m["mausac"]); ?>
+					</span>
+				<?php endif; ?>
+			</div>
 		</td>
-		<td><?php echo $m["giaban"]; ?></td>
+		<td><span class="text-danger fw-bold"><?php echo number_format($m["giaban"]); ?>đ</span></td>
 		<td><?php echo $m["soluongton"]; ?></td>
 		<td>
 			<a href="index.php?action=chitiet&id=<?php echo $m["id"]; ?>">

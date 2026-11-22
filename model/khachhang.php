@@ -179,5 +179,92 @@ class KHACHHANG{
 			exit();
 		}
 	}
+
+	// Lấy danh sách khách hàng (loai = 3) kèm thống kê số đơn hàng và tổng chi tiêu hoàn thành (trangthai = 3)
+	public function laydanhsachkhachhang($tukhoa = ''){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT n.*, 
+						   COUNT(d.id) AS sodonhang, 
+						   COALESCE(SUM(CASE WHEN d.trangthai = 3 THEN d.tongtien ELSE 0 END), 0) AS tongchitieu 
+					FROM nguoidung n 
+					LEFT JOIN donhang d ON n.id = d.nguoidung_id 
+					WHERE n.loai = 3";
+			
+			$tukhoa = trim($tukhoa);
+			if($tukhoa !== ''){
+				$sql .= " AND (n.hoten LIKE :tukhoa OR n.email LIKE :tukhoa OR n.sodienthoai LIKE :tukhoa)";
+			}
+			
+			$sql .= " GROUP BY n.id ORDER BY n.id DESC";
+			
+			$cmd = $db->prepare($sql);
+			if($tukhoa !== ''){
+				$cmd->bindValue(':tukhoa', '%' . $tukhoa . '%');
+			}
+			$cmd->execute();
+			$ketqua = $cmd->fetchAll(PDO::FETCH_ASSOC);
+			$cmd->closeCursor();
+			return $ketqua;
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Lấy thông tin chi tiết 1 khách hàng theo id kèm danh sách địa chỉ giao hàng
+	public function laykhachhangtheoid($id){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT n.*, 
+						   COUNT(d.id) AS sodonhang, 
+						   COALESCE(SUM(CASE WHEN d.trangthai = 3 THEN d.tongtien ELSE 0 END), 0) AS tongchitieu 
+					FROM nguoidung n 
+					LEFT JOIN donhang d ON n.id = d.nguoidung_id 
+					WHERE n.id = :id AND n.loai = 3 
+					GROUP BY n.id";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(':id', (int)$id, PDO::PARAM_INT);
+			$cmd->execute();
+			$khachhang = $cmd->fetch(PDO::FETCH_ASSOC);
+			$cmd->closeCursor();
+			
+			if($khachhang){
+				// Lấy danh sách địa chỉ của khách hàng
+				$sql_dc = "SELECT * FROM diachi WHERE nguoidung_id = :id ORDER BY macdinh DESC, id DESC";
+				$cmd_dc = $db->prepare($sql_dc);
+				$cmd_dc->bindValue(':id', (int)$id, PDO::PARAM_INT);
+				$cmd_dc->execute();
+				$khachhang['diachi'] = $cmd_dc->fetchAll(PDO::FETCH_ASSOC);
+				$cmd_dc->closeCursor();
+			}
+			return $khachhang;
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Đổi trạng thái hoạt động của khách hàng (1: Hoạt động, 0: Đã khóa)
+	public function doitrangthaikhachhang($id, $trangthai){
+		$db = DATABASE::connect();
+		try{
+			$sql = "UPDATE nguoidung SET trangthai = :trangthai WHERE id = :id AND loai = 3";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(':id', (int)$id, PDO::PARAM_INT);
+			$cmd->bindValue(':trangthai', (int)$trangthai, PDO::PARAM_INT);
+			$ketqua = $cmd->execute();
+			return $ketqua;
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
 }
 ?>
