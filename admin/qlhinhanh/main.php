@@ -79,11 +79,11 @@
 							?>
 							<img src="../../images/logo/<?= htmlspecialchars($logo_file) ?>" 
 							     id="previewLogoImg"
-							     alt="Logo Thanh Thảo Shop" 
+							     alt="Logo Thảo Mobile" 
 							     class="me-2 rounded shadow-sm bg-white p-1" 
 							     style="height: 48px; max-width: 140px; object-fit: contain;">
 							<div class="text-white">
-								<div class="fw-bold fs-6 lh-1">THANH THẢO SHOP</div>
+								<div class="fw-bold fs-6 lh-1">THẢO MOBILE</div>
 								<span class="small opacity-75" style="font-size: 11px;">Mô phỏng thanh Header</span>
 							</div>
 						</div>

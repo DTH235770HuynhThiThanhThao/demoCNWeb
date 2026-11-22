@@ -39,14 +39,14 @@ class HINHANH{
                 $db->exec($sql_create);
 
                 $sql_seed = "INSERT INTO `hinhanh` (`id`, `tieude`, `duongdan`, `loai`, `thutu`, `trangthai`) VALUES
-                    (1, 'Logo chính Thanh Thảo Shop', 'logo1.jpg', 'logo', 1, 1),
+                    (1, 'Logo chính Thảo Mobile', 'logo1.jpg', 'logo', 1, 1),
                     (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h4.jpg', 'banner_chinh', 1, 1),
                     (3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 2, 1),
                     (4, 'Ưu đãi trả góp 0% lãi suất - Thủ tục nhanh', 'h6.jpg', 'banner_chinh', 3, 1),
                     (5, 'Thu cũ đổi mới trợ giá cực khủng', 'h7.jpg', 'banner_chinh', 4, 1),
                     (6, 'Điện thoại chính hãng bảo hành 12 tháng', 'h1.jpg', 'banner_phu', 1, 1),
                     (7, 'Siêu ưu đãi công nghệ - Mua là có quà', 'h2.jpg', 'banner_phu', 2, 1),
-                    (8, 'Thanh Thảo Shop Flagship Store', 'h3.jpg', 'banner_phu', 3, 1);";
+                    (8, 'Thảo Mobile Flagship Store', 'h3.jpg', 'banner_phu', 3, 1);";
                 $db->exec($sql_seed);
             }
         }
@@ -125,12 +125,12 @@ class HINHANH{
             $cmd->execute();
             $result = $cmd->fetch();
             if(!$result){
-                return array("duongdan" => "logo1.jpg", "tieude" => "Thanh Thảo Shop");
+                return array("duongdan" => "logo1.jpg", "tieude" => "Thảo Mobile");
             }
             return $result;
         }
         catch(PDOException $e){
-            return array("duongdan" => "logo1.jpg", "tieude" => "Thanh Thảo Shop");
+            return array("duongdan" => "logo1.jpg", "tieude" => "Thảo Mobile");
         }
     }
 
@@ -189,7 +189,7 @@ class HINHANH{
             }
             else{
                 $sql = "INSERT INTO hinhanh (tieude, duongdan, loai, thutu, trangthai) 
-                        VALUES ('Logo chính Thanh Thảo Shop', :duongdan, 'logo', 1, 1)";
+                        VALUES ('Logo chính Thảo Mobile', :duongdan, 'logo', 1, 1)";
                 $cmd = $db->prepare($sql);
                 $cmd->bindValue(":duongdan", $duongdan);
                 return $cmd->execute();

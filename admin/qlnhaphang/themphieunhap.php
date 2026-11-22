@@ -2,12 +2,34 @@
 
 <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
 	<div>
-		<a href="index.php" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
+		<a href="index.php?tab=tonkho" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1 shadow-sm">
 			<i class="align-middle" data-feather="arrow-left"></i>
-			<span>Trở về danh sách nhập hàng</span>
+			<span>Trở về quản lý tồn kho & nhập hàng</span>
 		</a>
 	</div>
 </div>
+
+<?php 
+$mathang_id_chon = isset($mathang_id_chon) ? (int)$mathang_id_chon : 0;
+$ten_may_chon = "";
+if($mathang_id_chon > 0 && !empty($mathang)){
+	foreach($mathang as $m_item){
+		if($m_item["id"] == $mathang_id_chon){
+			$ten_may_chon = $m_item["tenmathang"];
+			break;
+		}
+	}
+}
+?>
+
+<?php if(!empty($ten_may_chon)): ?>
+	<div class="alert alert-info border-0 shadow-sm d-flex align-items-center py-2 px-3 mb-3" role="alert">
+		<i class="align-middle me-2 text-info" data-feather="corner-down-right" style="width: 20px; height: 20px;"></i>
+		<div>
+			Đang lập phiếu nhập thêm số lượng cho mẫu điện thoại: <strong class="text-dark"><?= htmlspecialchars($ten_may_chon) ?></strong> (đã được tự động chọn sẵn ở dòng 1).
+		</div>
+	</div>
+<?php endif; ?>
 
 <form method="post" action="index.php" id="formNhapHang" onsubmit="return kiemTraFormNhapHang()">
 	<input type="hidden" name="action" value="xulythem">
@@ -59,7 +81,7 @@
 				<!-- Ghi chú nhập kho -->
 				<div class="col-12">
 					<label class="form-label fw-bold text-dark">Ghi chú nhập kho</label>
-					<input type="text" class="form-control" name="txtghichu" placeholder="Ví dụ: Nhập hàng đợt 1, số seri hóa đơn VAT, chứng từ kho...">
+					<input type="text" class="form-control" name="txtghichu" placeholder="Ví dụ: Nhập bổ sung tồn kho, số hóa đơn VAT, chứng từ kho...">
 				</div>
 			</div>
 		</div>
@@ -119,7 +141,7 @@
 			</button>
 
 			<div class="d-flex align-items-center gap-2">
-				<a href="index.php" class="btn btn-light border px-3">Hủy bỏ</a>
+				<a href="index.php?tab=tonkho" class="btn btn-light border px-3">Hủy bỏ</a>
 				<button type="submit" class="btn btn-success px-4 py-2 fw-bold shadow-sm d-inline-flex align-items-center gap-2">
 					<i class="align-middle" data-feather="check-circle"></i>
 					<span>Lưu phiếu nhập & Cập nhật tồn kho</span>
@@ -143,6 +165,8 @@ var danhSachSanPhamData = [
 	},
 	<?php endforeach; ?>
 ];
+
+var sanPhamIdChonTruoc = <?= (int)$mathang_id_chon ?>;
 
 function ganNCC(ten) {
 	document.getElementById("txtnhacungcap").value = ten;
@@ -300,10 +324,14 @@ function dinhDangTien(so) {
 	return new Intl.NumberFormat('vi-VN').format(so) + 'đ';
 }
 
-// Khởi tạo sẵn 2 dòng mặc định khi mở trang
+// Khởi tạo dòng mặc định khi mở trang: nếu có máy chọn trước thì chọn đúng máy đó
 document.addEventListener("DOMContentLoaded", function() {
-	themDongSanPham(1);
-	themDongSanPham(3);
+	if (sanPhamIdChonTruoc > 0) {
+		themDongSanPham(sanPhamIdChonTruoc);
+	} else {
+		themDongSanPham(1);
+		themDongSanPham(3);
+	}
 });
 </script>
 

@@ -9,7 +9,7 @@ if(empty($ds_promo_banner)){
     $ds_promo_banner = array(
         array("duongdan" => "h1.jpg", "tieude" => "Điện thoại chính hãng"),
         array("duongdan" => "h2.jpg", "tieude" => "Siêu ưu đãi công nghệ"),
-        array("duongdan" => "h3.jpg", "tieude" => "Thanh Thảo Shop Flagship")
+        array("duongdan" => "h3.jpg", "tieude" => "Thảo Mobile Flagship")
     );
 }
 ?>

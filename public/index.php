@@ -536,6 +536,9 @@ switch($action){
         }
         include("search.php");
         break;
+    case "baohanh":
+        include("baohanh.php");
+        break;
     case "dangxuat":
         unset($_SESSION["khachhang"]);
         unset($_SESSION["nguoidung"]);

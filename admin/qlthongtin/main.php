@@ -50,7 +50,7 @@
 							<div class="input-group">
 								<span class="input-group-text"><i class="align-middle" data-feather="home"></i></span>
 								<input type="text" class="form-control" name="txttencuahang" id="inputTenCuaHang" 
-								       value="<?= htmlspecialchars($thongtin["tencuahang"] ?? "Thanh Thảo Shop") ?>" 
+								       value="<?= htmlspecialchars($thongtin["tencuahang"] ?? "Thảo Mobile") ?>" 
 								       required placeholder="Nhập tên cửa hàng...">
 							</div>
 						</div>
@@ -164,7 +164,7 @@
 					<div class="d-flex align-items-center gap-3 mb-3">
 						<img src="../../images/logo/logo1.jpg" alt="Logo" class="rounded-3 shadow-sm bg-white p-1" style="width: 52px; height: 52px; object-fit: cover;" onerror="this.src='../../images/products/a1.jpg';">
 						<div>
-							<h5 class="fw-bold mb-0 text-white" id="pvTenCuaHang"><?= htmlspecialchars($thongtin["tencuahang"] ?? "Thanh Thảo Shop") ?></h5>
+							<h5 class="fw-bold mb-0 text-white" id="pvTenCuaHang"><?= htmlspecialchars($thongtin["tencuahang"] ?? "Thảo Mobile") ?></h5>
 							<small class="text-white-50">Hệ thống bán lẻ chính hãng</small>
 						</div>
 					</div>
@@ -225,9 +225,9 @@
 <script>
 // Cập nhật Live Preview khi người dùng nhập liệu
 function capNhatLivePreview() {
-	var ten = document.getElementById("inputTenCuaHang").value.trim() || "Thanh Thảo Shop";
+	var ten = document.getElementById("inputTenCuaHang").value.trim() || "Thảo Mobile";
 	var hotline = document.getElementById("inputHotline").value.trim() || "076 3841190";
-	var email = document.getElementById("inputEmail").value.trim() || "thanhthaoshop@gmail.com";
+	var email = document.getElementById("inputEmail").value.trim() || "thaomobile@gmail.com";
 	var diachi = document.getElementById("inputDiaChi").value.trim() || "18 Ung Văn Khiêm, An Giang";
 	var giomocua = document.getElementById("inputGioMoCua").value.trim() || "08:00 - 21:30";
 	var slogan = document.getElementById("inputSlogan").value.trim() || "Thu cũ đổi mới • Giao nhanh 2H";

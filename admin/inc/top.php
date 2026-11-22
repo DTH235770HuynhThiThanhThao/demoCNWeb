@@ -8,7 +8,7 @@
 	
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 
-	<title>Trang quản trị - Thanh Thảo Shop</title>
+	<title>Trang quản trị - Thảo Mobile</title>
 
 	<link href="../inc/css/app.css" rel="stylesheet">
 	<script src="../inc/js/app.js"></script>
@@ -21,7 +21,7 @@
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="../../public/index.php">
-          <span class="align-middle">Thanh Thảo Shop</span>
+          <span class="align-middle">Thảo Mobile</span>
         </a>
 
 				<ul class="sidebar-nav">
@@ -61,7 +61,7 @@
 
 					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qlnhaphang") != false) echo "active"; ?>">
 						<a class="sidebar-link" href="../qlnhaphang/index.php">
-						<i class="align-middle" data-feather="download-cloud"></i> <span class="align-middle">Quản lý nhập hàng</span>
+						<i class="align-middle" data-feather="download-cloud"></i> <span class="align-middle">Quản lý tồn kho & nhập hàng</span>
 						</a>
 					</li>
 
@@ -78,6 +78,12 @@
 					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qldonhang") != false) echo "active"; ?>">
 						<a class="sidebar-link" href="../qldonhang/index.php">
 						<i class="align-middle" data-feather="truck"></i> <span class="align-middle">Quản lý đơn hàng</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qlbaohanh") != false) echo "active"; ?>">
+						<a class="sidebar-link" href="../qlbaohanh/index.php">
+						<i class="align-middle" data-feather="shield"></i> <span class="align-middle">Quản lý bảo hành</span>
 						</a>
 					</li>
 

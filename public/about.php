@@ -98,13 +98,13 @@ include("inc/top.php");
 <!-- ===== HERO ===== -->
 <div class="about-hero mb-5 mt-2">
     <div class="d-flex flex-column flex-md-row align-items-center gap-4">
-        <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thanh Thảo Shop"); ?>" class="hero-logo flex-shrink-0" onerror="this.src='../images/logo/logo1.jpg';">
+        <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?>" class="hero-logo flex-shrink-0" onerror="this.src='../images/logo/logo1.jpg';">
         <div>
             <h2 class="fw-bold text-navy mb-2" style="font-size:1.6rem;">
-                VỀ <?php echo mb_strtoupper($ten_shop ?? "Thanh Thảo Shop", 'UTF-8'); ?> – CỬA HÀNG ĐIỆN THOẠI CHÍNH HÃNG
+                VỀ <?php echo mb_strtoupper($ten_shop ?? "Thảo Mobile", 'UTF-8'); ?> – CỬA HÀNG ĐIỆN THOẠI CHÍNH HÃNG
             </h2>
             <p class="text-secondary mb-0" style="font-size:1.02rem; line-height:1.75;">
-                <?php echo nl2br(htmlspecialchars($thongtin_cuahang["gioithieu"] ?? "Thanh Thảo Shop là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: Apple, Samsung, OPPO và Xiaomi với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.")); ?>
+                <?php echo nl2br(htmlspecialchars($thongtin_cuahang["gioithieu"] ?? "Thảo Mobile là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: Apple, Samsung, OPPO và Xiaomi với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.")); ?>
             </p>
         </div>
     </div>
@@ -192,19 +192,19 @@ include("inc/top.php");
         <div class="row align-items-center g-4">
             <div class="col-md-7">
                 <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
-                    <i class="bi bi-shop"></i> <?php echo htmlspecialchars($ten_shop ?? "Thanh Thảo Shop"); ?> – Cửa hàng điện thoại
+                    <i class="bi bi-shop"></i> <?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?> – Cửa hàng điện thoại
                 </h5>
                 <div class="contact-info-row">
                     <i class="bi bi-geo-alt-fill"></i>
-                    <span><?php echo htmlspecialchars($diachi_shop ?? "18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang"); ?></span>
+                    <span><?php echo htmlspecialchars($diachi_shop ?? "570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp"); ?></span>
                 </div>
                 <div class="contact-info-row">
                     <i class="bi bi-telephone-fill"></i>
-                    <span><a href="tel:<?php echo preg_replace('/[^0-9]/', '', $hotline_shop ?? "0763841190"); ?>" class="text-white text-decoration-none fw-semibold"><?php echo htmlspecialchars($hotline_shop ?? "076 3841190"); ?></a></span>
+                    <span><a href="tel:<?php echo preg_replace('/[^0-9]/', '', $hotline_shop ?? "0357185269"); ?>" class="text-white text-decoration-none fw-semibold"><?php echo htmlspecialchars($hotline_shop ?? "0357185269"); ?></a></span>
                 </div>
                 <div class="contact-info-row">
                     <i class="bi bi-envelope-fill"></i>
-                    <span><a href="mailto:<?php echo htmlspecialchars($email_shop ?? "thanhthaoshop@gmail.com"); ?>" class="text-white text-decoration-none"><?php echo htmlspecialchars($email_shop ?? "thanhthaoshop@gmail.com"); ?></a></span>
+                    <span><a href="mailto:<?php echo htmlspecialchars($email_shop ?? "thaohuynh1092005@gmail.com"); ?>" class="text-white text-decoration-none"><?php echo htmlspecialchars($email_shop ?? "thaohuynh1092005@gmail.com"); ?></a></span>
                 </div>
                 <div class="contact-info-row">
                     <i class="bi bi-clock-fill"></i>
@@ -212,7 +212,7 @@ include("inc/top.php");
                 </div>
             </div>
             <div class="col-md-5 text-center">
-                <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thanh Thảo Shop"); ?>"
+                <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?>"
                      class="rounded-3 shadow mb-3"
                      style="width:100px; height:100px; object-fit:cover; border:3px solid rgba(255,255,255,0.6);"
                      onerror="this.src='../images/logo/logo1.jpg';">

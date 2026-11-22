@@ -1,4 +1,4 @@
--- ============================================================
+﻿-- ============================================================
 -- Shop quản lý cửa hàng điện thoại
 -- Đồ án Công nghệ Web PHP
 -- ============================================================
@@ -423,10 +423,10 @@ INSERT INTO `phieunhapct` (`id`, `phieunhap_id`, `mathang_id`, `gianhap`, `soluo
 -- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `thongtin` (
   `id` int(11) NOT NULL DEFAULT 1,
-  `tencuahang` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Thanh Thảo Shop',
+  `tencuahang` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Thảo Mobile',
   `slogan` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng',
   `sodienthoai` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '076 3841190',
-  `email` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'thanhthaoshop@gmail.com',
+  `email` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'thaomobile@gmail.com',
   `diachi` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang',
   `giomocua` varchar(150) COLLATE utf8_unicode_ci DEFAULT '08:00 - 21:30 (Tất cả các ngày trong tuần)',
   `gioithieu` text COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -434,7 +434,7 @@ CREATE TABLE IF NOT EXISTS `thongtin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `thongtin` (`id`, `tencuahang`, `slogan`, `sodienthoai`, `email`, `diachi`, `giomocua`, `gioithieu`) VALUES
-(1, 'Thanh Thảo Shop', 'Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng', '076 3841190', 'thanhthaoshop@gmail.com', '18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang', '08:00 - 21:30 (Tất cả các ngày trong tuần)', 'Thanh Thảo Shop là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: Apple, Samsung, OPPO và Xiaomi với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.');
+(1, 'Thảo Mobile', 'Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng', '076 3841190', 'thaomobile@gmail.com', '18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang', '08:00 - 21:30 (Tất cả các ngày trong tuần)', 'Thảo Mobile là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: Apple, Samsung, OPPO và Xiaomi với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.');
 
 -- --------------------------------------------------------
 -- Table: hinhanh
@@ -450,14 +450,44 @@ CREATE TABLE IF NOT EXISTS `hinhanh` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `hinhanh` (`id`, `tieude`, `duongdan`, `loai`, `thutu`, `trangthai`) VALUES
-(1, 'Logo chính Thanh Thảo Shop', 'logo1.jpg', 'logo', 1, 1),
+(1, 'Logo chính Thảo Mobile', 'logo1.jpg', 'logo', 1, 1),
 (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h4.jpg', 'banner_chinh', 1, 1),
 (3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 2, 1),
 (4, 'Ưu đãi trả góp 0% lãi suất - Thủ tục nhanh', 'h6.jpg', 'banner_chinh', 3, 1),
 (5, 'Thu cũ đổi mới trợ giá cực khủng', 'h7.jpg', 'banner_chinh', 4, 1),
 (6, 'Điện thoại chính hãng bảo hành 12 tháng', 'h1.jpg', 'banner_phu', 1, 1),
 (7, 'Siêu ưu đãi công nghệ - Mua là có quà', 'h2.jpg', 'banner_phu', 2, 1),
-(8, 'Thanh Thảo Shop Flagship Store', 'h3.jpg', 'banner_phu', 3, 1);
+(8, 'Thảo Mobile Flagship Store', 'h3.jpg', 'banner_phu', 3, 1);
+
+
+-- --------------------------------------------------------
+-- Table: baohanh
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `baohanh` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `donhang_id` int(11) NULL,
+  `mathang_id` int(11) NOT NULL,
+  `tenkhachhang` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `sodienthoai` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `soimei` varchar(50) COLLATE utf8_unicode_ci NULL,
+  `ngaymua` date NULL,
+  `hanbaohanh` date NULL,
+  `tinhtrangloi` text COLLATE utf8_unicode_ci NOT NULL,
+  `ngaytiepnhan` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `trangthai` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0: Tiếp nhận kiểm tra, 1: Đang sửa chữa / Gửi hãng, 2: Đã sửa xong - Chờ trả khách, 3: Đã bàn giao khách, 4: Từ chối bảo hành / Hết hạn',
+  `ghichu` varchar(255) COLLATE utf8_unicode_ci NULL,
+  PRIMARY KEY (`id`),
+  KEY `mathang_id` (`mathang_id`),
+  KEY `donhang_id` (`donhang_id`),
+  CONSTRAINT `baohanh_ibfk_1` FOREIGN KEY (`mathang_id`) REFERENCES `mathang` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `baohanh` (`id`, `donhang_id`, `mathang_id`, `tenkhachhang`, `sodienthoai`, `soimei`, `ngaymua`, `hanbaohanh`, `tinhtrangloi`, `ngaytiepnhan`, `trangthai`, `ghichu`) VALUES
+(1, 1, 1, 'Nguyễn Thị Thu An', '0934567890', '352938101234567', '2024-10-01', '2025-10-01', 'Màn hình bị sọc ngang, pin chai nhanh hết', '2026-11-01 09:00:00', 1, 'Đã liên hệ Apple Service, chờ linh kiện'),
+(2, NULL, 11, 'Trần Văn Bình', '0912233445', '358921076543210', '2025-05-15', '2026-05-15', 'Loa ngoài phát ra tiếng rè, mic đàm thoại mờ', '2026-11-10 14:30:00', 2, 'Đã thay loa và micro, chờ khách đến nhận'),
+(3, 3, 2, 'Hồ Xuân Minh', '0945678901', NULL, '2024-10-10', '2025-10-10', 'Máy không nhận sạc, cổng Lightning bị lỏng', '2026-11-15 10:15:00', 0, NULL),
+(4, NULL, 38, 'Lê Thị Lan', '0977888999', '860456321098765', '2025-08-20', '2026-08-20', 'Màn hình cảm ứng mất một góc, không phản hồi', '2026-11-18 16:00:00', 3, 'Đã thay màn hình, bàn giao 19/11/2026'),
+(5, NULL, 21, 'Phạm Quốc Dũng', '0966554433', NULL, '2024-02-10', '2025-02-10', 'Pin phồng, máy tắt đột ngột khi dùng', '2026-11-20 08:30:00', 4, 'Hết hạn bảo hành, đề nghị khách trả chi phí sửa chữa');
 
 COMMIT;
 

@@ -29,9 +29,9 @@
                     <!-- Cột 1: Thông tin thương hiệu & Liên hệ -->
                     <div class="col-lg-5 col-md-6">
                         <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3">
-                            <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thanh Thảo Shop"); ?>" class="rounded-3 me-3 shadow-sm" style="height: 52px; width: 52px; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);" onerror="this.src='../images/logo/logo1.jpg'">
+                            <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?>" class="rounded-3 me-3 shadow-sm" style="height: 52px; width: 52px; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);" onerror="this.src='../images/logo/logo1.jpg'">
                             <div>
-                                <h5 class="mb-0 fw-bold text-white"><?php echo htmlspecialchars($ten_shop ?? "Thanh Thảo Shop"); ?></h5>
+                                <h5 class="mb-0 fw-bold text-white"><?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?></h5>
                                 <small class="text-white-50">Hệ thống bán lẻ điện thoại chính hãng</small>
                             </div>
                         </a>
@@ -67,8 +67,8 @@
                         <a href="#" class="footer-link">
                             <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Hướng dẫn mua hàng trực tuyến
                         </a>
-                        <a href="#" class="footer-link">
-                            <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Chính sách bảo hành & đổi trả 30 ngày
+                        <a href="index.php?action=baohanh" class="footer-link">
+                            <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Tra cứu bảo hành & tiến độ sửa chữa
                         </a>
                         <a href="index.php?action=gioithieu" class="footer-link">
                             <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Giới thiệu & Liên hệ cửa hàng
@@ -91,7 +91,7 @@
 
                 <div class="row align-items-center">
                     <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
-                        <p class="m-0 text-white-50 small">&copy; <?php echo date("Y"); ?> <b><?php echo htmlspecialchars($ten_shop ?? "Thanh Thảo Shop"); ?></b>. Tất cả quyền được bảo lưu.</p>
+                        <p class="m-0 text-white-50 small">&copy; <?php echo date("Y"); ?> <b><?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?></b>. Tất cả quyền được bảo lưu.</p>
                     </div>
                     <div class="col-md-6 text-center text-md-end">
                         <small class="text-white-50">Thương hiệu bán lẻ công nghệ uy tín hàng đầu</small>

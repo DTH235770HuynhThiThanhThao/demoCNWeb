@@ -194,5 +194,98 @@ class NHAPHANG{
             exit();
         }
     }
+
+    // 5. Lấy danh sách tồn kho chi tiết kèm tổng nhập và đã bán
+    public function laydanhsachtonkho($tukhoa = '', $muctonkho = ''){
+        $db = DATABASE::connect();
+        try{
+            $where = " WHERE 1=1";
+            $params = array();
+
+            if(!empty($tukhoa)){
+                $id_tim = 0;
+                if(preg_match('/^SP-?(\d+)$/i', trim($tukhoa), $m_match)){
+                    $id_tim = (int)$m_match[1];
+                } elseif(is_numeric(trim($tukhoa))){
+                    $id_tim = (int)trim($tukhoa);
+                }
+
+                $where .= " AND (m.tenmathang LIKE :tukhoa OR dm.tendanhmuc LIKE :tukhoa2";
+                $params[':tukhoa'] = "%" . trim($tukhoa) . "%";
+                $params[':tukhoa2'] = "%" . trim($tukhoa) . "%";
+
+                if($id_tim > 0){
+                    $where .= " OR m.id = :id_tim";
+                    $params[':id_tim'] = $id_tim;
+                }
+                $where .= ")";
+            }
+
+            if($muctonkho === 'hethang'){
+                $where .= " AND m.soluongton = 0";
+            } elseif($muctonkho === 'saphet'){
+                $where .= " AND m.soluongton <= 15";
+            } elseif($muctonkho === 'conhang'){
+                $where .= " AND m.soluongton > 15";
+            }
+
+            $sql = "SELECT m.id, m.tenmathang, m.hinhanh, m.giagoc, m.giaban, m.soluongton, m.danhmuc_id,
+                           dm.tendanhmuc AS tenhang,
+                           COALESCE(pn.tongnhap, 0) AS tongnhap,
+                           COALESCE(dh.daban, 0) AS daban
+                    FROM mathang m
+                    LEFT JOIN danhmuc dm ON m.danhmuc_id = dm.id
+                    LEFT JOIN (
+                        SELECT mathang_id, SUM(soluong) AS tongnhap 
+                        FROM phieunhapct 
+                        GROUP BY mathang_id
+                    ) pn ON m.id = pn.mathang_id
+                    LEFT JOIN (
+                        SELECT ct.mathang_id, SUM(ct.soluong) AS daban 
+                        FROM donhangct ct 
+                        INNER JOIN donhang d ON ct.donhang_id = d.id 
+                        WHERE d.trangthai = 3 
+                        GROUP BY ct.mathang_id
+                    ) dh ON m.id = dh.mathang_id"
+                    . $where .
+                    " ORDER BY m.soluongton ASC, m.id DESC";
+
+            $cmd = $db->prepare($sql);
+            foreach($params as $k => $v){
+                $cmd->bindValue($k, $v);
+            }
+            $cmd->execute();
+            return $cmd->fetchAll();
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
+    // 6. Thống kê tổng quan tồn kho
+    public function thongketonkho(){
+        $db = DATABASE::connect();
+        try{
+            $sql = "SELECT 
+                        COALESCE(SUM(soluongton), 0) AS tongmayton,
+                        COALESCE(SUM(CASE WHEN soluongton <= 15 THEN 1 ELSE 0 END), 0) AS maysaphet,
+                        COALESCE(SUM(CASE WHEN soluongton = 0 THEN 1 ELSE 0 END), 0) AS mayhethang
+                    FROM mathang";
+            $cmd = $db->prepare($sql);
+            $cmd->execute();
+            $row = $cmd->fetch(PDO::FETCH_ASSOC);
+            if(!$row){
+                return array('tongmayton' => 0, 'maysaphet' => 0, 'mayhethang' => 0);
+            }
+            return $row;
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
 }
 ?>

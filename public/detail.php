@@ -342,7 +342,7 @@ if(!empty($mhct["mota"])){
             <div class="promo-gift-box">
                 <div class="promo-gift-header">
                     <i class="bi bi-gift-fill fs-5"></i>
-                    <span>ƯU ĐÃI ĐẶC QUYỀN TẠI THANH THẢO SHOP</span>
+                    <span>ƯU ĐÃI ĐẶC QUYỀN TẠI <?php echo mb_strtoupper($ten_shop ?? "Thảo Mobile", 'UTF-8'); ?></span>
                 </div>
                 <div class="promo-gift-body">
                     <ul>

@@ -7,7 +7,7 @@
 	
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	
-	<title>Đăng nhập - Thanh Thảo Shop</title>
+	<title>Đăng nhập - Thảo Mobile</title>
 
 	<link href="../inc/css/app.css" rel="stylesheet">
 	<script src="../inc/js/app.js"></script>

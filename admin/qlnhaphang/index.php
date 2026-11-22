@@ -26,11 +26,20 @@ $mh = new MATHANG();
 switch($action){
     case "macdinh":
     case "danhsach":
+        $tab = isset($_REQUEST["tab"]) ? trim($_REQUEST["tab"]) : "tonkho";
+        $tukhoa = isset($_REQUEST["tukhoa"]) ? trim($_REQUEST["tukhoa"]) : "";
+        $muctonkho = isset($_REQUEST["muctonkho"]) ? trim($_REQUEST["muctonkho"]) : "tatca";
+
+        $dastonkho = $nh->laydanhsachtonkho($tukhoa, $muctonkho);
         $phieunhap = $nh->laydanhsachphieunhap();
+        $thongketon = $nh->thongketonkho();
+        $tongtiennhap = $nh->tongtiennhaphang();
+
         include("main.php");
         break;
 
     case "them":
+        $mathang_id_chon = isset($_GET["mathang_id"]) ? (int)$_GET["mathang_id"] : 0;
         $mathang = $mh->laymathang();
         include("themphieunhap.php");
         break;
@@ -45,7 +54,7 @@ switch($action){
             $ds_soluong = isset($_POST["txtsoluong"]) ? $_POST["txtsoluong"] : array();
 
             $id_moi = $nh->themphieunhap($nguoidung_id, $nhacungcap, $ghichu, $ds_mathang, $ds_gianhap, $ds_soluong);
-            header("location:index.php?msg=them_ok&id=" . $id_moi);
+            header("location:index.php?tab=phieunhap&msg=them_ok&id=" . $id_moi);
             exit();
         }
         header("location:index.php");
@@ -59,13 +68,21 @@ switch($action){
             include("chitiet.php");
         }
         else{
+            $tab = "phieunhap";
+            $dastonkho = $nh->laydanhsachtonkho();
             $phieunhap = $nh->laydanhsachphieunhap();
+            $thongketon = $nh->thongketonkho();
+            $tongtiennhap = $nh->tongtiennhaphang();
             include("main.php");
         }
         break;
 
     default:
+        $tab = "tonkho";
+        $dastonkho = $nh->laydanhsachtonkho();
         $phieunhap = $nh->laydanhsachphieunhap();
+        $thongketon = $nh->thongketonkho();
+        $tongtiennhap = $nh->tongtiennhaphang();
         include("main.php");
         break;
 }
