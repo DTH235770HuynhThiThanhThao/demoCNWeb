@@ -11,6 +11,7 @@ require("../model/diachi.php");
 require("../model/donhang.php");
 require("../model/donhangct.php");
 require("../model/nguoidung.php");
+require("../model/thongtin.php");
 
 // Tự động đồng bộ session nếu đã đăng nhập bên admin
 if(!isset($_SESSION["khachhang"]) && isset($_SESSION["nguoidung"])){

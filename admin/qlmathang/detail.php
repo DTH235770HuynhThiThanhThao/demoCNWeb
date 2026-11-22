@@ -88,7 +88,13 @@
 					</div>
 				</div>
 
-				<div class="mt-4 d-flex gap-2">
+				<div class="mt-4 d-flex flex-wrap gap-2">
+					<a class="btn btn-outline-primary" href="index.php?action=bienthe&id=<?php echo $m["id"]; ?>">
+						<i class="align-middle me-1" data-feather="sliders"></i>Biến thể
+					</a>
+					<a class="btn btn-outline-success" href="index.php?action=anhmau&id=<?php echo $m["id"]; ?>">
+						<i class="align-middle me-1" data-feather="image"></i>Ảnh màu
+					</a>
 					<a class="btn btn-warning" href="index.php?action=sua&id=<?php echo $m["id"]; ?>">
 						<i class="align-middle me-1" data-feather="edit"></i>Sửa thông tin
 					</a> 

@@ -4,6 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 if(!isset($_SESSION["nguoidung"])){
     header("location:../index.php");
+    exit();
 }
 
 require("../../model/database.php");
@@ -26,10 +27,12 @@ switch($action){
         $mathang = $mh->laymathang();
 		include("main.php");
         break;
+
 	case "them":
 		$danhmuc = $dm->laydanhmuc();
 		include("addform.php");
         break;
+
 	case "xulythem":	
 		// xử lý file upload ảnh chính
 		$hinhanh = "";
@@ -70,18 +73,19 @@ switch($action){
         $mathanghh->setmausac($mausac);
         $mathanghh->setthuvienanh($thuvienanh);
 		$mh->themmathang($mathanghh);
-		$mathang = $mh->laymathang();
-		include("main.php");
-        break;
+		
+		header("location:index.php");
+		exit();
+
 	case "xoa":
 		if(isset($_GET["id"])){
             $mathanghh = new MATHANG();        
             $mathanghh->setid($_GET["id"]);
 			$mh->xoamathang($mathanghh);
         }
-		$mathang = $mh->laymathang();
-		include("main.php");
-		break;	
+		header("location:index.php?msg=xoa_ok");
+		exit();
+
     case "chitiet":
         if(isset($_GET["id"])){ 
             $m = $mh->laymathangtheoid($_GET["id"]);            
@@ -92,6 +96,7 @@ switch($action){
             include("main.php");            
         }
         break;
+
     case "sua":
         if(isset($_GET["id"])){ 
             $m = $mh->laymathangtheoid($_GET["id"]);
@@ -103,6 +108,7 @@ switch($action){
             include("main.php");            
         }
         break;
+
     case "xulysua":
         $mathanghh = new MATHANG();
         $mathanghh->setid($_POST["txtid"]);
@@ -168,10 +174,102 @@ switch($action){
         // sửa mặt hàng
         $mh->suamathang($mathanghh);         
     
-        // hiển thị ds mặt hàng
-        $mathang = $mh->laymathang();    
-        include("main.php");
-        break;
+        header("location:index.php");
+        exit();
+
+	// Quản lý nhanh Phiên bản (Dung lượng) & Màu sắc
+	case "bienthe":
+		if(isset($_GET["id"])){ 
+			$m = $mh->laymathangtheoid($_GET["id"]);
+			include("bienthe.php");
+		}
+		else{
+			$mathang = $mh->laymathang();        
+			include("main.php");            
+		}
+		break;
+
+	case "luubienthe":
+		if(isset($_POST["txtid"])){
+			$id = (int)$_POST["txtid"];
+			$phienban = isset($_POST["txtphienban"]) ? trim($_POST["txtphienban"]) : null;
+			$mausac = isset($_POST["txtmausac"]) ? trim($_POST["txtmausac"]) : null;
+			$mh->capnhatbienthe($id, $phienban, $mausac);
+		}
+		header("location:index.php?msg=bienthe_ok");
+		exit();
+
+	// Quản lý nhanh Thư viện ảnh màu
+	case "anhmau":
+		if(isset($_GET["id"])){ 
+			$m = $mh->laymathangtheoid($_GET["id"]);
+			include("anhmau.php");
+		}
+		else{
+			$mathang = $mh->laymathang();        
+			include("main.php");            
+		}
+		break;
+
+	case "themanhmau":
+		if(isset($_POST["txtid"])){
+			$id = (int)$_POST["txtid"];
+			$m = $mh->laymathangtheoid($id);
+			$ds_thuvien = array();
+			if(!empty($m["thuvienanh"])){
+				$arr_cu = explode(",", $m["thuvienanh"]);
+				foreach($arr_cu as $it){
+					$it = trim($it);
+					if(!empty($it)) $ds_thuvien[] = $it;
+				}
+			}
+
+			// Xử lý upload thêm ảnh
+			if(isset($_FILES["fileanhmau"]) && !empty($_FILES["fileanhmau"]["name"][0])){
+				$total_files = count($_FILES["fileanhmau"]["name"]);
+				for($i = 0; $i < $total_files; $i++){
+					if(!empty($_FILES["fileanhmau"]["name"][$i])){
+						$ten_file = basename($_FILES["fileanhmau"]["name"][$i]);
+						$duongdan_tv = "../../images/products/" . $ten_file;
+						if(move_uploaded_file($_FILES["fileanhmau"]["tmp_name"][$i], $duongdan_tv)){
+							if(!in_array($ten_file, $ds_thuvien)){
+								$ds_thuvien[] = $ten_file;
+							}
+						}
+					}
+				}
+			}
+
+			$thuvienanh_moi = !empty($ds_thuvien) ? implode(", ", $ds_thuvien) : null;
+			$mh->capnhatthuvienanh($id, $thuvienanh_moi);
+			header("location:index.php?action=anhmau&id=" . $id . "&msg=them_ok");
+			exit();
+		}
+		header("location:index.php");
+		exit();
+
+	case "xoaanhmau":
+		if(isset($_GET["id"]) && isset($_GET["file"])){
+			$id = (int)$_GET["id"];
+			$file_xoa = trim($_GET["file"]);
+			$m = $mh->laymathangtheoid($id);
+			$ds_thuvien = array();
+			if(!empty($m["thuvienanh"])){
+				$arr_cu = explode(",", $m["thuvienanh"]);
+				foreach($arr_cu as $it){
+					$it = trim($it);
+					if(!empty($it) && $it !== $file_xoa){
+						$ds_thuvien[] = $it;
+					}
+				}
+			}
+			$thuvienanh_moi = !empty($ds_thuvien) ? implode(", ", $ds_thuvien) : null;
+			$mh->capnhatthuvienanh($id, $thuvienanh_moi);
+			header("location:index.php?action=anhmau&id=" . $id . "&msg=xoa_ok");
+			exit();
+		}
+		header("location:index.php");
+		exit();
 
     default:
         break;

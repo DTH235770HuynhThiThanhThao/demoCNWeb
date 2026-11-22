@@ -59,6 +59,12 @@
 						</a>
 					</li>
 
+					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qlnhaphang") != false) echo "active"; ?>">
+						<a class="sidebar-link" href="../qlnhaphang/index.php">
+						<i class="align-middle" data-feather="download-cloud"></i> <span class="align-middle">Quản lý nhập hàng</span>
+						</a>
+					</li>
+
 					<li class="sidebar-header text-info">
 						KINH DOANH
 					</li>
@@ -93,14 +99,14 @@
 						CẤU HÌNH WEBSITE
 					</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="">
-						<i class="align-middle" data-feather="book"></i> <span class="align-middle">Thông tin</span>
+					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qlthongtin") != false) echo "active"; ?>">
+						<a class="sidebar-link" href="../qlthongtin/index.php">
+						<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Thông tin</span>
 						</a>
 					</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="">
+					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qlhinhanh") != false) echo "active"; ?>">
+						<a class="sidebar-link" href="../qlhinhanh/index.php">
 						<i class="align-middle" data-feather="image"></i> <span class="align-middle">Hình ảnh</span>
 						</a>
 					</li>
@@ -186,7 +192,7 @@
               </a>
 
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-								<img src="<?php if ($_SESSION["nguoidung"]["hinhanh"]==NULL) echo "../../images/users/user.png"; else echo "../../images/users/" . $_SESSION["nguoidung"]["hinhanh"]; ?>" class="avatar img-fluid rounded-circle me-1" width="36" height="36" style="object-fit: cover;" /> 
+								<img src="<?php if (empty($_SESSION["nguoidung"]["hinhanh"])) echo "../../images/users/user.png"; else echo "../../images/users/" . $_SESSION["nguoidung"]["hinhanh"]; ?>" class="avatar img-fluid rounded-circle me-1" width="36" height="36" style="object-fit: cover;" /> 
 								<span class="text-dark">Chào <?php if(isset($_SESSION["nguoidung"])) echo $_SESSION["nguoidung"]["hoten"]; else echo "bạn"; ?></span>
 							</a>
 							<div class="dropdown-menu dropdown-menu-end">

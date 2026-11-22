@@ -1,5 +1,20 @@
 <?php
 include("inc/top.php");
+
+// Lấy danh sách Hero Banner từ CSDL
+if(!class_exists("HINHANH")){
+    require_once("../model/hinhanh.php");
+}
+$ha_main = new HINHANH();
+$ds_hero_banner = $ha_main->layhinhanhhienthi("banner_chinh");
+if(empty($ds_hero_banner)){
+    $ds_hero_banner = array(
+        array("duongdan" => "h4.jpg", "tieude" => "Siêu phẩm công nghệ mới"),
+        array("duongdan" => "h5.jpg", "tieude" => "Lễ hội mua sắm giảm sốc"),
+        array("duongdan" => "h6.jpg", "tieude" => "Ưu đãi trả góp 0%"),
+        array("duongdan" => "h7.jpg", "tieude" => "Thu cũ đổi mới trợ giá")
+    );
+}
 ?>
 
 <!-- Hero Section (Bố cục CellphoneS / Hoàng Hà Mobile) -->
@@ -55,34 +70,20 @@ include("inc/top.php");
         <div id="heroBannerCarousel" class="carousel slide hero-carousel h-100 shadow-sm" data-bs-ride="carousel" data-bs-interval="4000">
             <!-- Carousel Indicators -->
             <div class="carousel-indicators mb-2">
-                <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <?php foreach($ds_hero_banner as $k => $b): ?>
+                    <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="<?php echo $k; ?>" class="<?php echo $k === 0 ? 'active' : ''; ?>" <?php echo $k === 0 ? 'aria-current="true"' : ''; ?> aria-label="Slide <?php echo $k + 1; ?>"></button>
+                <?php endforeach; ?>
             </div>
             
             <!-- Slides -->
             <div class="carousel-inner h-100">
-                <div class="carousel-item active h-100">
+                <?php foreach($ds_hero_banner as $k => $b): ?>
+                <div class="carousel-item <?php echo $k === 0 ? 'active' : ''; ?> h-100">
                     <a href="#danh-sach-san-pham">
-                        <img src="../images/carousel/h4.jpg" class="d-block w-100 h-100" alt="Siêu phẩm công nghệ mới">
+                        <img src="../images/carousel/<?php echo htmlspecialchars($b['duongdan']); ?>" class="d-block w-100 h-100" alt="<?php echo htmlspecialchars($b['tieude']); ?>" onerror="this.src='../images/carousel/h4.jpg'">
                     </a>
                 </div>
-                <div class="carousel-item h-100">
-                    <a href="#danh-sach-san-pham">
-                        <img src="../images/carousel/h5.jpg" class="d-block w-100 h-100" alt="Lễ hội mua sắm giảm sốc">
-                    </a>
-                </div>
-                <div class="carousel-item h-100">
-                    <a href="#danh-sach-san-pham">
-                        <img src="../images/carousel/h6.jpg" class="d-block w-100 h-100" alt="Ưu đãi trả góp 0%">
-                    </a>
-                </div>
-                <div class="carousel-item h-100">
-                    <a href="#danh-sach-san-pham">
-                        <img src="../images/carousel/h7.jpg" class="d-block w-100 h-100" alt="Thu cũ đổi mới trợ giá">
-                    </a>
-                </div>
+                <?php endforeach; ?>
             </div>
 
             <!-- Controls -->

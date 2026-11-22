@@ -47,7 +47,10 @@ class MATHANG{
     public function laymathang(){
         $dbcon = DATABASE::connect();
         try{
-            $sql = "SELECT * FROM mathang ORDER BY id DESC";
+            $sql = "SELECT m.*, d.tendanhmuc 
+                    FROM mathang m 
+                    LEFT JOIN danhmuc d ON m.danhmuc_id = d.id 
+                    ORDER BY m.id DESC";
             $cmd = $dbcon->prepare($sql);
             $cmd->execute();
             $result = $cmd->fetchAll();
@@ -100,11 +103,51 @@ class MATHANG{
     public function laymathangtheoid($id){
         $dbcon = DATABASE::connect();
         try{
-            $sql = "SELECT * FROM mathang WHERE id=:id";
+            $sql = "SELECT m.*, d.tendanhmuc 
+                    FROM mathang m 
+                    LEFT JOIN danhmuc d ON m.danhmuc_id = d.id 
+                    WHERE m.id=:id";
             $cmd = $dbcon->prepare($sql);
             $cmd->bindValue(":id", $id);
             $cmd->execute();
             $result = $cmd->fetch();             
+            return $result;
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
+    // Cập nhật riêng danh sách phiên bản & màu sắc cho 1 mẫu điện thoại
+    public function capnhatbienthe($id, $phienban, $mausac){
+        $dbcon = DATABASE::connect();
+        try{
+            $sql = "UPDATE mathang SET phienban=:phienban, mausac=:mausac WHERE id=:id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":phienban", $phienban);
+            $cmd->bindValue(":mausac", $mausac);
+            $cmd->bindValue(":id", $id, PDO::PARAM_INT);
+            $result = $cmd->execute();            
+            return $result;
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
+    // Cập nhật riêng chuỗi danh sách ảnh màu cho 1 mẫu điện thoại
+    public function capnhatthuvienanh($id, $thuvienanh){
+        $dbcon = DATABASE::connect();
+        try{
+            $sql = "UPDATE mathang SET thuvienanh=:thuvienanh WHERE id=:id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":thuvienanh", $thuvienanh);
+            $cmd->bindValue(":id", $id, PDO::PARAM_INT);
+            $result = $cmd->execute();            
             return $result;
         }
         catch(PDOException $e){

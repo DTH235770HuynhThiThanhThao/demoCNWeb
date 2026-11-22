@@ -2,8 +2,8 @@
 include("inc/top.php"); 
 
 // Xác định tên danh mục hãng
-$tendanhmuc_hien = "Điện thoại";
-if(isset($danhmuc) && is_array($danhmuc)){
+$tendanhmuc_hien = !empty($mhct["tendanhmuc"]) ? $mhct["tendanhmuc"] : "Điện thoại";
+if($tendanhmuc_hien == "Điện thoại" && isset($danhmuc) && is_array($danhmuc)){
     foreach($danhmuc as $d){
         if($d["id"] == $mhct["danhmuc_id"]){
             $tendanhmuc_hien = $d["tendanhmuc"];

@@ -279,6 +279,26 @@ INSERT INTO `mathang` (`id`, `tenmathang`, `mota`, `giagoc`, `giaban`, `soluongt
  '<p><strong>Màn hình:</strong> 6.52 inch IPS LCD, 60Hz</p><p><strong>Chip:</strong> MediaTek Helio G36</p><p><strong>RAM/ROM:</strong> 2GB / 32GB</p><p><strong>Camera:</strong> 8MP chính + 0.08MP AI | Trước 5MP</p><p><strong>Pin:</strong> 5.000 mAh, sạc 10W</p>',
  2490000, 1790000, 80, 'images/products/x10.jpg', 4, 1400, 130);
 
+-- Cập nhật dữ liệu mẫu về Phiên bản (dung lượng), Màu sắc và Thư viện ảnh màu cho các dòng máy nổi bật
+UPDATE `mathang` SET `phienban` = '128GB, 256GB, 512GB, 1TB', `mausac` = 'Titan Sa Mạc, Titan Tự Nhiên, Titan Đen, Titan Trắng', `thuvienanh` = 'a1.jpg, a2.jpg, a3.jpg, a4.jpg' WHERE `id` = 1;
+UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Titan Tự Nhiên, Titan Xanh, Titan Đen', `thuvienanh` = 'a2.jpg, a3.jpg, a4.jpg' WHERE `id` = 2;
+UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Titan Sa Mạc, Titan Tự Nhiên, Titan Trắng, Titan Đen', `thuvienanh` = 'a3.jpg, a1.jpg, a5.jpg, a6.jpg' WHERE `id` = 3;
+UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Titan Xanh, Titan Tự Nhiên, Titan Trắng', `thuvienanh` = 'a4.jpg, a6.jpg, a5.jpg' WHERE `id` = 4;
+UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Titan Trắng, Titan Xanh, Titan Tự Nhiên', `thuvienanh` = 'a5.jpg, a4.jpg, a6.jpg' WHERE `id` = 5;
+UPDATE `mathang` SET `phienban` = '128GB, 256GB, 512GB', `mausac` = 'Titan Tự Nhiên, Titan Xanh, Titan Đen, Titan Trắng', `thuvienanh` = 'a6.jpg, a4.jpg, a1.jpg, a5.jpg' WHERE `id` = 6;
+UPDATE `mathang` SET `phienban` = '128GB, 256GB, 512GB', `mausac` = 'Xanh Dương, Hồng, Vàng, Đen', `thuvienanh` = 'a7.jpg, a8.jpg, a9.jpg, a10.jpg' WHERE `id` = 7;
+UPDATE `mathang` SET `phienban` = '128GB, 256GB, 512GB, 1TB', `mausac` = 'Tím Deep Purple, Vàng Gold, Bạc Silver, Đen Space Black', `thuvienanh` = 'a8.jpg, a9.jpg, a10.jpg, a1.jpg' WHERE `id` = 8;
+UPDATE `mathang` SET `phienban` = '256GB, 512GB', `mausac` = 'Xanh Botanic, Đen Phantom, Kem Cotton, Tím Lilac', `thuvienanh` = 's1.jpg, s2.jpg, s3.jpg, s4.jpg' WHERE `id` = 11;
+UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Xanh Icy, Đen Phantom, Kem Ivory', `thuvienanh` = 's2.jpg, s1.jpg, s3.jpg' WHERE `id` = 12;
+UPDATE `mathang` SET `phienban` = '256GB, 512GB', `mausac` = 'Xanh Mint, Tím Fancy, Xám Indie, Kem Latte', `thuvienanh` = 's3.jpg, s4.jpg, s5.jpg, s6.jpg' WHERE `id` = 13;
+UPDATE `mathang` SET `phienban` = '256GB, 512GB', `mausac` = 'Xanh Botanic, Kem Cotton, Đen Phantom', `thuvienanh` = 's4.jpg, s5.jpg, s1.jpg' WHERE `id` = 14;
+UPDATE `mathang` SET `phienban` = '256GB', `mausac` = 'Tím Ánh Sao, Đen Khói', `thuvienanh` = 'o1.jpg, o2.jpg' WHERE `id` = 21;
+UPDATE `mathang` SET `phienban` = '256GB, 512GB', `mausac` = 'Trắng Gốm, Đen Men', `thuvienanh` = 'o2.jpg, o1.jpg' WHERE `id` = 22;
+UPDATE `mathang` SET `phienban` = '256GB', `mausac` = 'Tím Thạch Anh, Xám Ánh Trăng', `thuvienanh` = 'o3.jpg, o4.jpg' WHERE `id` = 23;
+UPDATE `mathang` SET `phienban` = '128GB, 256GB', `mausac` = 'Xanh Tuyết Sơn, Đen Cổ Điển, Xanh Đồng Cỏ', `thuvienanh` = 'x1.jpg, x2.jpg, x3.jpg' WHERE `id` = 31;
+UPDATE `mathang` SET `phienban` = '128GB, 256GB', `mausac` = 'Hồng Lite, Xanh Lite, Đen Lite', `thuvienanh` = 'x2.jpg, x1.jpg, x3.jpg' WHERE `id` = 32;
+UPDATE `mathang` SET `phienban` = '128GB, 256GB', `mausac` = 'Tím Ánh Sao, Xanh Bầu Trời, Đen Nửa Đêm', `thuvienanh` = 'x3.jpg, x4.jpg, x5.jpg' WHERE `id` = 33;
+
 -- --------------------------------------------------------
 -- Table: nguoidung
 -- --------------------------------------------------------
@@ -352,6 +372,92 @@ CREATE TABLE IF NOT EXISTS `giohang` (
   CONSTRAINT `giohang_ibfk_1` FOREIGN KEY (`nguoidung_id`) REFERENCES `nguoidung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `giohang_ibfk_2` FOREIGN KEY (`mathang_id`) REFERENCES `mathang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+-- Table: phieunhap
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `phieunhap` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nguoidung_id` int(11) NOT NULL,
+  `nhacungcap` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ngaynhap` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tongtien` decimal(15,0) NOT NULL DEFAULT 0,
+  `ghichu` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `nguoidung_id` (`nguoidung_id`),
+  CONSTRAINT `phieunhap_ibfk_1` FOREIGN KEY (`nguoidung_id`) REFERENCES `nguoidung` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `phieunhap` (`id`, `nguoidung_id`, `nhacungcap`, `ngaynhap`, `tongtien`, `ghichu`) VALUES
+(1, 1, 'Apple Việt Nam Chính Hãng', '2024-11-10 09:30:00', 396000000, 'Nhập lô hàng iPhone thế hệ mới đợt 1'),
+(2, 2, 'Samsung Electronics Vina', '2024-11-15 14:15:00', 214000000, 'Bổ sung Galaxy S23 Ultra và Z Flip5'),
+(3, 1, 'Nhà phân phối Digiworld (DGW)', '2024-11-18 10:00:00', 145000000, 'Lô máy Xiaomi và OPPO đợt cuối năm');
+
+-- --------------------------------------------------------
+-- Table: phieunhapct
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `phieunhapct` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `phieunhap_id` int(11) NOT NULL,
+  `mathang_id` int(11) NOT NULL,
+  `gianhap` decimal(15,0) NOT NULL,
+  `soluong` int(11) NOT NULL,
+  `thanhtien` decimal(15,0) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `phieunhap_id` (`phieunhap_id`),
+  KEY `mathang_id` (`mathang_id`),
+  CONSTRAINT `phieunhapct_ibfk_1` FOREIGN KEY (`phieunhap_id`) REFERENCES `phieunhap` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `phieunhapct_ibfk_2` FOREIGN KEY (`mathang_id`) REFERENCES `mathang` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `phieunhapct` (`id`, `phieunhap_id`, `mathang_id`, `gianhap`, `soluong`, `thanhtien`) VALUES
+(1, 1, 1, 26000000, 8, 208000000),
+(2, 1, 3, 23500000, 8, 188000000),
+(3, 2, 11, 13500000, 10, 135000000),
+(4, 2, 13, 15800000, 5, 79000000),
+(5, 3, 21, 14500000, 6, 87000000),
+(6, 3, 31, 9666667, 6, 58000000);
+
+-- --------------------------------------------------------
+-- Table: thongtin
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `thongtin` (
+  `id` int(11) NOT NULL DEFAULT 1,
+  `tencuahang` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Thanh Thảo Shop',
+  `slogan` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng',
+  `sodienthoai` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '076 3841190',
+  `email` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'thanhthaoshop@gmail.com',
+  `diachi` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang',
+  `giomocua` varchar(150) COLLATE utf8_unicode_ci DEFAULT '08:00 - 21:30 (Tất cả các ngày trong tuần)',
+  `gioithieu` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `thongtin` (`id`, `tencuahang`, `slogan`, `sodienthoai`, `email`, `diachi`, `giomocua`, `gioithieu`) VALUES
+(1, 'Thanh Thảo Shop', 'Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng', '076 3841190', 'thanhthaoshop@gmail.com', '18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang', '08:00 - 21:30 (Tất cả các ngày trong tuần)', 'Thanh Thảo Shop là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: Apple, Samsung, OPPO và Xiaomi với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.');
+
+-- --------------------------------------------------------
+-- Table: hinhanh
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hinhanh` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tieude` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `duongdan` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `loai` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `thutu` int(11) NOT NULL DEFAULT 1,
+  `trangthai` tinyint(4) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `hinhanh` (`id`, `tieude`, `duongdan`, `loai`, `thutu`, `trangthai`) VALUES
+(1, 'Logo chính Thanh Thảo Shop', 'logo1.jpg', 'logo', 1, 1),
+(2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h4.jpg', 'banner_chinh', 1, 1),
+(3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 2, 1),
+(4, 'Ưu đãi trả góp 0% lãi suất - Thủ tục nhanh', 'h6.jpg', 'banner_chinh', 3, 1),
+(5, 'Thu cũ đổi mới trợ giá cực khủng', 'h7.jpg', 'banner_chinh', 4, 1),
+(6, 'Điện thoại chính hãng bảo hành 12 tháng', 'h1.jpg', 'banner_phu', 1, 1),
+(7, 'Siêu ưu đãi công nghệ - Mua là có quà', 'h2.jpg', 'banner_phu', 2, 1),
+(8, 'Thanh Thảo Shop Flagship Store', 'h3.jpg', 'banner_phu', 3, 1);
 
 COMMIT;
 

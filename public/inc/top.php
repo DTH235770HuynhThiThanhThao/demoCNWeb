@@ -10,13 +10,38 @@ if(isset($_SESSION["khachhang"])){
         }
     }
 }
+
+// Lấy thông tin cấu hình cửa hàng
+if(!isset($thongtin_cuahang)){
+    if(!class_exists("THONGTIN")){
+        require_once("../model/thongtin.php");
+    }
+    $tt_top = new THONGTIN();
+    $thongtin_cuahang = $tt_top->laythongtin();
+}
+$ten_shop = !empty($thongtin_cuahang["tencuahang"]) ? $thongtin_cuahang["tencuahang"] : "Thanh Thảo Shop";
+$hotline_shop = !empty($thongtin_cuahang["sodienthoai"]) ? $thongtin_cuahang["sodienthoai"] : "076 3841190";
+$slogan_shop = !empty($thongtin_cuahang["slogan"]) ? $thongtin_cuahang["slogan"] : "Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng";
+$email_shop = !empty($thongtin_cuahang["email"]) ? $thongtin_cuahang["email"] : "thanhthaoshop@gmail.com";
+$diachi_shop = !empty($thongtin_cuahang["diachi"]) ? $thongtin_cuahang["diachi"] : "18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang";
+$giomocua_shop = !empty($thongtin_cuahang["giomocua"]) ? $thongtin_cuahang["giomocua"] : "08:00 - 21:30 (Tất cả các ngày trong tuần)";
+
+// Lấy thông tin Logo cửa hàng từ bảng hinhanh
+if(!isset($logo_shop)){
+    if(!class_exists("HINHANH")){
+        require_once("../model/hinhanh.php");
+    }
+    $ha_top = new HINHANH();
+    $logo_data = $ha_top->laylogo();
+    $logo_shop = !empty($logo_data["duongdan"]) ? $logo_data["duongdan"] : "logo1.jpg";
+}
 ?>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Thảo Mobile - Điện Thoại Chính Hãng Giá Tốt Nhất</title>
+        <title><?php echo htmlspecialchars($ten_shop); ?> - Điện Thoại Chính Hãng Giá Tốt Nhất</title>
         
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,16 +62,12 @@ if(isset($_SESSION["khachhang"])){
         <!-- Top Announcement Bar -->
         <div class="top-notice-bar py-1 d-none d-md-block">
             <div class="container d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center gap-3">
-                    <span class="notice-item"><i class="bi bi-arrow-repeat"></i> Thu cũ đổi mới trợ giá đến 2 triệu</span>
-                    <span class="text-white-50">•</span>
-                    <span class="notice-item"><i class="bi bi-truck"></i> Giao nhanh 2H miễn phí</span>
-                    <span class="text-white-50">•</span>
-                    <span class="notice-item"><i class="bi bi-shield-check"></i> Bảo hành chính hãng 12 tháng</span>
+                <div class="d-flex align-items-center gap-3 text-truncate me-3">
+                    <span class="notice-item text-truncate"><i class="bi bi-megaphone-fill text-warning me-1"></i><?php echo htmlspecialchars($slogan_shop); ?></span>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <a href="tel:0763841190" class="text-white text-decoration-none fw-semibold">
-                        <i class="bi bi-telephone-fill me-1 text-warning"></i>Hotline: 076 3841190
+                <div class="d-flex align-items-center gap-3 flex-shrink-0">
+                    <a href="tel:<?php echo preg_replace('/[^0-9]/', '', $hotline_shop); ?>" class="text-white text-decoration-none fw-semibold">
+                        <i class="bi bi-telephone-fill me-1 text-warning"></i>Hotline: <?php echo htmlspecialchars($hotline_shop); ?>
                     </a>
                 </div>
             </div>
@@ -57,8 +78,8 @@ if(isset($_SESSION["khachhang"])){
             <div class="container">
                 <!-- Logo & Brand Name -->
                 <a class="navbar-brand d-flex align-items-center" href="index.php">
-                    <img src="../images/logo/logo1.jpg" alt="Thanh Thảo Shop" class="me-2">
-                    <span>THANH THẢO SHOP</span>
+                    <img src="../images/logo/<?php echo htmlspecialchars($logo_shop); ?>" alt="<?php echo htmlspecialchars($ten_shop); ?>" class="me-2" onerror="this.src='../images/logo/logo1.jpg'">
+                    <span><?php echo mb_strtoupper($ten_shop, 'UTF-8'); ?></span>
                 </a>
 
                 <!-- Mobile Toggler -->

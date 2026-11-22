@@ -29,25 +29,25 @@
                     <!-- Cột 1: Thông tin thương hiệu & Liên hệ -->
                     <div class="col-lg-5 col-md-6">
                         <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3">
-                            <img src="../images/logo/logo1.jpg" alt="Thảo Mobile" class="rounded-3 me-3 shadow-sm" style="height: 52px; width: 52px; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
+                            <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thanh Thảo Shop"); ?>" class="rounded-3 me-3 shadow-sm" style="height: 52px; width: 52px; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);" onerror="this.src='../images/logo/logo1.jpg'">
                             <div>
-                                <h5 class="mb-0 fw-bold text-white">Thảo Mobile</h5>
+                                <h5 class="mb-0 fw-bold text-white"><?php echo htmlspecialchars($ten_shop ?? "Thanh Thảo Shop"); ?></h5>
                                 <small class="text-white-50">Hệ thống bán lẻ điện thoại chính hãng</small>
                             </div>
                         </a>
-                        <p class="text-white-50 small mb-3">Chuyên cung cấp các dòng điện thoại cao cấp từ Apple, Samsung, OPPO, Xiaomi với chính sách giá và hậu mãi hàng đầu.</p>
+                        <p class="text-white-50 small mb-3"><?php echo htmlspecialchars($thongtin_cuahang["gioithieu"] ?? "Chuyên cung cấp các dòng điện thoại cao cấp từ Apple, Samsung, OPPO, Xiaomi với chính sách giá và hậu mãi hàng đầu."); ?></p>
                         
                         <div class="footer-contact-item">
                             <i class="bi bi-geo-alt-fill"></i>
-                            <span><b>Địa chỉ:</b> 18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang</span>
+                            <span><b>Địa chỉ:</b> <?php echo htmlspecialchars($diachi_shop ?? "18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang"); ?></span>
                         </div>
                         <div class="footer-contact-item">
                             <i class="bi bi-telephone-fill"></i>
-                            <span><b>Điện thoại:</b> <a href="tel:0763841190" class="text-white text-decoration-none">076 3841190</a> (Hỗ trợ 8:00 - 21:30)</span>
+                            <span><b>Điện thoại:</b> <a href="tel:<?php echo preg_replace('/[^0-9]/', '', $hotline_shop ?? "0763841190"); ?>" class="text-white text-decoration-none"><?php echo htmlspecialchars($hotline_shop ?? "076 3841190"); ?></a> (Hỗ trợ <?php echo htmlspecialchars($giomocua_shop ?? "8:00 - 21:30"); ?>)</span>
                         </div>
                         <div class="footer-contact-item">
                             <i class="bi bi-envelope-fill"></i>
-                            <span><b>Email:</b> <a href="mailto:abc@abc.com" class="text-white-50 text-decoration-none">abc@abc.com</a></span>
+                            <span><b>Email:</b> <a href="mailto:<?php echo htmlspecialchars($email_shop ?? "thanhthaoshop@gmail.com"); ?>" class="text-white-50 text-decoration-none"><?php echo htmlspecialchars($email_shop ?? "thanhthaoshop@gmail.com"); ?></a></span>
                         </div>
                     </div>
 
@@ -91,7 +91,7 @@
 
                 <div class="row align-items-center">
                     <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
-                        <p class="m-0 text-white-50 small">&copy; 2026 <b>Thanh Thảo Shop</b>. Tất cả quyền được bảo lưu.</p>
+                        <p class="m-0 text-white-50 small">&copy; <?php echo date("Y"); ?> <b><?php echo htmlspecialchars($ten_shop ?? "Thanh Thảo Shop"); ?></b>. Tất cả quyền được bảo lưu.</p>
                     </div>
                     <div class="col-md-6 text-center text-md-end">
                         <small class="text-white-50">Thương hiệu bán lẻ công nghệ uy tín hàng đầu</small>
