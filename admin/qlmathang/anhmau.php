@@ -4,27 +4,67 @@ $from_bienthe = (isset($_GET["from"]) && $_GET["from"] === "bienthe");
 $url_from_param = $from_bienthe ? "&from=bienthe" : "";
 ?>
 
+<style>
+/* Style chuẩn Tech Flagship Thảo Mobile - Tối giản, sang trọng */
+.btn-flagship-back {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+.btn-flagship-back:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+.btn-flagship-nav {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+.btn-flagship-nav:hover {
+    border-color: #d70018;
+    color: #d70018;
+    background-color: #fff1f2;
+}
+</style>
+
 <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
 	<div>
 		<?php if($from_bienthe): ?>
-			<a href="index.php?action=bienthe&id=<?= $m['id'] ?>" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
-				<i class="align-middle" data-feather="arrow-left"></i>
-				<span>← Trở về cấu hình biến thể</span>
+			<a href="index.php?action=bienthe&id=<?= $m['id'] ?>" class="btn-flagship-back gap-1">
+				<i class="align-middle" data-feather="arrow-left" style="width: 14px; height: 14px;"></i>
+				<span>Trở về cấu hình biến thể</span>
 			</a>
 		<?php else: ?>
-			<a href="index.php" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
-				<i class="align-middle" data-feather="arrow-left"></i>
+			<a href="index.php" class="btn-flagship-back gap-1">
+				<i class="align-middle" data-feather="arrow-left" style="width: 14px; height: 14px;"></i>
 				<span>Trở về danh sách mặt hàng</span>
 			</a>
 		<?php endif; ?>
 	</div>
 	<div class="d-flex align-items-center gap-2">
-		<a href="index.php?action=bienthe&id=<?= $m['id'] ?>" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1">
-			<i class="align-middle" data-feather="sliders"></i>
+		<a href="index.php?action=bienthe&id=<?= $m['id'] ?>" class="btn-flagship-nav gap-1">
+			<i class="align-middle" data-feather="sliders" style="width: 14px; height: 14px;"></i>
 			<span>Quản lý biến thể</span>
 		</a>
-		<a href="../../public/index.php?action=detail&id=<?= $m['id'] ?>" target="_blank" class="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1">
-			<i class="align-middle" data-feather="external-link"></i>
+		<a href="../../public/index.php?action=detail&id=<?= $m['id'] ?>" target="_blank" class="btn-flagship-nav gap-1">
+			<i class="align-middle" data-feather="external-link" style="width: 14px; height: 14px;"></i>
 			<span>Xem trên Web</span>
 		</a>
 	</div>
@@ -32,13 +72,13 @@ $url_from_param = $from_bienthe ? "&from=bienthe" : "";
 
 <?php if(isset($_GET["msg"])): ?>
 	<?php if($_GET["msg"] == "them_ok"): ?>
-		<div class="alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
+		<div class="alert alert-success alert-dismissible fade show d-flex align-items-center rounded-3" role="alert">
 			<i class="align-middle me-2" data-feather="check-circle"></i>
 			<div>Đã tải thêm ảnh vào thư viện thành công!</div>
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	<?php elseif($_GET["msg"] == "xoa_ok"): ?>
-		<div class="alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
+		<div class="alert alert-success alert-dismissible fade show d-flex align-items-center rounded-3" role="alert">
 			<i class="align-middle me-2" data-feather="check-circle"></i>
 			<div>Đã xóa ảnh khỏi thư viện thành công!</div>
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -47,20 +87,20 @@ $url_from_param = $from_bienthe ? "&from=bienthe" : "";
 <?php endif; ?>
 
 <!-- Thẻ thông tin mặt hàng -->
-<div class="card border-0 shadow-sm mb-4">
+<div class="card border-0 shadow-sm rounded-4 mb-4">
 	<div class="card-body p-3">
 		<div class="d-flex align-items-center gap-3">
 			<img src="../../<?= $m["hinhanh"] ?>" 
 			     alt="<?= htmlspecialchars($m["tenmathang"]) ?>" 
-			     class="rounded border bg-white p-1" 
+			     class="rounded-3 border bg-white p-1" 
 			     style="width: 72px; height: 72px; object-fit: contain;"
 			     onerror="this.src='../../images/products/a1.jpg';">
 			<div>
-				<div class="d-flex align-items-center gap-2 flex-wrap">
-					<span class="badge bg-primary-subtle text-primary border border-primary-subtle fw-semibold"><?= sprintf("SP-%03d", $m["id"]) ?></span>
+				<div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+					<span class="badge" style="background-color: #fee2e2; color: #d70018; border: 1px solid #fecaca; font-weight: 700; border-radius: 8px;"><?= sprintf("SP-%03d", $m["id"]) ?></span>
 					<span class="badge bg-light text-secondary border"><?= htmlspecialchars($m["tendanhmuc"] ?? "Điện thoại") ?></span>
 				</div>
-				<h4 class="fw-bold mb-1 mt-1 text-dark"><?= htmlspecialchars($m["tenmathang"]) ?></h4>
+				<h4 class="fw-bold mb-1 text-dark"><?= htmlspecialchars($m["tenmathang"]) ?></h4>
 				<div class="small text-muted">
 					<?php 
 					$ds_mau = !empty($m["mausac"]) ? array_filter(array_map('trim', explode(',', $m["mausac"]))) : [];
@@ -71,7 +111,7 @@ $url_from_param = $from_bienthe ? "&from=bienthe" : "";
 							<span class="badge bg-light text-dark border me-1"><?= ($idx_ms + 1) ?>. <?= htmlspecialchars($ten_ms) ?></span>
 						<?php endforeach; ?>
 					<?php else: ?>
-						<span class="text-danger fst-italic">Chưa có danh sách màu sắc. <a href="index.php?action=bienthe&id=<?= $m['id'] ?>">Thêm màu sắc ngay</a></span>
+						<span class="text-danger fst-italic">Chưa có danh sách màu sắc. <a href="index.php?action=bienthe&id=<?= $m['id'] ?>" class="text-decoration-underline" style="color: #d70018;">Thêm màu sắc ngay</a></span>
 					<?php endif; ?>
 				</div>
 			</div>

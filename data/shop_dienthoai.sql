@@ -293,7 +293,7 @@ UPDATE `mathang` SET `phienban` = '128GB:18990000, 256GB:21990000, 512GB:2699000
 UPDATE `mathang` SET `phienban` = '128GB:16990000, 256GB:19990000, 512GB:24990000', `mausac` = 'Tím, Xanh Dương, Đen, Đỏ, Trắng, Vàng', `thuvienanh` = 'a10.jpg, 14-xanh.jpg, 14-den.jpg, 14-do.jpg, 14-trang.jpg, 14-vang.jpg' WHERE `id` = 10;
 
 -- 2. SAMSUNG (id = 11..20)
-UPDATE `mathang` SET `phienban` = '256GB:15990000, 512GB:18990000, 1TB:23990000', `mausac` = 'Xanh Botanic', `thuvienanh` = 's1.jpg' WHERE `id` = 11;
+UPDATE `mathang` SET `phienban` = '256GB:15990000:8GB, 512GB:18990000:12GB, 1TB:23990000:16GB', `mausac` = 'Xanh Botanic', `thuvienanh` = 's1.jpg' WHERE `id` = 11;
 UPDATE `mathang` SET `phienban` = '256GB:36990000, 512GB:40990000, 1TB:46990000', `mausac` = 'Xanh Icy', `thuvienanh` = 's2.jpg' WHERE `id` = 12;
 UPDATE `mathang` SET `phienban` = '256GB:19990000, 512GB:22990000', `mausac` = 'Xanh Mint', `thuvienanh` = 's3.jpg' WHERE `id` = 13;
 UPDATE `mathang` SET `phienban` = '256GB:14490000, 512GB:16990000', `mausac` = 'Kem Cotton', `thuvienanh` = 's4.jpg' WHERE `id` = 14;

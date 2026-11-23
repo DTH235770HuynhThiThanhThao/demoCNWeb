@@ -94,7 +94,7 @@ $tong_dg = !empty($thongke_danhgia["tongso"]) ? (int)$thongke_danhgia["tongso"] 
 
 $danh_sach_phienban = array();
 
-// Nếu Admin đã nhập trường phienban (hỗ trợ cả "128GB, 256GB" và "256GB:29990000, 512GB:34990000, 1TB:40990000")
+// Nếu Admin đã nhập trường phienban (hỗ trợ cả "128GB, 256GB" và "256GB:29990000" và "256GB:22990000:8GB")
 if(!empty($mhct["phienban"])){
     $arr_pb_raw = explode(",", $mhct["phienban"]);
     foreach($arr_pb_raw as $pb_item){
@@ -102,19 +102,32 @@ if(!empty($mhct["phienban"])){
         if(!empty($pb_item)){
             $dung_luong = $pb_item;
             $gia_pb = (float)$mhct["giaban"];
-            // Hỗ trợ định dạng DungLượng:GiáBán (ví dụ: "256GB:29990000")
+            $ram_pb = "";
+
+            // Hỗ trợ định dạng DungLượng:GiáBán hoặc DungLượng:GiáBán:RAM (ví dụ: "256GB:22990000:8GB")
             if(strpos($pb_item, ":") !== false){
                 $parts = explode(":", $pb_item);
                 $dung_luong = trim($parts[0]);
                 if(isset($parts[1]) && is_numeric(trim($parts[1]))){
                     $gia_pb = (float)trim($parts[1]);
                 }
+                if(isset($parts[2]) && !empty(trim($parts[2]))){
+                    $ram_pb = strtoupper(trim(str_replace(' ', '', $parts[2])));
+                }
             }
+
+            // Hỗ trợ nếu dung lượng ghi kèm RAM dạng "8GB/256GB" hoặc "8GB - 256GB"
+            if(empty($ram_pb) && preg_match('/(\d+\s*GB)\s*[\/\-]\s*(\d+\s*(?:GB|TB))/i', $dung_luong, $m_rr)){
+                $ram_pb = strtoupper(str_replace(' ', '', $m_rr[1]));
+                $dung_luong = strtoupper(str_replace(' ', '', $m_rr[2]));
+            }
+
             $is_cur = (strcasecmp($dung_luong, $dungluong_hientai) === 0);
             $danh_sach_phienban[$dung_luong] = array(
                 "id" => $is_cur ? $mhct["id"] : 0,
                 "dungluong" => $dung_luong,
                 "giaban" => $gia_pb,
+                "ram" => $ram_pb,
                 "is_current" => $is_cur
             );
         }
@@ -134,6 +147,7 @@ if(!empty($mhct["phienban"])){
         "id" => $mhct["id"],
         "dungluong" => $dungluong_hientai,
         "giaban" => (float)$mhct["giaban"],
+        "ram" => $ram_ban_dau ?? "",
         "is_current" => true
     );
 }
@@ -343,22 +357,37 @@ if(!empty($dungluong_hientai) && $dungluong_hientai != "Tiêu chuẩn"){
                     <?php foreach($danh_sach_phienban as $pb): ?>
                         <div class="col-6 col-md-4">
                             <?php if($pb["is_current"]): ?>
-                                <div class="option-capacity-card active" onclick="chonPhienBan(this, <?php echo $pb['giaban']; ?>, '<?php echo htmlspecialchars($pb['dungluong']); ?>')">
+                                <div class="option-capacity-card active" onclick="chonPhienBan(this, <?php echo $pb['giaban']; ?>, '<?php echo htmlspecialchars($pb['dungluong']); ?>', '<?php echo htmlspecialchars($pb['ram'] ?? ''); ?>')">
                                     <span class="badge-check"><i class="bi bi-check"></i></span>
-                                    <div class="fw-bold fs-6"><?php echo htmlspecialchars($pb["dungluong"]); ?></div>
+                                    <div class="fw-bold fs-6">
+                                        <?php echo htmlspecialchars($pb["dungluong"]); ?>
+                                        <?php if(!empty($pb["ram"])): ?>
+                                            <span class="small fw-normal text-muted" style="font-size: 11px;">(<?= htmlspecialchars($pb["ram"]) ?> RAM)</span>
+                                        <?php endif; ?>
+                                    </div>
                                     <small class="text-danger fw-semibold capacity-price"><?php echo number_format($pb["giaban"]); ?>đ</small>
                                 </div>
                             <?php elseif(empty($mhct["phienban"]) && !empty($pb["id"]) && $pb["id"] != $mhct["id"]): ?>
                                 <a href="index.php?action=detail&id=<?php echo $pb["id"]; ?>" class="text-decoration-none d-block">
                                     <div class="option-capacity-card">
-                                        <div class="fw-bold fs-6 text-dark"><?php echo htmlspecialchars($pb["dungluong"]); ?></div>
+                                        <div class="fw-bold fs-6 text-dark">
+                                            <?php echo htmlspecialchars($pb["dungluong"]); ?>
+                                            <?php if(!empty($pb["ram"])): ?>
+                                                <span class="small fw-normal text-muted" style="font-size: 11px;">(<?= htmlspecialchars($pb["ram"]) ?> RAM)</span>
+                                            <?php endif; ?>
+                                        </div>
                                         <small class="text-muted fw-semibold capacity-price"><?php echo number_format($pb["giaban"]); ?>đ</small>
                                     </div>
                                 </a>
                             <?php else: ?>
-                                <div class="option-capacity-card" onclick="chonPhienBan(this, <?php echo $pb['giaban']; ?>, '<?php echo htmlspecialchars($pb['dungluong']); ?>')">
+                                <div class="option-capacity-card" onclick="chonPhienBan(this, <?php echo $pb['giaban']; ?>, '<?php echo htmlspecialchars($pb['dungluong']); ?>', '<?php echo htmlspecialchars($pb['ram'] ?? ''); ?>')">
                                     <span class="badge-check"><i class="bi bi-check"></i></span>
-                                    <div class="fw-bold fs-6 text-dark"><?php echo htmlspecialchars($pb["dungluong"]); ?></div>
+                                    <div class="fw-bold fs-6 text-dark">
+                                        <?php echo htmlspecialchars($pb["dungluong"]); ?>
+                                        <?php if(!empty($pb["ram"])): ?>
+                                            <span class="small fw-normal text-muted" style="font-size: 11px;">(<?= htmlspecialchars($pb["ram"]) ?> RAM)</span>
+                                        <?php endif; ?>
+                                    </div>
                                     <small class="text-danger fw-semibold capacity-price"><?php echo number_format($pb["giaban"]); ?>đ</small>
                                 </div>
                             <?php endif; ?>
@@ -860,12 +889,12 @@ var romBanDau = <?php echo json_encode($rom_ban_dau); ?>;
 var hangSanXuat = <?php echo json_encode(strtolower($tendanhmuc_hien ?? '')); ?>;
 
 // Hàm tính toán RAM và ROM tương ứng chuẩn xác theo đời máy và phiên bản được chọn
-function tinhRamRomTuongUng(dungLuong) {
+function tinhRamRomTuongUng(dungLuong, ramMoi) {
     if (!dungLuong) {
         return { ram: ramBanDau, rom: romBanDau };
     }
 
-    // 1. Trường hợp phiên bản có chứa rõ cả RAM và ROM (ví dụ: "8GB/256GB", "8GB - 256GB", "12GB - 512GB")
+    // 1. Trường hợp phiên bản có chứa rõ cả RAM và ROM trong chuỗi dung lượng (ví dụ: "8GB/256GB", "8GB - 256GB", "12GB - 512GB")
     var capMatches = dungLuong.match(/\b\d+\s*(?:GB|TB)\b/gi);
     if (capMatches && capMatches.length >= 2) {
         return {
@@ -874,12 +903,24 @@ function tinhRamRomTuongUng(dungLuong) {
         };
     }
 
-    // 2. Trường hợp phiên bản chỉ là ROM đơn (ví dụ: "128GB", "256GB", "512GB", "1TB", "64GB")
+    // Lấy chuỗi ROM chuẩn (ví dụ: "256GB", "512GB", "1TB", "64GB")
     var romStr = (capMatches && capMatches.length === 1) 
         ? capMatches[0].toUpperCase().replace(/\s+/g, '') 
         : dungLuong.toUpperCase().replace(/\s+/g, '');
 
-    // Quy đổi ROM ra số GB để so sánh
+    // Nếu ramMoi được khai báo riêng (từ định dạng DungLượng:GiáBán:RAM)
+    if (ramMoi && ramMoi.trim() !== '') {
+        var ramClean = ramMoi.trim().toUpperCase().replace(/\s+/g, '');
+        if (ramClean.indexOf('GB') === -1 && ramClean.indexOf('TB') === -1) {
+            ramClean += 'GB';
+        }
+        return {
+            ram: ramClean,
+            rom: romStr
+        };
+    }
+
+    // 2. Tự động quy đổi mức RAM hợp lý nếu phiên bản chưa khai báo RAM riêng:
     var romGB = 256;
     if (romStr.indexOf('TB') !== -1) {
         romGB = (parseInt(romStr) || 1) * 1024;
@@ -895,51 +936,55 @@ function tinhRamRomTuongUng(dungLuong) {
     }
 
     var ramGocNum = parseInt(ramBanDau) || 8;
-    var isApple = (hangSanXuat.indexOf('apple') !== -1) || /iphone|apple/i.test(document.title);
+    var titleLower = (document.title + ' ' + ((document.querySelector('.detail-header-card h1') || {}).textContent || '')).toLowerCase();
+    var isApple = (hangSanXuat.indexOf('apple') !== -1) || titleLower.indexOf('iphone') !== -1 || titleLower.indexOf('apple') !== -1;
+    var isPro = titleLower.indexOf('pro') !== -1;
 
-    // Dòng Apple iPhone: RAM giữ nguyên chuẩn theo dòng máy cho toàn bộ các mức dung lượng
-    if (isApple) {
-        return { ram: ramGocNum + 'GB', rom: romStr };
-    }
+    var ramKetQua = ramGocNum;
 
     // Nếu chọn lại đúng dung lượng ROM gốc
     if (romGB === romGocGB) {
-        return { ram: ramGocNum + 'GB', rom: romStr };
+        ramKetQua = ramGocNum;
     }
-
-    // Dòng máy Android (Samsung, Xiaomi, OPPO): RAM tương ứng theo từng phân khúc dung lượng thực tế
-    var ramMoi = ramGocNum;
-
-    // Phân khúc phổ thông (RAM gốc <= 4GB, ví dụ: Redmi A2+, Redmi 12C, Redmi 12, Redmi Note 12...)
-    if (ramGocNum <= 4) {
-        if (romGB <= 32) ramMoi = 2;
-        else if (romGB <= 64) ramMoi = (ramGocNum <= 3) ? 3 : 4;
-        else if (romGB <= 128) ramMoi = (ramGocNum <= 3) ? 4 : 6;
-        else if (romGB >= 256) ramMoi = 8;
+    // Bản 32GB / 64GB: giữ RAM gốc hoặc 4GB / 6GB
+    else if (romGB <= 64) {
+        ramKetQua = (ramGocNum <= 4) ? ramGocNum : 4;
     }
-    // Phân khúc tầm trung (RAM gốc 6GB, ví dụ: Galaxy A24, OPPO A58...)
-    else if (ramGocNum === 6) {
-        if (romGB <= 128) ramMoi = 6;
-        else if (romGB <= 256) ramMoi = 8;
-        else if (romGB >= 512) ramMoi = 12;
+    // Bản 128GB: giữ nguyên mức RAM mặc định ban đầu (ví dụ 6GB hoặc 8GB)
+    else if (romGB === 128) {
+        ramKetQua = ramGocNum;
     }
-    // Phân khúc cận cao cấp (RAM gốc 8GB, ví dụ: Galaxy A54, Galaxy S23, Reno10...)
-    else if (ramGocNum === 8) {
-        if (romGB <= 128) ramMoi = 8;
-        else if (romGB <= 256) ramMoi = 8;
-        else if (romGB >= 512) ramMoi = 12;
-        else if (romGB >= 1024) ramMoi = 12;
+    // Bản 256GB: nếu RAM gốc dưới 8GB thì nâng lên 8GB, nếu dòng flagship Android từ 8GB trở lên thì nâng lên 12GB
+    else if (romGB === 256) {
+        if (ramGocNum < 8) {
+            ramKetQua = 8;
+        } else if (!isApple && ramGocNum >= 8) {
+            ramKetQua = 12;
+        } else {
+            ramKetQua = ramGocNum;
+        }
     }
-    // Phân khúc Flagship cao cấp (RAM gốc >= 12GB, ví dụ: Galaxy S24 Ultra, Z Fold 5, Find N3...)
-    else if (ramGocNum >= 12) {
-        if (romGB <= 128) ramMoi = 8;
-        else if (romGB <= 256) ramMoi = 12;
-        else if (romGB <= 512) ramMoi = 12;
-        else if (romGB >= 1024) ramMoi = 16;
+    // Bản 512GB: nâng RAM lên 12GB (hoặc giữ 8GB đối với dòng iPhone tiêu chuẩn)
+    else if (romGB === 512) {
+        if (isApple) {
+            ramKetQua = 8; // iPhone tiêu chuẩn giữ 8GB
+        } else {
+            ramKetQua = 12; // Android nâng lên 12GB
+        }
+    }
+    // Bản 1TB / 2TB: nâng RAM lên 16GB (hoặc 12GB đối với các dòng iPhone Pro/Pro Max)
+    else if (romGB >= 1024) {
+        if (isApple) {
+            ramKetQua = 12; // iPhone Pro/Pro Max bản 1TB/2TB
+        } else {
+            ramKetQua = 16; // Flagship Android nâng lên 16GB
+        }
+    } else {
+        ramKetQua = ramGocNum;
     }
 
     return {
-        ram: ramMoi + 'GB',
+        ram: ramKetQua + 'GB',
         rom: romStr
     };
 }
@@ -964,7 +1009,7 @@ function capNhatTieuDeDungLuong(element, ramMoi, romMoi) {
 }
 
 // 2. Chọn phiên bản dung lượng (Cập nhật giá bán, giá gốc, màu sắc và RAM/ROM tương ứng)
-function chonPhienBan(el, giaMoi, dungLuong) {
+function chonPhienBan(el, giaMoi, dungLuong, ramMoi) {
     document.querySelectorAll('.option-capacity-card').forEach(function(item) {
         item.classList.remove('active');
     });
@@ -1005,7 +1050,7 @@ function chonPhienBan(el, giaMoi, dungLuong) {
 
     // 4. Cập nhật cả RAM và ROM tương ứng trong bảng THÔNG SỐ KỸ THUẬT NỔI BẬT (.spec-table)
     if (dungLuong) {
-        var capInfo = tinhRamRomTuongUng(dungLuong);
+        var capInfo = tinhRamRomTuongUng(dungLuong, ramMoi);
         var ramTuongUng = capInfo.ram;
         var romTuongUng = capInfo.rom;
 
@@ -1015,20 +1060,18 @@ function chonPhienBan(el, giaMoi, dungLuong) {
             var valEl = row.querySelector('.spec-val');
             if (nameEl && valEl) {
                 var label = nameEl.textContent.trim().toLowerCase();
-                // Hàng chung RAM/ROM
+                // Hàng có nhãn RAM/ROM hoặc RAM hoặc Bộ nhớ: cập nhật toàn bộ giá trị ô .spec-val thành chuẩn "<RAM mới> / <ROM mới>"
                 if (label.indexOf('ram/rom') !== -1 || (label.indexOf('ram') !== -1 && label.indexOf('rom') !== -1)) {
                     valEl.textContent = ramTuongUng + ' / ' + romTuongUng;
                 } 
-                // Hàng riêng RAM
                 else if (label === 'ram' || label.indexOf('dung lượng ram') !== -1) {
                     valEl.textContent = /\b\d+\s*GB\b/i.test(valEl.textContent) 
                         ? valEl.textContent.replace(/\b\d+\s*GB\b/i, ramTuongUng) 
                         : ramTuongUng;
                 } 
-                // Hàng riêng ROM
                 else if (label.indexOf('bộ nhớ') !== -1 || label === 'rom' || label.indexOf('dung lượng') !== -1) {
-                    valEl.textContent = /\b\d+\s*(?:GB|TB)\b/i.test(valEl.textContent) 
-                        ? valEl.textContent.replace(/\b\d+\s*(?:GB|TB)\b/i, romTuongUng) 
+                    valEl.textContent = (valEl.textContent.indexOf('/') !== -1) 
+                        ? (ramTuongUng + ' / ' + romTuongUng) 
                         : romTuongUng;
                 }
             }
