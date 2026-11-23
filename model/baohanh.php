@@ -1,7 +1,7 @@
 <?php
 class BAOHANH{
 
-    // 1. Lấy danh sách phiếu bảo hành (có lọc theo từ khóa và trạng thái)
+    // 1. Lấy danh sách phiếu bảo hành (có lọc theo từ khóa và trạng thái - cho Admin)
     public function laydanhsachbaohanh($tukhoa = '', $trangthai = ''){
         $db = DATABASE::connect();
         try{
@@ -56,7 +56,7 @@ class BAOHANH{
         }
     }
 
-    // 3. Thêm phiếu tiếp nhận bảo hành mới
+    // 3. Thêm phiếu tiếp nhận bảo hành mới (trangthai = 0: Tiếp nhận kiểm tra)
     public function themphieubaohanh($donhang_id, $mathang_id, $tenkhachhang, $sodienthoai, $soimei, $ngaymua, $hanbaohanh, $tinhtrangloi, $ghichu){
         $db = DATABASE::connect();
         try{
@@ -82,7 +82,7 @@ class BAOHANH{
         }
     }
 
-    // 4. Cập nhật tiến độ xử lý bảo hành và ghi chú sửa chữa
+    // 4. Cập nhật tiến độ xử lý bảo hành và ghi chú sửa chữa (Admin)
     public function capnhatbaohanh($id, $trangthai, $ghichu){
         $db = DATABASE::connect();
         try{
@@ -100,28 +100,30 @@ class BAOHANH{
         }
     }
 
-    // 5. Tra cứu phiếu bảo hành (cho khách ngoài website)
+    // 5. Tra cứu phiếu bảo hành theo SĐT, IMEI hoặc Mã phiếu (VD: BH00001 -> id 1)
     public function tracuubaohanh($tukhoa){
         $db = DATABASE::connect();
         try{
-            $sql = "SELECT bh.*, m.tenmathang, m.hinhanh
+            $tukhoa_clean = trim($tukhoa);
+            $id_tim = 0;
+            // Tách mã phiếu: BH00001, BH1, hoặc số thuần túy <= 6 chữ số
+            if(preg_match('/^BH(\d+)$/i', $tukhoa_clean, $m)){
+                $id_tim = (int)$m[1];
+            } elseif(is_numeric($tukhoa_clean) && strlen($tukhoa_clean) <= 6){
+                $id_tim = (int)$tukhoa_clean;
+            }
+
+            $sql = "SELECT bh.*, m.tenmathang, m.hinhanh, m.giaban
                     FROM baohanh bh
                     LEFT JOIN mathang m ON bh.mathang_id = m.id
-                    WHERE bh.sodienthoai = :tukhoa
-                       OR bh.soimei = :tukhoa2
-                       OR bh.id = :tukhoa3
+                    WHERE bh.sodienthoai LIKE :sdt
+                       OR bh.soimei LIKE :imei
+                       OR bh.id = :id
                     ORDER BY bh.id DESC";
             $cmd = $db->prepare($sql);
-            $cmd->bindValue(':tukhoa',  $tukhoa);
-            $cmd->bindValue(':tukhoa2', $tukhoa);
-            // Thử parse mã phiếu dạng BH00001 -> lấy số
-            $id_tim = 0;
-            if(preg_match('/^BH(\d+)$/i', trim($tukhoa), $m)){
-                $id_tim = (int)$m[1];
-            } elseif(is_numeric($tukhoa) && strlen($tukhoa) <= 7){
-                $id_tim = (int)$tukhoa;
-            }
-            $cmd->bindValue(':tukhoa3', $id_tim, PDO::PARAM_INT);
+            $cmd->bindValue(':sdt',  '%' . $tukhoa_clean . '%');
+            $cmd->bindValue(':imei', '%' . $tukhoa_clean . '%');
+            $cmd->bindValue(':id',   $id_tim, PDO::PARAM_INT);
             $cmd->execute();
             return $cmd->fetchAll();
         }
@@ -132,7 +134,29 @@ class BAOHANH{
         }
     }
 
-    // Hàm hỗ trợ: Thống kê số lượng theo trạng thái
+    // 6. Lấy danh sách phiếu bảo hành của khách hàng theo số điện thoại
+    public function laybaohanhtheonguoidung($sodienthoai){
+        $db = DATABASE::connect();
+        try{
+            $sdt_clean = trim($sodienthoai);
+            $sql = "SELECT bh.*, m.tenmathang, m.hinhanh, m.giaban
+                    FROM baohanh bh
+                    LEFT JOIN mathang m ON bh.mathang_id = m.id
+                    WHERE bh.sodienthoai = :sodienthoai
+                    ORDER BY bh.id DESC";
+            $cmd = $db->prepare($sql);
+            $cmd->bindValue(':sodienthoai', $sdt_clean);
+            $cmd->execute();
+            return $cmd->fetchAll();
+        }
+        catch(PDOException $e){
+            $error_message = $e->getMessage();
+            echo "<p>Lỗi truy vấn: $error_message</p>";
+            exit();
+        }
+    }
+
+    // Hàm hỗ trợ: Thống kê số lượng theo trạng thái (cho Admin)
     public function thongkebaohanh(){
         $db = DATABASE::connect();
         try{

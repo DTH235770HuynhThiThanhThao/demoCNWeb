@@ -12,6 +12,7 @@ require("../model/donhang.php");
 require("../model/donhangct.php");
 require("../model/nguoidung.php");
 require("../model/thongtin.php");
+require("../model/baohanh.php");
 
 // Tự động đồng bộ session nếu đã đăng nhập bên admin
 if(!isset($_SESSION["khachhang"]) && isset($_SESSION["nguoidung"])){
@@ -562,13 +563,34 @@ switch($action){
             include("loginform.php");
             break;
         }
-        $nd = new NGUOIDUNG();
-        $ndcapnhat = new NGUOIDUNG();
-        $ndcapnhat->setemail($_POST["txtemail"]);
-        $ndcapnhat->setmatkhau($_POST["txtmatkhaumoi"]);
-        $nd->doimatkhau($ndcapnhat);
-        $tb_thanhcong = "Đổi mật khẩu thành công!";
-        include("changepass.php");
+        $kh_id          = (int)$_SESSION["khachhang"]["id"];
+        $matkhaucu      = trim($_POST["matkhaucu"] ?? "");
+        $matkhaumoi     = trim($_POST["matkhaumoi"] ?? "");
+        $nhaplaimatkhau = trim($_POST["nhaplaimatkhau"] ?? "");
+
+        $kh = new KHACHHANG();
+
+        if(empty($matkhaucu) || empty($matkhaumoi) || empty($nhaplaimatkhau)){
+            $tb = "Vui lòng nhập đầy đủ tất cả các trường mật khẩu!";
+            include("changepass.php");
+        }
+        elseif(!$kh->kiemtramatkhautheoid($kh_id, $matkhaucu)){
+            $tb = "Mật khẩu hiện tại không chính xác!";
+            include("changepass.php");
+        }
+        elseif($matkhaumoi !== $nhaplaimatkhau){
+            $tb = "Mật khẩu mới và xác nhận mật khẩu không khớp!";
+            include("changepass.php");
+        }
+        elseif($matkhaumoi === $matkhaucu){
+            $tb = "Mật khẩu mới phải khác mật khẩu hiện tại!";
+            include("changepass.php");
+        }
+        else{
+            $kh->doimatkhautheoid($kh_id, $matkhaumoi);
+            $tb_thanhcong = "Đổi mật khẩu thành công!";
+            include("changepass.php");
+        }
         break;
     case "gioithieu":
         include("about.php");
@@ -583,6 +605,73 @@ switch($action){
         include("search.php");
         break;
     case "baohanh":
+        if(!class_exists("BAOHANH")){
+            require_once("../model/baohanh.php");
+        }
+        $bh = new BAOHANH();
+        $dh = new DONHANG();
+        $mh = new MATHANG();
+
+        // Lấy danh mục và danh sách tất cả các dòng máy để chọn khi gửi yêu cầu
+        $danhsachmathang = $mh->laymathang();
+
+        // Nếu khách hàng đã đăng nhập, lấy danh sách máy đã mua từ các đơn Hoàn thành (trangthai = 3)
+        $mathang_damua = array();
+        $baohanh_cuatoi = array();
+        if(isset($_SESSION["khachhang"]["id"])){
+            $kh_id = (int)$_SESSION["khachhang"]["id"];
+            $mathang_damua = $dh->laymathangdamuatheonguoidung($kh_id);
+            if(!empty($_SESSION["khachhang"]["sodienthoai"])){
+                $baohanh_cuatoi = $bh->laybaohanhtheonguoidung($_SESSION["khachhang"]["sodienthoai"]);
+            }
+        }
+
+        $thongbao_thanhcong = "";
+        $thongbao_loi = "";
+        $maphieu_moi = "";
+
+        // Xử lý khi khách bấm nút "Gửi yêu cầu bảo hành" (btn_guibaohanh)
+        if(isset($_POST["btn_guibaohanh"])){
+            $tenkhachhang = trim($_POST["tenkhachhang"] ?? "");
+            $sodienthoai  = trim($_POST["sodienthoai"] ?? "");
+            $mathang_id   = (int)($_POST["mathang_id"] ?? 0);
+            $donhang_id   = !empty($_POST["donhang_id"]) ? (int)$_POST["donhang_id"] : null;
+            $soimei       = trim($_POST["soimei"] ?? "");
+            $tinhtrangloi = trim($_POST["tinhtrangloi"] ?? "");
+            $ngaymua      = !empty($_POST["ngaymua"]) ? trim($_POST["ngaymua"]) : null;
+            $hanbaohanh   = !empty($_POST["hanbaohanh"]) ? trim($_POST["hanbaohanh"]) : null;
+
+            if(empty($tenkhachhang) || empty($sodienthoai) || $mathang_id <= 0 || empty($tinhtrangloi)){
+                $thongbao_loi = "Vui lòng nhập đầy đủ: Họ tên khách hàng, Số điện thoại, Chọn mẫu máy và Mô tả chi tiết tình trạng lỗi!";
+            } else {
+                // Tự động tính hạn bảo hành 12 tháng (+1 năm) nếu có ngày mua nhưng chưa có hạn
+                if(!empty($ngaymua) && empty($hanbaohanh)){
+                    $hanbaohanh = date('Y-m-d', strtotime('+1 year', strtotime($ngaymua)));
+                }
+
+                $ghichu = "Yêu cầu bảo hành online từ khách hàng qua website Thảo Mobile.";
+                $id_moi = $bh->themphieubaohanh($donhang_id, $mathang_id, $tenkhachhang, $sodienthoai, $soimei, $ngaymua, $hanbaohanh, $tinhtrangloi, $ghichu);
+
+                if($id_moi){
+                    $maphieu_moi = sprintf("BH%05d", $id_moi);
+                    $thongbao_thanhcong = "Gửi yêu cầu bảo hành thành công! Mã phiếu bảo hành của bạn là <strong>" . $maphieu_moi . "</strong>. Kỹ thuật viên Thảo Mobile sẽ kiểm tra và liên hệ hỗ trợ bạn sớm nhất!";
+                    // Nếu là khách đã đăng nhập, làm mới lại danh sách bảo hành của tôi
+                    if(!empty($_SESSION["khachhang"]["sodienthoai"])){
+                        $baohanh_cuatoi = $bh->laybaohanhtheonguoidung($_SESSION["khachhang"]["sodienthoai"]);
+                    }
+                } else {
+                    $thongbao_loi = "Có lỗi xảy ra trong quá trình gửi yêu cầu. Quý khách vui lòng thử lại hoặc gọi tổng đài hỗ trợ!";
+                }
+            }
+        }
+
+        // Xử lý tra cứu bảo hành (nhận từ $_GET['tukhoa'] hoặc $_POST['tukhoa'])
+        $tukhoa = trim($_REQUEST["tukhoa"] ?? "");
+        $ketqua_tracuu = null; // null: chưa tìm kiếm, array: đã thực hiện tra cứu
+        if($tukhoa !== ""){
+            $ketqua_tracuu = $bh->tracuubaohanh($tukhoa);
+        }
+
         include("baohanh.php");
         break;
     case "dangxuat":

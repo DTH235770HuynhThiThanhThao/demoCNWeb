@@ -102,13 +102,40 @@ switch($action){
         include("changepass.php");
         break; 
     case "doimatkhau":
-        $ndcapnhat = new NGUOIDUNG();
-        $ndcapnhat->setemail($_POST["txtemail"]);
-        $ndcapnhat->setmatkhau($_POST["txtmatkhaumoi"]);
-        $nd->doimatkhau($ndcapnhat);
-        header("location:index.php");
-        exit();
-        break; 
+        if(!$isLogin){
+            include("login.php");
+            break;
+        }
+        $email          = $_SESSION["nguoidung"]["email"];
+        $matkhaucu      = trim($_POST["matkhaucu"] ?? "");
+        $matkhaumoi     = trim($_POST["matkhaumoi"] ?? "");
+        $nhaplaimatkhau = trim($_POST["nhaplaimatkhau"] ?? "");
+
+        if(empty($matkhaucu) || empty($matkhaumoi) || empty($nhaplaimatkhau)){
+            $tb = "Vui lòng nhập đầy đủ tất cả các trường mật khẩu!";
+            include("changepass.php");
+        }
+        elseif(!$nd->kiemtramatkhau($email, $matkhaucu)){
+            $tb = "Mật khẩu hiện tại không chính xác!";
+            include("changepass.php");
+        }
+        elseif($matkhaumoi !== $nhaplaimatkhau){
+            $tb = "Mật khẩu mới và xác nhận mật khẩu không khớp!";
+            include("changepass.php");
+        }
+        elseif($matkhaumoi === $matkhaucu){
+            $tb = "Mật khẩu mới phải khác mật khẩu hiện tại!";
+            include("changepass.php");
+        }
+        else{
+            $ndcapnhat = new NGUOIDUNG();
+            $ndcapnhat->setemail($email);
+            $ndcapnhat->setmatkhau($matkhaumoi);
+            $nd->doimatkhau($ndcapnhat);
+            $tb_thanhcong = "Đổi mật khẩu thành công!";
+            include("changepass.php");
+        }
+        break;
     default:
         $dh = new DONHANG();
         $mh = new MATHANG();

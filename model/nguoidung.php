@@ -147,6 +147,44 @@ class NGUOIDUNG{
 		}
 	}
 
+	// Kiểm tra mật khẩu hiện tại của người dùng theo id
+	public function kiemtramatkhautheoid($id, $matkhaucu){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT id FROM nguoidung WHERE id=:id AND matkhau=:matkhau AND trangthai=1";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+			$cmd->bindValue(":matkhau", md5($matkhaucu));
+			$cmd->execute();
+			$khop = ($cmd->rowCount() >= 1);
+			$cmd->closeCursor();
+			return $khop;
+		}
+		catch(PDOException $e){
+			$error_message=$e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
+	// Đổi mật khẩu người dùng theo id
+	public function doimatkhautheoid($id, $matkhaumoi){
+		$db = DATABASE::connect();
+		try{
+			$sql = "UPDATE nguoidung SET matkhau=:matkhau WHERE id=:id";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(":matkhau", md5($matkhaumoi));
+			$cmd->bindValue(":id", (int)$id, PDO::PARAM_INT);
+			$ketqua = $cmd->execute();
+			return $ketqua;
+		}
+		catch(PDOException $e){
+			$error_message=$e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
+
 	// Đổi mật khẩu (tham số: email, mật khẩu)
 	public function doimatkhau($nguoidung){
 		$db = DATABASE::connect();

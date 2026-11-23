@@ -337,5 +337,27 @@ class DONHANG{
 			exit();
 		}
 	}
+
+	// 5. Lấy danh sách các mẫu điện thoại khách đã mua từ các đơn hàng Hoàn thành (trangthai = 3)
+	public function laymathangdamuatheonguoidung($nguoidung_id){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT d.id AS donhang_id, d.ngay AS ngaymua, m.id AS mathang_id, m.tenmathang, m.hinhanh, ct.dongia 
+					FROM donhang d 
+					INNER JOIN donhangct ct ON d.id = ct.donhang_id 
+					INNER JOIN mathang m ON ct.mathang_id = m.id 
+					WHERE d.nguoidung_id = :nguoidung_id AND d.trangthai = 3 
+					ORDER BY d.id DESC, m.id ASC";
+			$cmd = $db->prepare($sql);
+			$cmd->bindValue(':nguoidung_id', (int)$nguoidung_id, PDO::PARAM_INT);
+			$cmd->execute();
+			return $cmd->fetchAll(PDO::FETCH_ASSOC);
+		}
+		catch(PDOException $e){
+			$error_message = $e->getMessage();
+			echo "<p>Lỗi truy vấn: $error_message</p>";
+			exit();
+		}
+	}
 }
 ?>

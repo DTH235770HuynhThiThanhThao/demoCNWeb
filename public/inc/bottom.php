@@ -64,11 +64,11 @@
                     <!-- Cột 3: Hỗ trợ khách hàng -->
                     <div class="col-lg-4 col-md-12">
                         <h5 class="footer-title">HỖ TRỢ KHÁCH HÀNG</h5>
+                        <a href="index.php?action=baohanh" class="footer-link text-white fw-bold d-inline-flex align-items-center py-1">
+                            <i class="bi bi-shield-check text-warning me-2 fs-6"></i>Tra cứu & Gửi yêu cầu bảo hành
+                        </a>
                         <a href="#" class="footer-link">
                             <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Hướng dẫn mua hàng trực tuyến
-                        </a>
-                        <a href="index.php?action=baohanh" class="footer-link">
-                            <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Tra cứu bảo hành & tiến độ sửa chữa
                         </a>
                         <a href="index.php?action=gioithieu" class="footer-link">
                             <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Giới thiệu & Liên hệ cửa hàng
