@@ -81,9 +81,15 @@ switch($action){
 		if(isset($_GET["id"])){
             $mathanghh = new MATHANG();        
             $mathanghh->setid($_GET["id"]);
-			$mh->xoamathang($mathanghh);
+			$kq = $mh->xoamathang($mathanghh);
+            if($kq === "in_use" || $kq === false){
+                header("location:index.php?msg=xoa_loi_rangbuoc");
+                exit();
+            }
+            header("location:index.php?msg=xoa_ok");
+            exit();
         }
-		header("location:index.php?msg=xoa_ok");
+		header("location:index.php");
 		exit();
 
     case "chitiet":

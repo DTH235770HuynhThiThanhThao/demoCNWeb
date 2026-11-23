@@ -107,21 +107,27 @@
 <!-- Thông báo trạng thái -->
 <?php if(isset($_GET["msg"])): ?>
     <?php if($_GET["msg"] == "bienthe_ok"): ?>
-        <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3 d-flex align-items-center mb-3" role="alert">
+        <div class="alert alert-success alert-dismissible fade show shadow-sm d-flex align-items-center mb-3" style="border-radius: 10px;" role="alert">
             <i class="align-middle me-2" data-feather="check-circle"></i>
             <div>Cập nhật <strong>Phiên bản & Màu sắc</strong> thành công!</div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php elseif($_GET["msg"] == "anhmau_ok"): ?>
-        <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3 d-flex align-items-center mb-3" role="alert">
+        <div class="alert alert-success alert-dismissible fade show shadow-sm d-flex align-items-center mb-3" style="border-radius: 10px;" role="alert">
             <i class="align-middle me-2" data-feather="check-circle"></i>
             <div>Cập nhật <strong>Thư viện ảnh màu</strong> thành công!</div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php elseif($_GET["msg"] == "xoa_ok"): ?>
-        <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3 d-flex align-items-center mb-3" role="alert">
+        <div class="alert alert-success alert-dismissible fade show shadow-sm d-flex align-items-center mb-3" style="border-radius: 10px;" role="alert">
             <i class="align-middle me-2" data-feather="check-circle"></i>
-            <div>Đã xóa mặt hàng thành công!</div>
+            <div><strong>Đã xóa mặt hàng thành công!</strong></div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php elseif($_GET["msg"] == "xoa_loi_rangbuoc"): ?>
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm d-flex align-items-center mb-3" style="border-radius: 10px; background-color: #fff1f2; border: 1px solid #fecdd3; color: #9f1239;" role="alert">
+            <i class="align-middle me-2 text-danger flex-shrink-0" data-feather="alert-circle" style="width: 20px; height: 20px;"></i>
+            <div><strong>Không thể xóa mặt hàng này vì đã phát sinh lịch sử nhập kho, đơn hàng hoặc bảo hành trên hệ thống!</strong></div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>

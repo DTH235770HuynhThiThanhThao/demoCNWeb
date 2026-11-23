@@ -139,7 +139,7 @@ $so_luong = is_array($mathang) ? count($mathang) : 0;
                             <span class="product-price-original"><?php echo number_format($m["giagoc"]); ?>đ</span>
                         <?php endif; ?>
                     </div>
-                    <div class="product-promo-box"><i class="bi bi-gift-fill"></i><span class="text-truncate">Trả góp 0% • Bảo hành 12 tháng</span></div>
+                    <div class="product-promo-box"><i class="bi bi-gift-fill"></i><span class="text-truncate">VietQR / COD • Bảo hành 12 tháng</span></div>
                     <div class="product-card-footer">
                         <div class="product-rating"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
                         <a class="btn btn-buy-tech text-decoration-none" href="index.php?action=chovaogio&id=<?php echo $m["id"]; ?>"><i class="bi bi-cart-plus me-1"></i>Chọn mua</a>

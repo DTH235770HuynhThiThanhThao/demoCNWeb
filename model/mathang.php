@@ -276,7 +276,7 @@ class MATHANG{
     public function xoamathang($mathang){
         $dbcon = DATABASE::connect();
         try{
-            $id = is_object($mathang) ? ($mathang->getid() ?? $mathang->id) : (int)$mathang;
+            $id = is_object($mathang) ? ($mathang->getid() ?? (isset($mathang->id) ? $mathang->id : 0)) : (int)$mathang;
             $sql = "DELETE FROM mathang WHERE id=:id";
             $cmd = $dbcon->prepare($sql);
             $cmd->bindValue(":id", $id);
@@ -284,8 +284,11 @@ class MATHANG{
             return $result;
         }
         catch(PDOException $e){
-            // Mã lỗi 23000 / 1451: Vi phạm ràng buộc khóa ngoại (sản phẩm đang được tham chiếu)
-            if($e->getCode() == '23000' || strpos($e->getMessage(), '1451') !== false){
+            // Mã lỗi 23000 / 1451: Vi phạm ràng buộc khóa ngoại (sản phẩm đang được tham chiếu trong phiếu nhập, đơn hàng, bảo hành)
+            $code = (string)$e->getCode();
+            $msg = $e->getMessage();
+            $driverCode = isset($e->errorInfo[1]) ? (int)$e->errorInfo[1] : 0;
+            if($code === '23000' || $driverCode === 1451 || strpos($msg, '1451') !== false || strpos($msg, '23000') !== false){
                 return "in_use";
             }
             return false;

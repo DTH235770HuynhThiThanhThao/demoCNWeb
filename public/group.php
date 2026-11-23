@@ -102,7 +102,7 @@ if(!empty($mathang)){
                 </div>
                 <div class="product-promo-box">
                     <i class="bi bi-gift-fill"></i>
-                    <span class="text-truncate">Trả góp 0% • Bảo hành 12 tháng</span>
+                    <span class="text-truncate">VietQR / COD • Bảo hành 12 tháng</span>
                 </div>
                 <div class="product-card-footer">
                     <div class="product-rating">

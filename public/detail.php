@@ -192,6 +192,26 @@ if(!empty($mhct["mota"])){
         }
     }
 }
+
+// Trích xuất RAM và ROM ban đầu của sản phẩm để phục vụ tính toán phiên bản tương ứng
+$ram_ban_dau = "8GB";
+$rom_ban_dau = "256GB";
+foreach($ds_thongso as $spec_k => $spec_v){
+    if(stripos($spec_k, "RAM") !== false || stripos($spec_k, "Bộ nhớ") !== false || stripos($spec_k, "ROM") !== false){
+        $parts_rr = explode("/", $spec_v);
+        if(isset($parts_rr[0]) && preg_match('/(\d+\s*GB)/i', $parts_rr[0], $m_ram)){
+            $ram_ban_dau = strtoupper(str_replace(' ', '', $m_ram[1]));
+        }
+        if(isset($parts_rr[1]) && preg_match('/(\d+\s*(?:GB|TB))/i', $parts_rr[1], $m_rom)){
+            $rom_ban_dau = strtoupper(str_replace(' ', '', $m_rom[1]));
+        } elseif(preg_match('/(\d+\s*(?:GB|TB))/i', $spec_v, $m_rom2)){
+            $rom_ban_dau = strtoupper(str_replace(' ', '', $m_rom2[1]));
+        }
+    }
+}
+if(!empty($dungluong_hientai) && $dungluong_hientai != "Tiêu chuẩn"){
+    $rom_ban_dau = $dungluong_hientai;
+}
 ?>
 
 <!-- 1. Thanh điều hướng Breadcrumb -->
@@ -835,8 +855,115 @@ function doiAnhChinh(el, srcAnh) {
 var tiLeGiamGia = <?php echo json_encode((float)($ti_le_giam_gia ?? 0)); ?>;
 var giaGocBanDau = <?php echo json_encode((float)($mhct["giagoc"] ?? 0)); ?>;
 var giaBanBanDau = <?php echo json_encode((float)($mhct["giaban"] ?? 0)); ?>;
+var ramBanDau = <?php echo json_encode($ram_ban_dau); ?>;
+var romBanDau = <?php echo json_encode($rom_ban_dau); ?>;
+var hangSanXuat = <?php echo json_encode(strtolower($tendanhmuc_hien ?? '')); ?>;
 
-// 2. Chọn phiên bản dung lượng (Cập nhật giá bán, giá gốc và màu sắc)
+// Hàm tính toán RAM và ROM tương ứng chuẩn xác theo đời máy và phiên bản được chọn
+function tinhRamRomTuongUng(dungLuong) {
+    if (!dungLuong) {
+        return { ram: ramBanDau, rom: romBanDau };
+    }
+
+    // 1. Trường hợp phiên bản có chứa rõ cả RAM và ROM (ví dụ: "8GB/256GB", "8GB - 256GB", "12GB - 512GB")
+    var capMatches = dungLuong.match(/\b\d+\s*(?:GB|TB)\b/gi);
+    if (capMatches && capMatches.length >= 2) {
+        return {
+            ram: capMatches[0].toUpperCase().replace(/\s+/g, ''),
+            rom: capMatches[1].toUpperCase().replace(/\s+/g, '')
+        };
+    }
+
+    // 2. Trường hợp phiên bản chỉ là ROM đơn (ví dụ: "128GB", "256GB", "512GB", "1TB", "64GB")
+    var romStr = (capMatches && capMatches.length === 1) 
+        ? capMatches[0].toUpperCase().replace(/\s+/g, '') 
+        : dungLuong.toUpperCase().replace(/\s+/g, '');
+
+    // Quy đổi ROM ra số GB để so sánh
+    var romGB = 256;
+    if (romStr.indexOf('TB') !== -1) {
+        romGB = (parseInt(romStr) || 1) * 1024;
+    } else {
+        romGB = parseInt(romStr) || 256;
+    }
+
+    var romGocGB = 256;
+    if (romBanDau.indexOf('TB') !== -1) {
+        romGocGB = (parseInt(romBanDau) || 1) * 1024;
+    } else {
+        romGocGB = parseInt(romBanDau) || 256;
+    }
+
+    var ramGocNum = parseInt(ramBanDau) || 8;
+    var isApple = (hangSanXuat.indexOf('apple') !== -1) || /iphone|apple/i.test(document.title);
+
+    // Dòng Apple iPhone: RAM giữ nguyên chuẩn theo dòng máy cho toàn bộ các mức dung lượng
+    if (isApple) {
+        return { ram: ramGocNum + 'GB', rom: romStr };
+    }
+
+    // Nếu chọn lại đúng dung lượng ROM gốc
+    if (romGB === romGocGB) {
+        return { ram: ramGocNum + 'GB', rom: romStr };
+    }
+
+    // Dòng máy Android (Samsung, Xiaomi, OPPO): RAM tương ứng theo từng phân khúc dung lượng thực tế
+    var ramMoi = ramGocNum;
+
+    // Phân khúc phổ thông (RAM gốc <= 4GB, ví dụ: Redmi A2+, Redmi 12C, Redmi 12, Redmi Note 12...)
+    if (ramGocNum <= 4) {
+        if (romGB <= 32) ramMoi = 2;
+        else if (romGB <= 64) ramMoi = (ramGocNum <= 3) ? 3 : 4;
+        else if (romGB <= 128) ramMoi = (ramGocNum <= 3) ? 4 : 6;
+        else if (romGB >= 256) ramMoi = 8;
+    }
+    // Phân khúc tầm trung (RAM gốc 6GB, ví dụ: Galaxy A24, OPPO A58...)
+    else if (ramGocNum === 6) {
+        if (romGB <= 128) ramMoi = 6;
+        else if (romGB <= 256) ramMoi = 8;
+        else if (romGB >= 512) ramMoi = 12;
+    }
+    // Phân khúc cận cao cấp (RAM gốc 8GB, ví dụ: Galaxy A54, Galaxy S23, Reno10...)
+    else if (ramGocNum === 8) {
+        if (romGB <= 128) ramMoi = 8;
+        else if (romGB <= 256) ramMoi = 8;
+        else if (romGB >= 512) ramMoi = 12;
+        else if (romGB >= 1024) ramMoi = 12;
+    }
+    // Phân khúc Flagship cao cấp (RAM gốc >= 12GB, ví dụ: Galaxy S24 Ultra, Z Fold 5, Find N3...)
+    else if (ramGocNum >= 12) {
+        if (romGB <= 128) ramMoi = 8;
+        else if (romGB <= 256) ramMoi = 12;
+        else if (romGB <= 512) ramMoi = 12;
+        else if (romGB >= 1024) ramMoi = 16;
+    }
+
+    return {
+        ram: ramMoi + 'GB',
+        rom: romStr
+    };
+}
+
+// Cập nhật chuỗi dung lượng trên tiêu đề và breadcrumb (cả cặp RAM/ROM hoặc ROM đơn lẻ)
+function capNhatTieuDeDungLuong(element, ramMoi, romMoi) {
+    if (!element) return;
+    var text = element.textContent;
+
+    // 1. Nếu tên máy có cả cặp RAM/ROM (ví dụ: "Redmi Note 12 4GB/128GB" hoặc "4GB - 128GB")
+    var pairRegex = /\b\d+\s*GB\s*[\/\-]\s*\d+\s*(?:GB|TB)\b/i;
+    if (pairRegex.test(text)) {
+        element.textContent = text.replace(pairRegex, ramMoi + '/' + romMoi);
+        return;
+    }
+
+    // 2. Nếu tên máy chỉ có ROM (ví dụ: "iPhone 16 Pro Max 256GB" hoặc "Galaxy S24 256GB")
+    var singleRegex = /\b\d+\s*(?:GB|TB)\b/i;
+    if (singleRegex.test(text)) {
+        element.textContent = text.replace(singleRegex, romMoi);
+    }
+}
+
+// 2. Chọn phiên bản dung lượng (Cập nhật giá bán, giá gốc, màu sắc và RAM/ROM tương ứng)
 function chonPhienBan(el, giaMoi, dungLuong) {
     document.querySelectorAll('.option-capacity-card').forEach(function(item) {
         item.classList.remove('active');
@@ -875,6 +1002,45 @@ function chonPhienBan(el, giaMoi, dungLuong) {
     document.querySelectorAll('.color-price-display').forEach(function(item) {
         item.innerText = dinhDangTien(giaMoi);
     });
+
+    // 4. Cập nhật cả RAM và ROM tương ứng trong bảng THÔNG SỐ KỸ THUẬT NỔI BẬT (.spec-table)
+    if (dungLuong) {
+        var capInfo = tinhRamRomTuongUng(dungLuong);
+        var ramTuongUng = capInfo.ram;
+        var romTuongUng = capInfo.rom;
+
+        var specRows = document.querySelectorAll('.spec-table tr');
+        specRows.forEach(function(row) {
+            var nameEl = row.querySelector('.spec-name');
+            var valEl = row.querySelector('.spec-val');
+            if (nameEl && valEl) {
+                var label = nameEl.textContent.trim().toLowerCase();
+                // Hàng chung RAM/ROM
+                if (label.indexOf('ram/rom') !== -1 || (label.indexOf('ram') !== -1 && label.indexOf('rom') !== -1)) {
+                    valEl.textContent = ramTuongUng + ' / ' + romTuongUng;
+                } 
+                // Hàng riêng RAM
+                else if (label === 'ram' || label.indexOf('dung lượng ram') !== -1) {
+                    valEl.textContent = /\b\d+\s*GB\b/i.test(valEl.textContent) 
+                        ? valEl.textContent.replace(/\b\d+\s*GB\b/i, ramTuongUng) 
+                        : ramTuongUng;
+                } 
+                // Hàng riêng ROM
+                else if (label.indexOf('bộ nhớ') !== -1 || label === 'rom' || label.indexOf('dung lượng') !== -1) {
+                    valEl.textContent = /\b\d+\s*(?:GB|TB)\b/i.test(valEl.textContent) 
+                        ? valEl.textContent.replace(/\b\d+\s*(?:GB|TB)\b/i, romTuongUng) 
+                        : romTuongUng;
+                }
+            }
+        });
+
+        // 5. Đồng bộ dung lượng trên thẻ tiêu đề <h1> và Breadcrumb (cập nhật cả RAM và ROM nếu có trong tên máy)
+        var h1Title = document.querySelector('.detail-header-card h1');
+        capNhatTieuDeDungLuong(h1Title, ramTuongUng, romTuongUng);
+
+        var breadcrumbActive = document.querySelector('.breadcrumb-shop .breadcrumb-item.active');
+        capNhatTieuDeDungLuong(breadcrumbActive, ramTuongUng, romTuongUng);
+    }
 }
 
 // 3. Chọn màu sắc (Đổi ảnh lớn và viền đỏ ô màu)

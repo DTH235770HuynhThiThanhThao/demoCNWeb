@@ -11,7 +11,7 @@ if(empty($ds_hero_banner)){
     $ds_hero_banner = array(
         array("duongdan" => "h4.jpg", "tieude" => "Siêu phẩm công nghệ mới"),
         array("duongdan" => "h5.jpg", "tieude" => "Lễ hội mua sắm giảm sốc"),
-        array("duongdan" => "h6.jpg", "tieude" => "Ưu đãi trả góp 0%"),
+        array("duongdan" => "h6.jpg", "tieude" => "Ưu đãi thanh toán linh hoạt"),
         array("duongdan" => "h7.jpg", "tieude" => "Ưu đãi siêu phẩm giá sốc")
     );
 }
@@ -137,11 +137,11 @@ if(empty($ds_hero_banner)){
     <div class="col-6 col-md-3">
         <div class="commitment-card">
             <div class="commitment-icon-wrap">
-                <i class="bi bi-credit-card-2-front"></i>
+                <i class="bi bi-qr-code-scan"></i>
             </div>
             <div class="commitment-text">
-                <div class="commit-title">Trả góp 0%</div>
-                <div class="commit-desc">Thủ tục đơn giản qua thẻ</div>
+                <div class="commit-title">Thanh toán linh hoạt</div>
+                <div class="commit-desc">Chuyển khoản VietQR & COD nhận hàng</div>
             </div>
         </div>
     </div>
