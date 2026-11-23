@@ -52,40 +52,101 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
 ?>
 
 <style>
-/* Hiệu ứng tương tác Dashboard Thảo Mobile */
-.kpi-card, .status-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* Phong cách Tech Flagship Thảo Mobile - Tối giản, sang trọng */
+.kpi-card {
+    background-color: #ffffff;
+    border: 1px solid #f1f5f9 !important;
+    border-radius: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 .kpi-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06) !important;
+    border-color: #e2e8f0 !important;
+}
+
+.status-card {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 .status-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
+    border-color: #d70018 !important;
+    box-shadow: 0 6px 18px rgba(215, 0, 24, 0.08) !important;
 }
-.btn-red-action {
-    background-color: #d70018;
-    border-color: #d70018;
-    color: #ffffff;
+
+.kpi-link {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+.kpi-link:hover {
+    color: #d70018;
+}
+
+.btn-header-nhap {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13.5px;
+    padding: 7px 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
     transition: all 0.2s ease;
 }
-.btn-red-action:hover {
+.btn-header-nhap:hover {
+    border-color: #d70018;
+    color: #d70018;
+    background-color: #fff1f2;
+}
+
+.btn-header-them {
+    background-color: #d70018;
+    border: 1px solid #d70018;
+    color: #ffffff;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13.5px;
+    padding: 7px 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(215, 0, 24, 0.2);
+}
+.btn-header-them:hover {
     background-color: #b30012;
     border-color: #b30012;
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(215, 0, 24, 0.25);
+    box-shadow: 0 4px 12px rgba(215, 0, 24, 0.3);
 }
-.btn-outline-red-action {
-    border-color: #d70018;
-    color: #d70018;
+
+.btn-card-more {
+    border: 1px solid #e2e8f0;
     background-color: #ffffff;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
     transition: all 0.2s ease;
 }
-.btn-outline-red-action:hover {
-    background-color: #fff0f1;
+.btn-card-more:hover {
     border-color: #d70018;
     color: #d70018;
+    background-color: #fff1f2;
 }
 </style>
 
@@ -104,15 +165,17 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
     </div>
     <div class="col-12 col-xl-5">
         <div class="d-flex flex-wrap align-items-center justify-content-xl-end gap-2">
-            <div class="badge bg-white text-secondary border px-3 py-2 d-inline-flex align-items-center shadow-sm" style="border-radius: 10px; font-weight: 500;">
-                <i class="align-middle me-2 text-danger" data-feather="calendar" style="width: 15px; height: 15px;"></i>
+            <div class="badge bg-white border px-3 py-2 d-inline-flex align-items-center shadow-sm" style="border-radius: 10px; font-weight: 500; border-color: #e2e8f0 !important; color: #475569 !important;">
+                <i class="align-middle me-2" data-feather="calendar" style="width: 15px; height: 15px; color: #d70018;"></i>
                 <span><?= $currentDateStr ?></span>
             </div>
-            <a href="../qlnhaphang/index.php?action=them" class="btn btn-outline-red-action d-inline-flex align-items-center shadow-sm px-3 py-2" style="border-radius: 10px; font-weight: 600; font-size: 13.5px;">
-                <i class="align-middle me-1" data-feather="download" style="width: 16px; height: 16px;"></i> + Nhập hàng mới
+            <a href="../qlnhaphang/index.php?action=them" class="btn-header-nhap shadow-sm">
+                <i class="align-middle me-1" data-feather="download" style="width: 15px; height: 15px;"></i>
+                <span>+ Nhập hàng mới</span>
             </a>
-            <a href="../qlmathang/index.php?action=them" class="btn btn-red-action d-inline-flex align-items-center shadow-sm px-3 py-2" style="border-radius: 10px; font-weight: 600; font-size: 13.5px;">
-                <i class="align-middle me-1" data-feather="plus-circle" style="width: 16px; height: 16px;"></i> + Thêm điện thoại
+            <a href="../qlmathang/index.php?action=them" class="btn-header-them shadow-sm">
+                <i class="align-middle me-1" data-feather="plus-circle" style="width: 15px; height: 15px;"></i>
+                <span>+ Thêm điện thoại</span>
             </a>
         </div>
     </div>
@@ -122,13 +185,13 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
 <div class="row g-3 mb-4">
     <!-- Thẻ 1: Tổng doanh thu -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card h-100 shadow-sm border-0 kpi-card" style="border-radius: 14px; border-left: 4px solid #d70018 !important; background-color: #ffffff;">
+        <div class="card h-100 shadow-sm border-0 rounded-4 kpi-card">
             <div class="card-body p-4 d-flex flex-column justify-content-between">
                 <div>
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="text-muted fw-bold small text-uppercase" style="letter-spacing: 0.5px; font-size: 12px;">Tổng doanh thu</span>
-                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background-color: rgba(215, 0, 24, 0.1); color: #d70018;">
-                            <i data-feather="dollar-sign" style="width: 22px; height: 22px;"></i>
+                        <span class="text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px; font-size: 0.75rem;">Tổng doanh thu</span>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px; background-color: #fee2e2; color: #d70018;">
+                            <i data-feather="dollar-sign" style="width: 20px; height: 20px;"></i>
                         </div>
                     </div>
                     <h3 class="fw-bold my-1" style="color: #d70018; font-size: 1.6rem; letter-spacing: -0.5px;">
@@ -140,8 +203,9 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
                     </div>
                 </div>
                 <div class="pt-2 border-top">
-                    <a href="../qldoanhthu/index.php" class="small fw-semibold text-decoration-none d-inline-flex align-items-center" style="color: #d70018;">
-                        Xem báo cáo doanh thu <i class="align-middle ms-1" data-feather="arrow-right" style="width: 14px; height: 14px;"></i>
+                    <a href="../qldoanhthu/index.php" class="kpi-link">
+                        <span>Xem báo cáo doanh thu</span>
+                        <i class="align-middle ms-1" data-feather="arrow-right" style="width: 14px; height: 14px;"></i>
                     </a>
                 </div>
             </div>
@@ -150,33 +214,34 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
 
     <!-- Thẻ 2: Tổng đơn hàng -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card h-100 shadow-sm border-0 kpi-card" style="border-radius: 14px; border-left: 4px solid #0d6efd !important; background-color: #ffffff;">
+        <div class="card h-100 shadow-sm border-0 rounded-4 kpi-card">
             <div class="card-body p-4 d-flex flex-column justify-content-between">
                 <div>
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="text-muted fw-bold small text-uppercase" style="letter-spacing: 0.5px; font-size: 12px;">Tổng đơn hàng</span>
-                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background-color: rgba(13, 110, 253, 0.1); color: #0d6efd;">
-                            <i data-feather="shopping-cart" style="width: 22px; height: 22px;"></i>
+                        <span class="text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px; font-size: 0.75rem;">Tổng đơn hàng</span>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px; background-color: #e0f2fe; color: #0284c7;">
+                            <i data-feather="shopping-cart" style="width: 20px; height: 20px;"></i>
                         </div>
                     </div>
-                    <h3 class="fw-bold my-1 text-dark" style="font-size: 1.6rem; letter-spacing: -0.5px;">
+                    <h3 class="fw-bold my-1" style="color: #0f172a; font-size: 1.6rem; letter-spacing: -0.5px;">
                         <?= number_format($tongdonhang ?? 0, 0, ',', '.') ?> <span class="fs-6 fw-normal text-muted">đơn</span>
                     </h3>
                     <div class="mt-1 mb-3">
                         <?php if ($so_don_cho > 0): ?>
-                            <span class="badge bg-warning text-dark px-2 py-1" style="font-size: 11.5px;">
+                            <span class="badge rounded-pill px-2.5 py-1" style="background-color: #fef3c7; color: #b45309; font-size: 11.5px; font-weight: 600;">
                                 <i class="align-middle me-1" data-feather="clock" style="width: 11px; height: 11px;"></i><?= $so_don_cho ?> đơn chờ duyệt
                             </span>
                         <?php else: ?>
-                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1" style="font-size: 11.5px;">
+                            <span class="badge rounded-pill px-2.5 py-1" style="background-color: #dcfce7; color: #15803d; font-size: 11.5px; font-weight: 600;">
                                 <i class="align-middle me-1" data-feather="check" style="width: 11px; height: 11px;"></i>Đã xử lý tất cả
                             </span>
                         <?php endif; ?>
                     </div>
                 </div>
                 <div class="pt-2 border-top">
-                    <a href="../qldonhang/index.php" class="small fw-semibold text-primary text-decoration-none d-inline-flex align-items-center">
-                        Quản lý đơn hàng <i class="align-middle ms-1" data-feather="arrow-right" style="width: 14px; height: 14px;"></i>
+                    <a href="../qldonhang/index.php" class="kpi-link">
+                        <span>Quản lý đơn hàng</span>
+                        <i class="align-middle ms-1" data-feather="arrow-right" style="width: 14px; height: 14px;"></i>
                     </a>
                 </div>
             </div>
@@ -185,16 +250,16 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
 
     <!-- Thẻ 3: Sản phẩm kinh doanh -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card h-100 shadow-sm border-0 kpi-card" style="border-radius: 14px; border-left: 4px solid #fd7e14 !important; background-color: #ffffff;">
+        <div class="card h-100 shadow-sm border-0 rounded-4 kpi-card">
             <div class="card-body p-4 d-flex flex-column justify-content-between">
                 <div>
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="text-muted fw-bold small text-uppercase" style="letter-spacing: 0.5px; font-size: 12px;">Sản phẩm kinh doanh</span>
-                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background-color: rgba(253, 126, 20, 0.12); color: #fd7e14;">
-                            <i data-feather="smartphone" style="width: 22px; height: 22px;"></i>
+                        <span class="text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px; font-size: 0.75rem;">Sản phẩm kinh doanh</span>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px; background-color: #ffedd5; color: #ea580c;">
+                            <i data-feather="smartphone" style="width: 20px; height: 20px;"></i>
                         </div>
                     </div>
-                    <h3 class="fw-bold my-1 text-dark" style="font-size: 1.6rem; letter-spacing: -0.5px;">
+                    <h3 class="fw-bold my-1" style="color: #0f172a; font-size: 1.6rem; letter-spacing: -0.5px;">
                         <?= number_format($tongmathang ?? 0, 0, ',', '.') ?> <span class="fs-6 fw-normal text-muted">mẫu máy</span>
                     </h3>
                     <div class="text-muted small mt-1 mb-3 d-flex align-items-center">
@@ -203,8 +268,9 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
                     </div>
                 </div>
                 <div class="pt-2 border-top">
-                    <a href="../qlnhaphang/index.php" class="small fw-semibold text-decoration-none d-inline-flex align-items-center" style="color: #fd7e14;">
-                        Quản lý kho <i class="align-middle ms-1" data-feather="arrow-right" style="width: 14px; height: 14px;"></i>
+                    <a href="../qlnhaphang/index.php" class="kpi-link">
+                        <span>Quản lý kho</span>
+                        <i class="align-middle ms-1" data-feather="arrow-right" style="width: 14px; height: 14px;"></i>
                     </a>
                 </div>
             </div>
@@ -213,16 +279,16 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
 
     <!-- Thẻ 4: Khách hàng thành viên -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card h-100 shadow-sm border-0 kpi-card" style="border-radius: 14px; border-left: 4px solid #198754 !important; background-color: #ffffff;">
+        <div class="card h-100 shadow-sm border-0 rounded-4 kpi-card">
             <div class="card-body p-4 d-flex flex-column justify-content-between">
                 <div>
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="text-muted fw-bold small text-uppercase" style="letter-spacing: 0.5px; font-size: 12px;">Khách hàng thành viên</span>
-                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background-color: rgba(25, 135, 84, 0.1); color: #198754;">
-                            <i data-feather="users" style="width: 22px; height: 22px;"></i>
+                        <span class="text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px; font-size: 0.75rem;">Khách hàng thành viên</span>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px; background-color: #f1f5f9; color: #475569;">
+                            <i data-feather="users" style="width: 20px; height: 20px;"></i>
                         </div>
                     </div>
-                    <h3 class="fw-bold my-1 text-dark" style="font-size: 1.6rem; letter-spacing: -0.5px;">
+                    <h3 class="fw-bold my-1" style="color: #0f172a; font-size: 1.6rem; letter-spacing: -0.5px;">
                         <?= number_format($tongkhachhang ?? 0, 0, ',', '.') ?> <span class="fs-6 fw-normal text-muted">tài khoản</span>
                     </h3>
                     <div class="text-muted small mt-1 mb-3 d-flex align-items-center">
@@ -231,8 +297,9 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
                     </div>
                 </div>
                 <div class="pt-2 border-top">
-                    <a href="../qlkhachhang/index.php" class="small fw-semibold text-success text-decoration-none d-inline-flex align-items-center">
-                        Danh sách khách hàng <i class="align-middle ms-1" data-feather="arrow-right" style="width: 14px; height: 14px;"></i>
+                    <a href="../qlkhachhang/index.php" class="kpi-link">
+                        <span>Danh sách khách hàng</span>
+                        <i class="align-middle ms-1" data-feather="arrow-right" style="width: 14px; height: 14px;"></i>
                     </a>
                 </div>
             </div>
@@ -240,23 +307,23 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
     </div>
 </div>
 
-<!-- ================= 3. THANH TỔNG QUAN TÌNH TRẠNG ĐƠN HÀNG & BẢO HÀNH (TRUY VẤN THẬT TỪ CSDL) ================= -->
+<!-- ================= 3. THANH TỔNG QUAN TÌNH TRẠNG ĐƠN HÀNG & BẢO HÀNH ================= -->
 <div class="row g-3 mb-4">
     <!-- 1. Chờ xác nhận (donhang.trangthai = 0) -->
     <div class="col-6 col-xl-3">
         <a href="../qldonhang/index.php" class="text-decoration-none d-block h-100">
-            <div class="card h-100 border shadow-sm status-card" style="border-radius: 12px; background-color: #fff9db; border-color: #ffe066 !important;">
+            <div class="card h-100 shadow-sm status-card">
                 <div class="card-body p-3 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 42px; height: 42px; background-color: #fff3bf; color: #b45309;">
-                            <i data-feather="clock" style="width: 20px; height: 20px;"></i>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 38px; height: 38px; background-color: #fef3c7; color: #b45309;">
+                            <i data-feather="clock" style="width: 18px; height: 18px;"></i>
                         </div>
                         <div>
-                            <div class="small fw-bold" style="color: #854d0e; font-size: 13px;">Chờ xác nhận</div>
-                            <div class="fs-5 fw-bold" style="color: #92400e;"><?= number_format($so_don_cho) ?> <span class="small fw-normal" style="font-size: 12px;">đơn</span></div>
+                            <div class="small fw-semibold text-muted" style="font-size: 12.5px;">Chờ xác nhận</div>
+                            <div class="fs-5 fw-bold" style="color: #0f172a;"><?= number_format($so_don_cho) ?> <span class="small fw-normal text-muted" style="font-size: 12px;">đơn</span></div>
                         </div>
                     </div>
-                    <i data-feather="chevron-right" style="width: 18px; height: 18px; color: #b45309;"></i>
+                    <i data-feather="chevron-right" style="width: 18px; height: 18px; color: #94a3b8;"></i>
                 </div>
             </div>
         </a>
@@ -265,18 +332,18 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
     <!-- 2. Đang giao hàng (donhang.trangthai = 1 hoặc 2) -->
     <div class="col-6 col-xl-3">
         <a href="../qldonhang/index.php" class="text-decoration-none d-block h-100">
-            <div class="card h-100 border shadow-sm status-card" style="border-radius: 12px; background-color: #e7f5ff; border-color: #a5d8ff !important;">
+            <div class="card h-100 shadow-sm status-card">
                 <div class="card-body p-3 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 42px; height: 42px; background-color: #d0ebff; color: #1971c2;">
-                            <i data-feather="truck" style="width: 20px; height: 20px;"></i>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 38px; height: 38px; background-color: #e0f2fe; color: #0369a1;">
+                            <i data-feather="truck" style="width: 18px; height: 18px;"></i>
                         </div>
                         <div>
-                            <div class="small fw-bold" style="color: #1864ab; font-size: 13px;">Đang giao hàng</div>
-                            <div class="fs-5 fw-bold" style="color: #1971c2;"><?= number_format($so_don_giao) ?> <span class="small fw-normal" style="font-size: 12px;">đơn</span></div>
+                            <div class="small fw-semibold text-muted" style="font-size: 12.5px;">Đang giao hàng</div>
+                            <div class="fs-5 fw-bold" style="color: #0f172a;"><?= number_format($so_don_giao) ?> <span class="small fw-normal text-muted" style="font-size: 12px;">đơn</span></div>
                         </div>
                     </div>
-                    <i data-feather="chevron-right" style="width: 18px; height: 18px; color: #1971c2;"></i>
+                    <i data-feather="chevron-right" style="width: 18px; height: 18px; color: #94a3b8;"></i>
                 </div>
             </div>
         </a>
@@ -285,18 +352,18 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
     <!-- 3. Đã hoàn thành (donhang.trangthai = 3) -->
     <div class="col-6 col-xl-3">
         <a href="../qldonhang/index.php" class="text-decoration-none d-block h-100">
-            <div class="card h-100 border shadow-sm status-card" style="border-radius: 12px; background-color: #ebfbee; border-color: #b2f2bb !important;">
+            <div class="card h-100 shadow-sm status-card">
                 <div class="card-body p-3 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 42px; height: 42px; background-color: #d3f9d8; color: #2b8a3e;">
-                            <i data-feather="check-circle" style="width: 20px; height: 20px;"></i>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 38px; height: 38px; background-color: #dcfce7; color: #15803d;">
+                            <i data-feather="check-circle" style="width: 18px; height: 18px;"></i>
                         </div>
                         <div>
-                            <div class="small fw-bold" style="color: #2b8a3e; font-size: 13px;">Đã hoàn thành</div>
-                            <div class="fs-5 fw-bold" style="color: #2b8a3e;"><?= number_format($so_don_hoanthanh) ?> <span class="small fw-normal" style="font-size: 12px;">đơn</span></div>
+                            <div class="small fw-semibold text-muted" style="font-size: 12.5px;">Đã hoàn thành</div>
+                            <div class="fs-5 fw-bold" style="color: #0f172a;"><?= number_format($so_don_hoanthanh) ?> <span class="small fw-normal text-muted" style="font-size: 12px;">đơn</span></div>
                         </div>
                     </div>
-                    <i data-feather="chevron-right" style="width: 18px; height: 18px; color: #2b8a3e;"></i>
+                    <i data-feather="chevron-right" style="width: 18px; height: 18px; color: #94a3b8;"></i>
                 </div>
             </div>
         </a>
@@ -305,18 +372,18 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
     <!-- 4. Yêu cầu bảo hành chờ xử lý (baohanh.trangthai = 0) -->
     <div class="col-6 col-xl-3">
         <a href="../qlbaohanh/index.php?trangthai=0" class="text-decoration-none d-block h-100">
-            <div class="card h-100 border shadow-sm status-card" style="border-radius: 12px; background-color: #fff5f5; border-color: #ffc9c9 !important;">
+            <div class="card h-100 shadow-sm status-card">
                 <div class="card-body p-3 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 42px; height: 42px; background-color: #ffe3e3; color: #c92a2a;">
-                            <i data-feather="shield" style="width: 20px; height: 20px;"></i>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 38px; height: 38px; background-color: #fee2e2; color: #b91c1c;">
+                            <i data-feather="shield" style="width: 18px; height: 18px;"></i>
                         </div>
                         <div>
-                            <div class="small fw-bold" style="color: #c92a2a; font-size: 13px;">Bảo hành chờ xử lý</div>
-                            <div class="fs-5 fw-bold" style="color: #c92a2a;"><?= number_format($so_bh_cho) ?> <span class="small fw-normal" style="font-size: 12px;">yêu cầu</span></div>
+                            <div class="small fw-semibold text-muted" style="font-size: 12.5px;">Bảo hành chờ xử lý</div>
+                            <div class="fs-5 fw-bold" style="color: #0f172a;"><?= number_format($so_bh_cho) ?> <span class="small fw-normal text-muted" style="font-size: 12px;">yêu cầu</span></div>
                         </div>
                     </div>
-                    <i data-feather="chevron-right" style="width: 18px; height: 18px; color: #c92a2a;"></i>
+                    <i data-feather="chevron-right" style="width: 18px; height: 18px; color: #94a3b8;"></i>
                 </div>
             </div>
         </a>
@@ -327,17 +394,15 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
 <div class="row g-3">
     <!-- Cột trái (col-lg-7) — ĐƠN HÀNG MỚI NHẤT -->
     <div class="col-12 col-lg-7 mb-4">
-        <div class="card h-100 shadow-sm border-0" style="border-radius: 14px; background-color: #ffffff;">
-            <div class="card-header bg-white py-3 px-4 border-0 d-flex justify-content-between align-items-center" style="border-top-left-radius: 14px; border-top-right-radius: 14px;">
+        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden" style="background-color: #ffffff;">
+            <div class="card-header bg-white py-3 px-4 border-bottom d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                    <div style="width: 4px; height: 20px; background-color: #d70018; border-radius: 3px; margin-right: 10px;"></div>
-                    <h5 class="card-title mb-0 fw-bold text-dark d-flex align-items-center">
-                        <i class="align-middle me-2 text-danger" data-feather="clock" style="width: 18px; height: 18px;"></i>
-                        Đơn hàng mới nhất
-                    </h5>
+                    <div style="width: 4px; height: 18px; background-color: #d70018; border-radius: 3px; margin-right: 10px; flex-shrink: 0;"></div>
+                    <h5 class="card-title mb-0 fw-bold text-dark" style="font-size: 1rem;">Đơn hàng mới nhất</h5>
                 </div>
-                <a href="../qldonhang/index.php" class="btn btn-sm btn-outline-danger px-3 py-1" style="border-radius: 8px; font-weight: 500; font-size: 12.5px;">
-                    Xem tất cả <i class="align-middle ms-1" data-feather="arrow-right" style="width: 13px; height: 13px;"></i>
+                <a href="../qldonhang/index.php" class="btn-card-more">
+                    <span>Xem tất cả</span>
+                    <i class="align-middle ms-1" data-feather="arrow-right" style="width: 12px; height: 12px;"></i>
                 </a>
             </div>
             <div class="card-body p-0">
@@ -349,13 +414,13 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
                 <?php else: ?>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
+                            <thead style="background-color: #f8fafc; border-bottom: 1px solid #e2e8f0;">
                                 <tr>
-                                    <th class="ps-4 py-3" style="width: 120px;">Mã ĐH</th>
-                                    <th class="py-3">Khách hàng</th>
-                                    <th class="py-3" style="width: 135px;">Ngày đặt</th>
-                                    <th class="py-3 text-center" style="width: 140px;">Trạng thái</th>
-                                    <th class="pe-4 py-3 text-end" style="width: 130px;">Tổng tiền</th>
+                                    <th class="ps-4 py-3 text-muted fw-semibold" style="width: 120px; font-size: 11.5px; text-transform: uppercase;">Mã ĐH</th>
+                                    <th class="py-3 text-muted fw-semibold" style="font-size: 11.5px; text-transform: uppercase;">Khách hàng</th>
+                                    <th class="py-3 text-muted fw-semibold" style="width: 135px; font-size: 11.5px; text-transform: uppercase;">Ngày đặt</th>
+                                    <th class="py-3 text-center text-muted fw-semibold" style="width: 140px; font-size: 11.5px; text-transform: uppercase;">Trạng thái</th>
+                                    <th class="pe-4 py-3 text-end text-muted fw-semibold" style="width: 130px; font-size: 11.5px; text-transform: uppercase;">Tổng tiền</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -363,7 +428,7 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
                                     <tr>
                                         <!-- Mã ĐH: huy hiệu bấm vào xem chi tiết -->
                                         <td class="ps-4">
-                                            <a href="../qldonhang/index.php?action=chitiet&id=<?= $dh["id"] ?>" class="badge text-decoration-none fw-bold" style="background-color: #f1f3f5; color: #1971c2; border: 1px solid #dee2e6; font-size: 12px; padding: 6px 9px; border-radius: 6px;" title="Xem chi tiết đơn hàng">
+                                            <a href="../qldonhang/index.php?action=chitiet&id=<?= $dh["id"] ?>" class="badge text-decoration-none fw-bold" style="background-color: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; font-size: 12px; padding: 5px 8px; border-radius: 6px;" title="Xem chi tiết đơn hàng">
                                                 #<?= sprintf("DH%06d", $dh["id"]) ?>
                                             </a>
                                         </td>
@@ -383,20 +448,20 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
                                             <?= !empty($dh["ngay"]) ? date("d/m/Y H:i", strtotime($dh["ngay"])) : "—" ?>
                                         </td>
 
-                                        <!-- Trạng thái đơn -->
+                                        <!-- Trạng thái đơn (Pastel pill dịu mắt) -->
                                         <td class="text-center">
                                             <?php 
                                             $tt = (int)($dh["trangthai"] ?? 0);
                                             if ($tt === 0) {
-                                                echo '<span class="badge bg-warning text-dark px-2 py-1 text-nowrap" style="font-size: 11px;"><i class="align-middle me-1" data-feather="clock" style="width: 11px; height: 11px;"></i>Chờ xác nhận</span>';
+                                                echo '<span class="badge rounded-pill px-2.5 py-1 text-nowrap" style="background-color: #fef3c7; color: #b45309; font-size: 11px; font-weight: 600;"><i class="align-middle me-1" data-feather="clock" style="width: 11px; height: 11px;"></i>Chờ xác nhận</span>';
                                             } elseif ($tt === 1) {
-                                                echo '<span class="badge bg-primary px-2 py-1 text-nowrap" style="font-size: 11px;"><i class="align-middle me-1" data-feather="check" style="width: 11px; height: 11px;"></i>Đã duyệt</span>';
+                                                echo '<span class="badge rounded-pill px-2.5 py-1 text-nowrap" style="background-color: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 600;"><i class="align-middle me-1" data-feather="check" style="width: 11px; height: 11px;"></i>Đã duyệt</span>';
                                             } elseif ($tt === 2) {
-                                                echo '<span class="badge bg-info text-white px-2 py-1 text-nowrap" style="font-size: 11px;"><i class="align-middle me-1" data-feather="truck" style="width: 11px; height: 11px;"></i>Đang giao</span>';
+                                                echo '<span class="badge rounded-pill px-2.5 py-1 text-nowrap" style="background-color: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 600;"><i class="align-middle me-1" data-feather="truck" style="width: 11px; height: 11px;"></i>Đang giao</span>';
                                             } elseif ($tt === 3) {
-                                                echo '<span class="badge bg-success px-2 py-1 text-nowrap" style="font-size: 11px;"><i class="align-middle me-1" data-feather="check-circle" style="width: 11px; height: 11px;"></i>Hoàn thành</span>';
+                                                echo '<span class="badge rounded-pill px-2.5 py-1 text-nowrap" style="background-color: #dcfce7; color: #15803d; font-size: 11px; font-weight: 600;"><i class="align-middle me-1" data-feather="check-circle" style="width: 11px; height: 11px;"></i>Hoàn thành</span>';
                                             } else {
-                                                echo '<span class="badge bg-secondary px-2 py-1 text-nowrap" style="font-size: 11px;"><i class="align-middle me-1" data-feather="x-circle" style="width: 11px; height: 11px;"></i>Đã hủy</span>';
+                                                echo '<span class="badge rounded-pill px-2.5 py-1 text-nowrap" style="background-color: #fee2e2; color: #b91c1c; font-size: 11px; font-weight: 600;"><i class="align-middle me-1" data-feather="x-circle" style="width: 11px; height: 11px;"></i>Đã hủy</span>';
                                             }
                                             ?>
                                         </td>
@@ -404,7 +469,7 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
                                         <!-- Tổng tiền -->
                                         <td class="pe-4 text-end">
                                             <span class="fw-bold" style="color: #d70018; font-size: 13.5px;">
-                                                <?= number_format($dh["tongtien"] ?? 0, 0, ',', '.') ?>đ
+                                                 <?= number_format($dh["tongtien"] ?? 0, 0, ',', '.') ?>đ
                                             </span>
                                         </td>
                                     </tr>
@@ -419,18 +484,17 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
 
     <!-- Cột phải (col-lg-5) — CẢNH BÁO TỒN KHO (THẤP NHẤT) -->
     <div class="col-12 col-lg-5 mb-4">
-        <div class="card h-100 shadow-sm border-0" style="border-radius: 14px; background-color: #ffffff;">
-            <div class="card-header bg-white py-3 px-4 border-0 d-flex justify-content-between align-items-center" style="border-top-left-radius: 14px; border-top-right-radius: 14px;">
+        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden" style="background-color: #ffffff;">
+            <div class="card-header bg-white py-3 px-4 border-bottom d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px; background-color: #fff3bf; color: #f59f00;">
-                        <i data-feather="alert-triangle" style="width: 16px; height: 16px;"></i>
-                    </div>
-                    <h5 class="card-title mb-0 fw-bold text-dark">
+                    <div style="width: 4px; height: 18px; background-color: #d70018; border-radius: 3px; margin-right: 10px; flex-shrink: 0;"></div>
+                    <h5 class="card-title mb-0 fw-bold text-dark" style="font-size: 1rem;">
                         Cảnh báo tồn kho (Thấp nhất)
                     </h5>
                 </div>
-                <a href="../qlnhaphang/index.php" class="btn btn-sm btn-outline-warning text-dark px-3 py-1" style="border-radius: 8px; font-weight: 500; font-size: 12.5px;">
-                    Nhập thêm hàng <i class="align-middle ms-1" data-feather="plus" style="width: 13px; height: 13px;"></i>
+                <a href="../qlnhaphang/index.php" class="btn-card-more">
+                    <span>Nhập thêm hàng</span>
+                    <i class="align-middle ms-1" data-feather="plus" style="width: 12px; height: 12px;"></i>
                 </a>
             </div>
             <div class="card-body p-0">
@@ -442,11 +506,11 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
                 <?php else: ?>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
+                            <thead style="background-color: #f8fafc; border-bottom: 1px solid #e2e8f0;">
                                 <tr>
-                                    <th class="ps-3 py-3" style="width: 60px;">Ảnh</th>
-                                    <th class="py-3">Tên điện thoại</th>
-                                    <th class="pe-4 py-3 text-end" style="width: 120px;">Tồn kho</th>
+                                    <th class="ps-3 py-3 text-muted fw-semibold" style="width: 60px; font-size: 11.5px; text-transform: uppercase;">Ảnh</th>
+                                    <th class="py-3 text-muted fw-semibold" style="font-size: 11.5px; text-transform: uppercase;">Tên điện thoại</th>
+                                    <th class="pe-4 py-3 text-end text-muted fw-semibold" style="width: 120px; font-size: 11.5px; text-transform: uppercase;">Tồn kho</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -472,18 +536,18 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
                                             </div>
                                         </td>
 
-                                        <!-- Huy hiệu phân cấp mức tồn kho -->
+                                        <!-- Huy hiệu phân cấp mức tồn kho dịu mắt pastel -->
                                         <td class="pe-4 text-end">
                                             <?php if ($sp["soluongton"] < 5): ?>
-                                                <span class="badge bg-danger px-2 py-1 fw-bold shadow-sm" style="font-size: 11.5px;" title="Cần nhập hàng khẩn cấp">
+                                                <span class="badge rounded-pill px-2.5 py-1 fw-bold" style="background-color: #fee2e2; color: #b91c1c; font-size: 11.5px;" title="Cần nhập hàng khẩn cấp">
                                                     <i class="align-middle me-1" data-feather="alert-circle" style="width: 11px; height: 11px;"></i>Còn <?= $sp["soluongton"] ?>
                                                 </span>
                                             <?php elseif ($sp["soluongton"] <= 12): ?>
-                                                <span class="badge bg-warning text-dark px-2 py-1 fw-bold" style="font-size: 11.5px;" title="Sắp hết hàng">
+                                                <span class="badge rounded-pill px-2.5 py-1 fw-bold" style="background-color: #fef3c7; color: #b45309; font-size: 11.5px;" title="Sắp hết hàng">
                                                     Còn <?= $sp["soluongton"] ?>
                                                 </span>
                                             <?php else: ?>
-                                                <span class="badge bg-success px-2 py-1 fw-bold" style="font-size: 11.5px;">
+                                                <span class="badge rounded-pill px-2.5 py-1 fw-bold" style="background-color: #dcfce7; color: #15803d; font-size: 11.5px;">
                                                     Còn <?= $sp["soluongton"] ?>
                                                 </span>
                                             <?php endif; ?>
