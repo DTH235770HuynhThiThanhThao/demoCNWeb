@@ -57,6 +57,19 @@ try {
 
     // Tổng số thông báo cần xử lý
     $tong_thongbao = $so_don_moi + $so_bh_moi + $so_sap_het;
+
+    // Tạo chữ ký nhận diện tập hợp thông báo hiện tại
+    $alert_keys = array();
+    foreach ($ds_don_moi as $dh) {
+        $alert_keys[] = "dh_" . $dh['id'];
+    }
+    foreach ($ds_bh_moi as $bh) {
+        $alert_keys[] = "bh_" . $bh['id'];
+    }
+    foreach ($ds_sap_het as $sp) {
+        $alert_keys[] = "sp_" . $sp['id'];
+    }
+    $current_alert_signature = "c:" . $so_don_moi . "_" . $so_bh_moi . "_" . $so_sap_het . "|ids:" . implode(",", $alert_keys);
 } catch (Exception $e) {
     // Bọc trong try...catch an toàn để không bao giờ gây lỗi giao diện
     $so_don_moi = 0;
@@ -66,6 +79,7 @@ try {
     $ds_bh_moi = array();
     $ds_sap_het = array();
     $tong_thongbao = 0;
+    $current_alert_signature = "";
 }
 ?>
 <!DOCTYPE html>
@@ -82,21 +96,152 @@ try {
 
 	<link href="../inc/css/app.css" rel="stylesheet">
 	<script src="../inc/js/app.js"></script>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 	<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
+	<!-- Phong cách Tech Flagship hiện đại Thảo Mobile -->
+	<style>
+		/* Nền Sidebar tối sang trọng */
+		.sidebar, 
+		.sidebar-content, 
+		.sidebar-nav {
+			background: #181c24 !important;
+			background: linear-gradient(180deg, #181c24 0%, #11141a 100%) !important;
+		}
+
+		/* Khối thương hiệu Brand */
+		.sidebar-brand {
+			padding: 1.15rem 1.25rem !important;
+			background: transparent !important;
+		}
+		.sidebar-brand:hover {
+			opacity: 0.95;
+		}
+
+		/* Tiêu đề nhóm xám bạc tinh tế */
+		.sidebar-header {
+			color: #64748b !important;
+			font-size: 0.7rem !important;
+			font-weight: 700 !important;
+			letter-spacing: 0.08em !important;
+			padding: 1.25rem 1.4rem 0.45rem !important;
+			text-transform: uppercase !important;
+			background: transparent !important;
+		}
+
+		/* Tinh chỉnh mục Sidebar */
+		.sidebar-item {
+			margin-bottom: 2px !important;
+		}
+		.sidebar-link {
+			color: #cbd5e1 !important;
+			border-radius: 10px !important;
+			margin: 2px 12px !important;
+			padding: 0.62rem 0.95rem !important;
+			white-space: nowrap !important;
+			font-size: 0.88rem !important;
+			font-weight: 500 !important;
+			display: flex !important;
+			align-items: center !important;
+			transition: all 0.2s ease !important;
+			background: transparent !important;
+			border-left: none !important;
+		}
+		.sidebar-link i, 
+		.sidebar-link svg {
+			color: #94a3b8 !important;
+			margin-right: 0.75rem !important;
+			width: 18px !important;
+			height: 18px !important;
+			flex-shrink: 0 !important;
+			transition: color 0.2s ease, transform 0.2s ease !important;
+		}
+
+		/* Hiệu ứng Hover mục thường */
+		.sidebar-link:hover {
+			background: rgba(255, 255, 255, 0.07) !important;
+			color: #ffffff !important;
+		}
+		.sidebar-link:hover i, 
+		.sidebar-link:hover svg {
+			color: #ff4d6d !important;
+			transform: scale(1.08);
+		}
+
+		/* Hiệu ứng Active tông đỏ thương hiệu #d70018 */
+		.sidebar-item.active > .sidebar-link {
+			background: linear-gradient(90deg, #d70018 0%, #b91c1c 100%) !important;
+			color: #ffffff !important;
+			font-weight: 600 !important;
+			border-radius: 10px !important;
+			margin: 2px 12px !important;
+			box-shadow: 0 4px 14px rgba(215, 0, 24, 0.35) !important;
+			border-left: none !important;
+		}
+		.sidebar-item.active > .sidebar-link i, 
+		.sidebar-item.active > .sidebar-link svg {
+			color: #ffffff !important;
+			transform: none !important;
+		}
+		.sidebar-item.active > .sidebar-link:hover {
+			background: linear-gradient(90deg, #d70018 0%, #b91c1c 100%) !important;
+			color: #ffffff !important;
+		}
+
+		/* Xóa vạch xanh mặc định của template AdminKit nếu có */
+		.sidebar-item.active:before,
+		.sidebar-item.active:after,
+		.sidebar-link:before,
+		.sidebar-link:after {
+			display: none !important;
+			content: none !important;
+		}
+
+		/* Đánh dấu thông báo đã đọc / chưa đọc */
+		.alert-item {
+			transition: background-color 0.2s ease, opacity 0.2s ease;
+		}
+		.alert-item:hover {
+			background-color: #f8f9fa !important;
+		}
+		.alert-item.alert-item-read {
+			opacity: 0.65;
+			background-color: #fbfbfb;
+		}
+		.alert-item.alert-item-read .alert-title {
+			color: #64748b !important;
+			font-weight: 500 !important;
+		}
+		.alert-item.alert-item-read .unread-dot {
+			display: none !important;
+		}
+		.unread-dot {
+			width: 7px;
+			height: 7px;
+			background-color: #d70018;
+			border-radius: 50%;
+			display: inline-block;
+			flex-shrink: 0;
+		}
+	</style>
 </head>
 
 <body>
 	<div class="wrapper">
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
-				<a class="sidebar-brand d-flex align-items-center" href="../../public/index.php">
-					<img src="../../images/logo/logo2.jpg" alt="Thảo Mobile" class="rounded-2 me-2 shadow-sm" style="width: 32px; height: 32px; object-fit: cover; border: 1px solid rgba(255,255,255,0.25);" onerror="this.src='../../images/logo/logo.jpg'">
-					<span class="align-middle">Thảo Mobile</span>
+				<a class="sidebar-brand d-flex align-items-center py-3 px-3 text-decoration-none" href="../../public/index.php" style="border-bottom: 1px solid rgba(255,255,255,0.08);">
+					<div class="brand-logo-container me-3 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); overflow: hidden; flex-shrink: 0;">
+						<img src="../../images/logo/logo2.jpg" alt="Thảo Mobile" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='../../images/logo/logo.jpg'">
+					</div>
+					<div class="brand-info text-start lh-sm">
+						<div class="fw-bold text-white text-uppercase" style="letter-spacing: 0.6px; font-size: 0.95rem;">THẢO MOBILE</div>
+						<div style="color: #94a3b8; font-size: 0.72rem; font-weight: 500;">Hệ thống quản trị</div>
+					</div>
 				</a>
 
 				<ul class="sidebar-nav">
-					<li class="sidebar-header text-info">
+					<li class="sidebar-header">
 						HỆ THỐNG
 					</li>
 
@@ -114,7 +259,7 @@ try {
 					</li>
 				<?php } ?>
 
-					<li class="sidebar-header text-info">
+					<li class="sidebar-header">
 						DANH MỤC
 					</li>
 
@@ -132,11 +277,11 @@ try {
 
 					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qlnhaphang") != false) echo "active"; ?>">
 						<a class="sidebar-link" href="../qlnhaphang/index.php">
-						<i class="align-middle" data-feather="download-cloud"></i> <span class="align-middle">Quản lý tồn kho & nhập hàng</span>
+						<i class="align-middle" data-feather="download-cloud"></i> <span class="align-middle">Quản lý kho & nhập hàng</span>
 						</a>
 					</li>
 
-					<li class="sidebar-header text-info">
+					<li class="sidebar-header">
 						KINH DOANH
 					</li>
 					
@@ -172,7 +317,7 @@ try {
 
 					
 					
-					<li class="sidebar-header text-info">
+					<li class="sidebar-header">
 						CẤU HÌNH WEBSITE
 					</li>
 
@@ -204,7 +349,20 @@ try {
 								<div class="position-relative">
 									<i class="align-middle" data-feather="bell"></i>
 									<?php if ($tong_thongbao > 0): ?>
-										<span class="indicator" style="background-color: #dc3545; color: #fff; font-weight: 700;"><?= $tong_thongbao ?></span>
+										<span class="indicator" id="alertIndicatorBadge" style="background-color: #dc3545; color: #fff; font-weight: 700;"><?= $tong_thongbao ?></span>
+										<script>
+											// Ẩn ngay lập tức nếu Admin đã xem qua tập hợp thông báo này để chống chớp nháy số đỏ
+											(function() {
+												try {
+													var currentSig = <?= json_encode($current_alert_signature) ?>;
+													var seenSig = localStorage.getItem('thao_mobile_admin_seen_alerts');
+													if (seenSig && seenSig === currentSig) {
+														var badge = document.getElementById('alertIndicatorBadge');
+														if (badge) badge.style.display = 'none';
+													}
+												} catch(e) {}
+											})();
+										</script>
 									<?php endif; ?>
 								</div>
 							</a>
@@ -225,7 +383,7 @@ try {
 									<?php else: ?>
 										<!-- 1. Đơn hàng mới chờ xác nhận -->
 										<?php foreach ($ds_don_moi as $dh): ?>
-											<a href="../qldonhang/index.php?action=chitiet&id=<?= $dh['id'] ?>" class="list-group-item list-group-item-action py-2">
+											<a href="../qldonhang/index.php?action=chitiet&id=<?= $dh['id'] ?>" class="list-group-item list-group-item-action py-2 alert-item" data-alert-id="dh_<?= $dh['id'] ?>">
 												<div class="row g-0 align-items-center">
 													<div class="col-2 text-center">
 														<div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background-color: rgba(215, 0, 24, 0.1);">
@@ -233,8 +391,11 @@ try {
 														</div>
 													</div>
 													<div class="col-10 ps-2">
-														<div class="text-dark fw-bold small">Đơn hàng mới <?= sprintf("#DH%06d", $dh['id']) ?></div>
-														<div class="text-muted small mt-1" style="font-size: 12px;">Khách: <strong><?= htmlspecialchars($dh['hoten'] ?? 'Khách vãng lai') ?></strong> • <span class="text-danger fw-semibold"><?= number_format($dh['tongtien'], 0, ',', '.') ?>đ</span></div>
+														<div class="text-dark fw-bold small alert-title d-flex align-items-center justify-content-between">
+															<span>Đơn hàng mới <?= sprintf("#DH%06d", $dh['id']) ?></span>
+															<span class="unread-dot"></span>
+														</div>
+														<div class="text-muted small mt-1 alert-desc" style="font-size: 12px;">Khách: <strong><?= htmlspecialchars($dh['hoten'] ?? 'Khách vãng lai') ?></strong> • <span class="text-danger fw-semibold"><?= number_format($dh['tongtien'], 0, ',', '.') ?>đ</span></div>
 														<div class="text-muted small mt-1" style="font-size: 11px;"><i class="align-middle me-1" data-feather="clock" style="width: 11px; height: 11px;"></i><?= date("d/m/Y H:i", strtotime($dh['ngaydat'])) ?></div>
 													</div>
 												</div>
@@ -243,7 +404,7 @@ try {
 
 										<!-- 2. Yêu cầu bảo hành mới tiếp nhận -->
 										<?php foreach ($ds_bh_moi as $bh): ?>
-											<a href="../qlbaohanh/index.php" class="list-group-item list-group-item-action py-2">
+											<a href="../qlbaohanh/index.php" class="list-group-item list-group-item-action py-2 alert-item" data-alert-id="bh_<?= $bh['id'] ?>">
 												<div class="row g-0 align-items-center">
 													<div class="col-2 text-center">
 														<div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background-color: rgba(245, 158, 11, 0.15);">
@@ -251,8 +412,11 @@ try {
 														</div>
 													</div>
 													<div class="col-10 ps-2">
-														<div class="text-dark fw-bold small">Yêu cầu bảo hành <?= sprintf("#BH%05d", $bh['id']) ?></div>
-														<div class="text-muted small mt-1" style="font-size: 12px;"><strong><?= htmlspecialchars($bh['tenkhachhang']) ?></strong> • Máy: <?= htmlspecialchars($bh['tenhang'] ?? 'Điện thoại') ?></div>
+														<div class="text-dark fw-bold small alert-title d-flex align-items-center justify-content-between">
+															<span>Yêu cầu bảo hành <?= sprintf("#BH%05d", $bh['id']) ?></span>
+															<span class="unread-dot"></span>
+														</div>
+														<div class="text-muted small mt-1 alert-desc" style="font-size: 12px;"><strong><?= htmlspecialchars($bh['tenkhachhang']) ?></strong> • Máy: <?= htmlspecialchars($bh['tenhang'] ?? 'Điện thoại') ?></div>
 														<div class="text-muted small mt-1" style="font-size: 11px;"><i class="align-middle me-1" data-feather="clock" style="width: 11px; height: 11px;"></i><?= date("d/m/Y H:i", strtotime($bh['ngaytiepnhan'])) ?></div>
 													</div>
 												</div>
@@ -261,7 +425,7 @@ try {
 
 										<!-- 3. Cảnh báo tồn kho thấp -->
 										<?php foreach ($ds_sap_het as $sp): ?>
-											<a href="../qlnhaphang/index.php" class="list-group-item list-group-item-action py-2">
+											<a href="../qlnhaphang/index.php" class="list-group-item list-group-item-action py-2 alert-item" data-alert-id="sp_<?= $sp['id'] ?>">
 												<div class="row g-0 align-items-center">
 													<div class="col-2 text-center">
 														<div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background-color: rgba(252, 185, 44, 0.18);">
@@ -269,8 +433,11 @@ try {
 														</div>
 													</div>
 													<div class="col-10 ps-2">
-														<div class="text-dark fw-bold small">Sắp hết hàng: <?= htmlspecialchars($sp['tenhang']) ?></div>
-														<div class="text-danger small mt-1 fw-semibold" style="font-size: 12px;">Chỉ còn <?= (int)$sp['soluongton'] ?> chiếc trong kho</div>
+														<div class="text-dark fw-bold small alert-title d-flex align-items-center justify-content-between">
+															<span>Sắp hết hàng: <?= htmlspecialchars($sp['tenhang']) ?></span>
+															<span class="unread-dot"></span>
+														</div>
+														<div class="text-danger small mt-1 fw-semibold alert-desc" style="font-size: 12px;">Chỉ còn <?= (int)$sp['soluongton'] ?> chiếc trong kho</div>
 													</div>
 												</div>
 											</a>
@@ -313,6 +480,93 @@ try {
 					</ul>
 				</div>
 			</nav>
+
+			<!-- Controller quản lý trạng thái thông báo và huy hiệu số đỏ Admin Thảo Mobile -->
+			<script>
+			(function() {
+				var currentSig = <?= json_encode($current_alert_signature ?? '') ?>;
+
+				function getReadAlertItems() {
+					try {
+						var raw = localStorage.getItem('thao_mobile_admin_read_alert_items');
+						return raw ? JSON.parse(raw) : [];
+					} catch(e) {
+						return [];
+					}
+				}
+
+				function markAlertItemAsRead(id) {
+					try {
+						var items = getReadAlertItems();
+						if (items.indexOf(id) === -1) {
+							items.push(id);
+							if (items.length > 100) items.shift(); // giới hạn tối đa 100 ID
+							localStorage.setItem('thao_mobile_admin_read_alert_items', JSON.stringify(items));
+						}
+					} catch(e) {}
+				}
+
+				function markAllAlertsAsSeen() {
+					try {
+						if (currentSig) {
+							localStorage.setItem('thao_mobile_admin_seen_alerts', currentSig);
+						}
+						var badge = document.getElementById('alertIndicatorBadge');
+						if (badge) {
+							badge.style.display = 'none';
+						}
+					} catch(e) {}
+				}
+
+				// Đảm bảo ẩn huy hiệu ngay lập tức nếu Admin đã xem qua tập hợp thông báo này
+				try {
+					var seenSig = localStorage.getItem('thao_mobile_admin_seen_alerts');
+					if (seenSig && seenSig === currentSig) {
+						var badge = document.getElementById('alertIndicatorBadge');
+						if (badge) badge.style.display = 'none';
+					}
+				} catch(e) {}
+
+				document.addEventListener('DOMContentLoaded', function() {
+					var alertsBtn = document.getElementById('alertsDropdown');
+					var badge = document.getElementById('alertIndicatorBadge');
+
+					// Kiểm tra lại trạng thái sau khi nạp DOM
+					try {
+						var seenSig = localStorage.getItem('thao_mobile_admin_seen_alerts');
+						if (seenSig && seenSig === currentSig) {
+							if (badge) badge.style.display = 'none';
+						} else if (currentSig && badge) {
+							badge.style.display = '';
+						}
+					} catch(e) {}
+
+					// Lắng nghe click hoặc sự kiện mở dropdown của Bootstrap
+					if (alertsBtn) {
+						alertsBtn.addEventListener('click', markAllAlertsAsSeen);
+						alertsBtn.addEventListener('show.bs.dropdown', markAllAlertsAsSeen);
+					}
+
+					// Áp dụng kiểu dáng "đã đọc" cho các mục thông báo
+					var readItems = getReadAlertItems();
+					var alertLinks = document.querySelectorAll('.alert-item');
+					alertLinks.forEach(function(item) {
+						var id = item.getAttribute('data-alert-id');
+						if (id && readItems.indexOf(id) !== -1) {
+							item.classList.add('alert-item-read');
+						}
+
+						item.addEventListener('click', function() {
+							if (id) {
+								markAlertItemAsRead(id);
+								item.classList.add('alert-item-read');
+							}
+							markAllAlertsAsSeen();
+						});
+					});
+				});
+			})();
+			</script>
 
 			<main class="content">
 				<div class="container-fluid p-0">
