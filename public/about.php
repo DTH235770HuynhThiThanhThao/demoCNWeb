@@ -225,6 +225,186 @@ include("inc/top.php");
     </div>
 </div>
 
+<!-- ===== HƯỚNG DẪN MUA HÀNG 4 BƯỚC ===== -->
+<div id="huong-dan-mua-hang" style="scroll-margin-top: 90px;" class="mb-5">
+    <div style="
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 3px 14px rgba(0,0,0,0.05);
+        overflow: hidden;
+    ">
+        <!-- Tiêu đề với thanh nhấn đỏ -->
+        <div style="padding: 1.5rem 1.75rem 1rem; border-bottom: 1.5px solid #f1f5f9; display:flex; align-items:flex-start; gap:12px;">
+            <div style="width:5px; min-height:48px; background:#d70018; border-radius:4px; flex-shrink:0; margin-top:2px;"></div>
+            <div>
+                <h4 style="font-weight:800; font-size:1.1rem; color:#1e293b; text-transform:uppercase; letter-spacing:0.4px; margin:0 0 4px 0;">
+                    <i class="bi bi-bag-check-fill me-2" style="color:#d70018;"></i>HƯỚNG DẪN MUA HÀNG TRỰC TUYẾN TẠI THẢO MOBILE
+                </h4>
+                <p style="font-size:0.84rem; color:#64748b; margin:0;">Chỉ 4 bước đơn giản – Nhận máy ngay tại nhà, kiểm tra trước khi thanh toán!</p>
+            </div>
+        </div>
+
+        <!-- 4 thẻ bước ngang -->
+        <div style="padding: 1.5rem 1.75rem;">
+            <div class="row g-3">
+
+                <!-- Bước 1 -->
+                <div class="col-md-6 col-lg-3">
+                    <div style="
+                        background: #fff;
+                        border: 1.5px solid #e5e7eb;
+                        border-radius: 14px;
+                        padding: 1.4rem 1.1rem 1.2rem;
+                        height: 100%;
+                        text-align: center;
+                        transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+                        position: relative;
+                    " class="buoc-card">
+                        <!-- Vòng tròn số thứ tự -->
+                        <div style="
+                            width: 48px; height: 48px;
+                            background: #d70018;
+                            border-radius: 50%;
+                            display: flex; align-items: center; justify-content: center;
+                            margin: 0 auto 14px;
+                            font-size: 1.35rem; font-weight: 800; color: #fff;
+                            box-shadow: 0 4px 14px rgba(215,0,24,0.30);
+                        ">1</div>
+                        <div style="font-size:1.6rem; color:#d70018; margin-bottom:8px;">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <h6 style="font-weight:700; color:#1e293b; margin-bottom:8px;">Chọn máy &amp; Phiên bản</h6>
+                        <p style="font-size:0.83rem; color:#64748b; margin:0; line-height:1.6;">
+                            Tìm kiếm điện thoại theo hãng <strong>Apple, Samsung, OPPO, Xiaomi</strong>, chọn đúng phiên bản dung lượng và màu sắc yêu thích.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bước 2 -->
+                <div class="col-md-6 col-lg-3">
+                    <div style="
+                        background: #fff;
+                        border: 1.5px solid #e5e7eb;
+                        border-radius: 14px;
+                        padding: 1.4rem 1.1rem 1.2rem;
+                        height: 100%;
+                        text-align: center;
+                        transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+                    " class="buoc-card">
+                        <div style="
+                            width: 48px; height: 48px;
+                            background: #d70018;
+                            border-radius: 50%;
+                            display: flex; align-items: center; justify-content: center;
+                            margin: 0 auto 14px;
+                            font-size: 1.35rem; font-weight: 800; color: #fff;
+                            box-shadow: 0 4px 14px rgba(215,0,24,0.30);
+                        ">2</div>
+                        <div style="font-size:1.6rem; color:#d70018; margin-bottom:8px;">
+                            <i class="bi bi-cart-plus-fill"></i>
+                        </div>
+                        <h6 style="font-weight:700; color:#1e293b; margin-bottom:8px;">Đặt mua nhanh chóng</h6>
+                        <p style="font-size:0.83rem; color:#64748b; margin:0; line-height:1.6;">
+                            Bấm <strong>Thêm vào giỏ</strong> nếu chọn nhiều sản phẩm, hoặc bấm <strong>Mua ngay</strong> để chuyển thẳng sang bước thanh toán.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bước 3 -->
+                <div class="col-md-6 col-lg-3">
+                    <div style="
+                        background: #fff;
+                        border: 1.5px solid #e5e7eb;
+                        border-radius: 14px;
+                        padding: 1.4rem 1.1rem 1.2rem;
+                        height: 100%;
+                        text-align: center;
+                        transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+                    " class="buoc-card">
+                        <div style="
+                            width: 48px; height: 48px;
+                            background: #d70018;
+                            border-radius: 50%;
+                            display: flex; align-items: center; justify-content: center;
+                            margin: 0 auto 14px;
+                            font-size: 1.35rem; font-weight: 800; color: #fff;
+                            box-shadow: 0 4px 14px rgba(215,0,24,0.30);
+                        ">3</div>
+                        <div style="font-size:1.6rem; color:#d70018; margin-bottom:8px;">
+                            <i class="bi bi-credit-card-2-front-fill"></i>
+                        </div>
+                        <h6 style="font-weight:700; color:#1e293b; margin-bottom:8px;">Thanh toán linh hoạt</h6>
+                        <p style="font-size:0.83rem; color:#64748b; margin:0; line-height:1.6;">
+                            Nhập địa chỉ nhận hàng, chọn <strong>Thanh toán khi nhận hàng (COD)</strong> hoặc <strong>Quét mã VietQR</strong> tự động điền đúng số tiền.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bước 4 -->
+                <div class="col-md-6 col-lg-3">
+                    <div style="
+                        background: #fff;
+                        border: 1.5px solid #e5e7eb;
+                        border-radius: 14px;
+                        padding: 1.4rem 1.1rem 1.2rem;
+                        height: 100%;
+                        text-align: center;
+                        transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+                    " class="buoc-card">
+                        <div style="
+                            width: 48px; height: 48px;
+                            background: #d70018;
+                            border-radius: 50%;
+                            display: flex; align-items: center; justify-content: center;
+                            margin: 0 auto 14px;
+                            font-size: 1.35rem; font-weight: 800; color: #fff;
+                            box-shadow: 0 4px 14px rgba(215,0,24,0.30);
+                        ">4</div>
+                        <div style="font-size:1.6rem; color:#d70018; margin-bottom:8px;">
+                            <i class="bi bi-box-seam-fill"></i>
+                        </div>
+                        <h6 style="font-weight:700; color:#1e293b; margin-bottom:8px;">Nhận máy &amp; Bảo hành</h6>
+                        <p style="font-size:0.83rem; color:#64748b; margin:0; line-height:1.6;">
+                            Nhận hàng hỏa tốc, kiểm tra máy <strong>nguyên seal</strong> trước khi thanh toán và kích hoạt bảo hành điện tử <strong>12 tháng</strong>.
+                        </p>
+                    </div>
+                </div>
+
+            </div><!-- /.row -->
+
+            <!-- Mũi tên kết nối (responsive, ẩn trên mobile) -->
+            <div class="d-none d-lg-flex justify-content-center align-items-center gap-1 mt-3">
+                <small style="color:#d70018; font-weight:700; font-size:0.82rem; letter-spacing:0.5px;">
+                    <i class="bi bi-arrow-right-circle-fill me-1"></i>Chọn máy
+                    &nbsp;<i class="bi bi-arrow-right" style="color:#94a3b8;"></i>&nbsp;
+                    <i class="bi bi-arrow-right-circle-fill me-1"></i>Đặt mua
+                    &nbsp;<i class="bi bi-arrow-right" style="color:#94a3b8;"></i>&nbsp;
+                    <i class="bi bi-arrow-right-circle-fill me-1"></i>Thanh toán
+                    &nbsp;<i class="bi bi-arrow-right" style="color:#94a3b8;"></i>&nbsp;
+                    <i class="bi bi-arrow-right-circle-fill me-1"></i>Nhận máy
+                </small>
+            </div>
+
+            <!-- Nút CTA -->
+            <div class="text-center mt-4">
+                <a href="index.php" class="btn fw-bold px-4 py-2 rounded-pill" style="background:#d70018; color:#fff; font-size:0.95rem; box-shadow:0 4px 14px rgba(215,0,24,0.28); text-decoration:none; transition:background 0.2s;"
+                   onmouseover="this.style.background='#b80014'" onmouseout="this.style.background='#d70018'">
+                    <i class="bi bi-bag-heart-fill me-2"></i>Mua sắm ngay tại Thảo Mobile
+                </a>
+            </div>
+        </div><!-- /.padding -->
+    </div><!-- /.card -->
+</div>
+
+<style>
+.buoc-card:hover {
+    border-color: #fecdd3 !important;
+    box-shadow: 0 6px 22px rgba(215,0,24,0.10);
+    transform: translateY(-4px);
+}
+</style>
+
 <?php
 include("inc/bottom.php");
 ?>

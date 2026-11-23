@@ -67,21 +67,17 @@
                         <a href="index.php?action=baohanh" class="footer-link text-white fw-bold d-inline-flex align-items-center py-1">
                             <i class="bi bi-shield-check text-warning me-2 fs-6"></i>Tra cứu & Gửi yêu cầu bảo hành
                         </a>
-                        <a href="#" class="footer-link">
+                        <a href="index.php?action=gioithieu#huong-dan-mua-hang" class="footer-link">
                             <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Hướng dẫn mua hàng trực tuyến
                         </a>
                         <a href="index.php?action=gioithieu" class="footer-link">
                             <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Giới thiệu & Liên hệ cửa hàng
                         </a>
-                        <a href="../admin/index.php" class="footer-link text-warning">
-                            <i class="bi bi-shield-lock me-1"></i>Quản trị hệ thống (Dành cho Admin / NV)
-                        </a>
                         
                         <div class="mt-3 pt-2">
                             <div class="d-flex gap-2">
-                                <span class="badge bg-secondary p-2"><i class="bi bi-credit-card-2-front me-1"></i> Visa / Master</span>
-                                <span class="badge bg-secondary p-2"><i class="bi bi-qr-code-scan me-1"></i> VNPAY-QR</span>
-                                <span class="badge bg-secondary p-2"><i class="bi bi-cash me-1"></i> COD</span>
+                                <span class="badge bg-secondary p-2"><i class="bi bi-qr-code me-1"></i> Chuyển khoản QR</span>
+                                <span class="badge bg-secondary p-2"><i class="bi bi-cash me-1"></i> Thanh toán COD</span>
                             </div>
                         </div>
                     </div>
