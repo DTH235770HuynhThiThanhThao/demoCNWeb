@@ -1,4 +1,11 @@
-<?php include("inc/top.php"); ?>
+<?php 
+include("inc/top.php"); 
+
+if(!isset($dg_model)){
+    require_once("../model/danhgia.php");
+    $dg_model = new DANHGIA();
+}
+?>
 
 <div class="row my-4">
   <div class="col-12 col-md-11 col-lg-10 m-auto">
@@ -31,7 +38,7 @@
           <div class="col-12 col-md-6">
             <p class="mb-2"><strong>Mã đơn hàng:</strong> <span class="text-primary fw-bold"><?= sprintf("DH%06d", $donhang["id"]) ?></span></p>
             <p class="mb-2"><strong>Ngày đặt hàng:</strong> <?= date("d/m/Y H:i:s", strtotime($donhang["ngay"])) ?></p>
-            <p class="mb-0"><strong>Người nhận:</strong> <?= htmlspecialchars($_SESSION["khachhang"]["hoten"]) ?> (<?= htmlspecialchars($_SESSION["khachhang"]["sodienthoai"]) ?>)</p>
+            <p class="mb-0"><strong>Người nhận:</strong> <?= htmlspecialchars($_SESSION["khachhang"]["hoten"] ?? "") ?> (<?= htmlspecialchars($_SESSION["khachhang"]["sodienthoai"] ?? "") ?>)</p>
           </div>
           <div class="col-12 col-md-6">
             <p class="mb-2"><strong>Địa chỉ giao hàng:</strong> <?= htmlspecialchars(!empty($donhang["diachi"]) ? $donhang["diachi"] : "Địa chỉ mặc định của khách hàng") ?></p>
@@ -57,12 +64,15 @@
           <table class="table table-bordered table-hover align-middle mb-0">
             <thead class="table-light">
               <tr class="text-center">
-                <th style="width: 60px;">STT</th>
-                <th style="width: 80px;">Hình ảnh</th>
+                <th style="width: 50px;">STT</th>
+                <th style="width: 75px;">Hình ảnh</th>
                 <th class="text-start">Tên sản phẩm</th>
-                <th class="text-end" style="width: 140px;">Đơn giá</th>
-                <th class="text-center" style="width: 100px;">Số lượng</th>
-                <th class="text-end" style="width: 150px;">Thành tiền</th>
+                <th class="text-end" style="width: 130px;">Đơn giá</th>
+                <th class="text-center" style="width: 90px;">Số lượng</th>
+                <th class="text-end" style="width: 140px;">Thành tiền</th>
+                <?php if($tt === 3): ?>
+                  <th class="text-center" style="width: 135px;">Đánh giá</th>
+                <?php endif; ?>
               </tr>
             </thead>
             <tbody>
@@ -70,6 +80,7 @@
               $stt = 1;
               if(!empty($chitiet_donhang)):
                 foreach($chitiet_donhang as $ct): 
+                  $mhid_danhgia = !empty($ct["mathang_id"]) ? $ct["mathang_id"] : ($ct["mhid"] ?? 0);
               ?>
               <tr>
                 <td class="text-center fw-semibold text-secondary"><?= $stt++ ?></td>
@@ -77,26 +88,44 @@
                   <img class="img-thumbnail rounded" style="width: 60px; height: 60px; object-fit: contain;" src="../<?= $ct["hinhanh"] ?>" alt="<?= htmlspecialchars($ct["tenmathang"]) ?>">
                 </td>
                 <td>
-                  <a class="text-dark fw-bold text-decoration-none" href="index.php?action=detail&id=<?= $ct["mhid"] ?>">
+                  <a class="text-dark fw-bold text-decoration-none" href="index.php?action=detail&id=<?= $mhid_danhgia ?>">
                     <?= htmlspecialchars($ct["tenmathang"]) ?>
                   </a>
                 </td>
                 <td class="text-end"><?= number_format($ct["dongia"]) ?>đ</td>
                 <td class="text-center fw-semibold"><?= $ct["soluong"] ?></td>
                 <td class="text-end fw-bold text-navy"><?= number_format($ct["thanhtien"]) ?>đ</td>
+                <?php if($tt === 3): ?>
+                  <td class="text-center" style="white-space: nowrap;">
+                    <?php 
+                    $kh_id_hientai = (int)($_SESSION["khachhang"]["id"] ?? 0);
+                    $da_danhgia = $dg_model->kiemtradadanhgiadon($kh_id_hientai, (int)$donhang["id"], (int)$mhid_danhgia);
+                    if($da_danhgia): ?>
+                      <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 fw-semibold">
+                        <i class="bi bi-check-circle-fill me-1"></i>Đã đánh giá
+                      </span>
+                    <?php else: ?>
+                      <a href="index.php?action=detail&id=<?= $mhid_danhgia ?>#khung-danh-gia" 
+                         class="btn btn-sm text-white fw-bold px-2 py-1 shadow-sm" 
+                         style="background-color: #d70018; border-radius: 8px; font-size: 12px;">
+                        ★ Đánh giá ngay
+                      </a>
+                    <?php endif; ?>
+                  </td>
+                <?php endif; ?>
               </tr>
               <?php 
                 endforeach; 
               else: 
               ?>
               <tr>
-                <td colspan="6" class="text-center text-muted py-4">Không tìm thấy chi tiết sản phẩm cho đơn hàng này.</td>
+                <td colspan="<?= ($tt === 3) ? 7 : 6 ?>" class="text-center text-muted py-4">Không tìm thấy chi tiết sản phẩm cho đơn hàng này.</td>
               </tr>
               <?php endif; ?>
             </tbody>
             <tfoot>
               <tr class="table-light">
-                <td colspan="5" class="text-end fw-bold fs-6">Tổng tiền:</td>
+                <td colspan="<?= ($tt === 3) ? 6 : 5 ?>" class="text-end fw-bold fs-6">Tổng tiền:</td>
                 <td class="text-end text-danger fw-bold fs-5"><?= number_format($donhang["tongtien"]) ?>đ</td>
               </tr>
             </tfoot>

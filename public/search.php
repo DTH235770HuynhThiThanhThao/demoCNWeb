@@ -1,56 +1,114 @@
 <?php include("inc/top.php"); ?>
 
 <style>
+.search-result-box {
+    background-color: #ffffff;
+    border: 1px solid #eef2f6;
+    border-radius: 14px;
+    border-left: 4px solid #d70018;
+    padding: 14px 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
 .search-result-title {
     font-size: 1.1rem;
-    color: #142B4A;
-    border-left: 4px solid #142B4A;
-    padding-left: 12px;
+    color: #1e293b;
+    margin-bottom: 0;
 }
-.search-no-result {
+.search-count-badge {
+    background-color: #fff1f2;
+    color: #d70018;
+    font-weight: 700;
+    border: 1px solid #fecdd3;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+}
+.search-no-result-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
     text-align: center;
-    padding: 60px 20px;
-    color: #6c757d;
+    padding: 60px 24px;
+    margin: 20px 0 40px 0;
 }
-.search-no-result i {
-    font-size: 3.5rem;
-    color: #dee2e6;
-    display: block;
-    margin-bottom: 16px;
+.search-no-result-card .icon-wrap {
+    width: 80px;
+    height: 80px;
+    background-color: #fff1f2;
+    color: #d70018;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    margin-bottom: 20px;
 }
 </style>
 
 <?php
 $tukhoa_hien = htmlspecialchars(trim($_REQUEST["q"] ?? ""));
+$so_luong = is_array($mathang) ? count($mathang) : 0;
 ?>
 
 <div class="mb-4">
-    <p class="search-result-title fw-semibold">
-        <?php if($tukhoa_hien !== ""): ?>
-            Kết quả tìm kiếm cho: <span class="text-dark">"<?php echo $tukhoa_hien; ?>"</span>
-            <?php if(is_array($mathang) && count($mathang) > 0): ?>
-                &nbsp;<span class="badge bg-navy text-dark"><?php echo count($mathang); ?> sản phẩm</span>
+    <div class="search-result-box d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <p class="search-result-title fw-semibold">
+            <?php if($tukhoa_hien !== ""): ?>
+                Kết quả tìm kiếm cho: <span class="text-dark fw-bold">"<?php echo $tukhoa_hien; ?>"</span>
+            <?php else: ?>
+                Vui lòng nhập từ khóa để tìm kiếm
             <?php endif; ?>
-        <?php else: ?>
-            Vui lòng nhập từ khóa để tìm kiếm
+        </p>
+        <?php if($tukhoa_hien !== "" && $so_luong > 0): ?>
+            <span class="search-count-badge">
+                <i class="bi bi-check2-circle me-1"></i>Tìm thấy <?php echo $so_luong; ?> sản phẩm
+            </span>
         <?php endif; ?>
-    </p>
+    </div>
 </div>
 
 <?php if($tukhoa_hien === ""): ?>
-    <div class="search-no-result">
-        <i class="bi bi-search"></i>
-        <h5>Nhập từ khóa vào ô tìm kiếm trên thanh menu</h5>
-        <p>Bạn có thể tìm theo tên sản phẩm, thương hiệu hoặc model điện thoại.</p>
-        <a href="index.php" class="btn btn-navy text-white mt-2"><i class="bi bi-house-fill me-1"></i> Về trang chủ</a>
+    <div class="search-no-result-card">
+        <div class="icon-wrap">
+            <i class="bi bi-search"></i>
+        </div>
+        <h4 class="fw-bold text-dark mb-2">Nhập từ khóa vào ô tìm kiếm</h4>
+        <p class="text-muted mb-4" style="max-width: 480px; margin: 0 auto;">
+            Bạn có thể tìm kiếm theo tên máy, hãng sản xuất (Apple, Samsung, OPPO, Xiaomi) hoặc model điện thoại mong muốn.
+        </p>
+        <a href="index.php" class="btn text-white px-4 py-2 fw-bold shadow-sm d-inline-flex align-items-center gap-2" 
+           style="background-color: #d70018; border-radius: 10px;">
+            <i class="bi bi-house-door-fill"></i>
+            <span>Quay về trang chủ</span>
+        </a>
     </div>
 <?php elseif(empty($mathang)): ?>
-    <div class="search-no-result">
-        <i class="bi bi-emoji-frown"></i>
-        <h5>Không tìm thấy sản phẩm nào</h5>
-        <p>Không có sản phẩm nào khớp với từ khóa <strong>"<?php echo $tukhoa_hien; ?>"</strong>.</p>
-        <p class="text-muted small">Thử tìm với từ khóa khác hoặc duyệt qua danh mục sản phẩm.</p>
-        <a href="index.php" class="btn btn-navy text-white mt-2"><i class="bi bi-grid-fill me-1"></i> Xem tất cả sản phẩm</a>
+    <div class="search-no-result-card">
+        <div class="icon-wrap">
+            <i class="bi bi-search-heart"></i>
+        </div>
+        <h4 class="fw-bold text-dark mb-2">Không tìm thấy sản phẩm nào!</h4>
+        <p class="text-muted mb-2">
+            Rất tiếc, không có sản phẩm nào khớp với từ khóa <strong class="text-dark">"<?php echo $tukhoa_hien; ?>"</strong>.
+        </p>
+        <p class="text-muted small mb-4">
+            Quý khách vui lòng kiểm tra lại chính tả, thử từ khóa ngắn hơn hoặc quay về trang chủ để khám phá các dòng điện thoại mới nhất.
+        </p>
+        <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+            <a href="index.php" class="btn text-white px-4 py-2 fw-bold shadow-sm d-inline-flex align-items-center gap-2" 
+               style="background-color: #d70018; border-radius: 10px;">
+                <i class="bi bi-house-door-fill"></i>
+                <span>Quay về trang chủ</span>
+            </a>
+            <a href="index.php?action=group&id=0" class="btn btn-outline-secondary px-4 py-2 fw-semibold" 
+               style="border-radius: 10px;">
+                <i class="bi bi-grid-fill me-1"></i>
+                <span>Xem tất cả sản phẩm</span>
+            </a>
+        </div>
     </div>
 <?php else: ?>
     <div class="row row-cols-2 row-cols-md-4 g-3">

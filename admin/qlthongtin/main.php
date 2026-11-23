@@ -62,8 +62,8 @@
 							<div class="input-group">
 								<span class="input-group-text"><i class="align-middle" data-feather="phone-call"></i></span>
 								<input type="text" class="form-control" name="txtsodienthoai" id="inputHotline" 
-								       value="<?= htmlspecialchars($thongtin["sodienthoai"] ?? "076 3841190") ?>" 
-								       required placeholder="Ví dụ: 076 3841190...">
+								       value="<?= htmlspecialchars($thongtin["sodienthoai"] ?? "0357185269") ?>" 
+								       required placeholder="Ví dụ: 0357185269...">
 							</div>
 						</div>
 					</div>
@@ -103,7 +103,7 @@
 						<div class="input-group">
 							<span class="input-group-text"><i class="align-middle" data-feather="volume-2"></i></span>
 							<input type="text" class="form-control" name="txtslogan" id="inputSlogan" 
-							       value="<?= htmlspecialchars($thongtin["slogan"] ?? "Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng") ?>" 
+							       value="<?= htmlspecialchars($thongtin["slogan"] ?? "Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng") ?>" 
 							       placeholder="Nhập slogan hoặc ưu đãi nổi bật trên đầu trang...">
 						</div>
 						<div class="form-text small text-muted">
@@ -119,7 +119,7 @@
 						<div class="input-group">
 							<span class="input-group-text"><i class="align-middle" data-feather="map-pin"></i></span>
 							<input type="text" class="form-control" name="txtdiachi" id="inputDiaChi" 
-							       value="<?= htmlspecialchars($thongtin["diachi"] ?? "18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang") ?>" 
+							       value="<?= htmlspecialchars($thongtin["diachi"] ?? "Số 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp") ?>" 
 							       required placeholder="Nhập số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành...">
 						</div>
 					</div>
@@ -172,7 +172,7 @@
 					<div class="small border-top border-secondary pt-2 mt-2">
 						<div class="d-flex align-items-start gap-2 mb-2">
 							<i class="align-middle text-warning mt-1" data-feather="phone-call" style="width: 14px; height: 14px;"></i>
-							<span>Hotline: <strong class="text-warning" id="pvHotline"><?= htmlspecialchars($thongtin["sodienthoai"] ?? "076 3841190") ?></strong></span>
+							<span>Hotline: <strong class="text-warning" id="pvHotline"><?= htmlspecialchars($thongtin["sodienthoai"] ?? "0357185269") ?></strong></span>
 						</div>
 						<div class="d-flex align-items-start gap-2 mb-2">
 							<i class="align-middle text-info mt-1" data-feather="mail" style="width: 14px; height: 14px;"></i>
@@ -180,7 +180,7 @@
 						</div>
 						<div class="d-flex align-items-start gap-2 mb-2">
 							<i class="align-middle text-danger mt-1" data-feather="map-pin" style="width: 14px; height: 14px;"></i>
-							<span id="pvDiaChi"><?= htmlspecialchars($thongtin["diachi"] ?? "18 Ung Văn Khiêm, An Giang") ?></span>
+							<span id="pvDiaChi"><?= htmlspecialchars($thongtin["diachi"] ?? "Số 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp") ?></span>
 						</div>
 						<div class="d-flex align-items-start gap-2">
 							<i class="align-middle text-success mt-1" data-feather="clock" style="width: 14px; height: 14px;"></i>
@@ -194,7 +194,7 @@
 					<div class="small text-muted fw-semibold mb-1">Mô phỏng Top-bar ngoài web:</div>
 					<div class="p-2 rounded bg-dark text-white small" style="font-size: 11px;">
 						<i class="align-middle text-warning me-1" data-feather="bell" style="width: 12px; height: 12px;"></i>
-						<span id="pvSlogan"><?= htmlspecialchars($thongtin["slogan"] ?? "Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí") ?></span>
+						<span id="pvSlogan"><?= htmlspecialchars($thongtin["slogan"] ?? "Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng") ?></span>
 					</div>
 				</div>
 
@@ -226,11 +226,11 @@
 // Cập nhật Live Preview khi người dùng nhập liệu
 function capNhatLivePreview() {
 	var ten = document.getElementById("inputTenCuaHang").value.trim() || "Thảo Mobile";
-	var hotline = document.getElementById("inputHotline").value.trim() || "076 3841190";
+	var hotline = document.getElementById("inputHotline").value.trim() || "0357185269";
 	var email = document.getElementById("inputEmail").value.trim() || "thaomobile@gmail.com";
-	var diachi = document.getElementById("inputDiaChi").value.trim() || "18 Ung Văn Khiêm, An Giang";
+	var diachi = document.getElementById("inputDiaChi").value.trim() || "Số 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp";
 	var giomocua = document.getElementById("inputGioMoCua").value.trim() || "08:00 - 21:30";
-	var slogan = document.getElementById("inputSlogan").value.trim() || "Thu cũ đổi mới • Giao nhanh 2H";
+	var slogan = document.getElementById("inputSlogan").value.trim() || "Giao nhanh 2H • Bảo hành 12 tháng";
 
 	document.getElementById("pvTenCuaHang").innerText = ten;
 	document.getElementById("pvHotline").innerText = hotline;

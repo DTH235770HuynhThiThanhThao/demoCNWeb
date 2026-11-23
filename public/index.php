@@ -13,6 +13,7 @@ require("../model/donhangct.php");
 require("../model/nguoidung.php");
 require("../model/thongtin.php");
 require("../model/baohanh.php");
+require("../model/danhgia.php");
 
 // Tự động đồng bộ session nếu đã đăng nhập bên admin
 if(!isset($_SESSION["khachhang"]) && isset($_SESSION["nguoidung"])){
@@ -103,7 +104,7 @@ switch($action){
         break;
     case "detail": 
         if(isset($_GET["id"])){
-            $mahang = $_GET["id"];
+            $mahang = (int)$_GET["id"];
             // tăng lượt xem lên 1
             $mh->tangluotxem($mahang);
             // lấy thông tin chi tiết mặt hàng
@@ -111,7 +112,47 @@ switch($action){
             // lấy các mặt hàng cùng danh mục
             $madm = $mhct["danhmuc_id"];
             $mathang = $mh->laymathangtheodanhmuc($madm);
+            // lấy dữ liệu đánh giá sản phẩm
+            $dg = new DANHGIA();
+            $thongke_danhgia = $dg->tinhdiemdanhgia($mahang);
+            $ds_danhgia = $dg->laydanhgiatheomathang($mahang);
+            $donhang_id_duocdanhgia = false;
+            if(isset($_SESSION["khachhang"]["id"])){
+                $donhang_id_duocdanhgia = $dg->kiemtraduocphepdanhgia((int)$_SESSION["khachhang"]["id"], $mahang);
+            }
             include("detail.php");
+        }
+        break;
+    case "guidanhgia":
+        if(!kiemtra_khachhang_hople()){
+            $thongbao = "Vui lòng đăng nhập để gửi đánh giá sản phẩm!";
+            include("loginform.php");
+            break;
+        }
+
+        $khachhang_id = (int)$_SESSION["khachhang"]["id"];
+        $mathang_id = isset($_POST["mathang_id"]) ? (int)$_POST["mathang_id"] : 0;
+        $sosao = isset($_POST["sosao"]) ? (int)$_POST["sosao"] : 5;
+        if($sosao < 1) $sosao = 1;
+        if($sosao > 5) $sosao = 5;
+        $noidung = isset($_POST["noidung"]) ? trim($_POST["noidung"]) : "";
+
+        if($mathang_id <= 0 || empty($noidung)){
+            header("Location: index.php?action=detail&id=" . $mathang_id . "&msg=danhgia_trong#khung-danh-gia");
+            exit();
+        }
+
+        $dg = new DANHGIA();
+        // Xác thực lại quyền kiểm tra đơn hàng hoàn thành ở phía server
+        $donhang_id_hople = $dg->kiemtraduocphepdanhgia($khachhang_id, $mathang_id);
+
+        if($donhang_id_hople !== false){
+            $dg->themdanhgia($mathang_id, $khachhang_id, $donhang_id_hople, $sosao, $noidung);
+            header("Location: index.php?action=detail&id=" . $mathang_id . "&msg=danhgia_ok#khung-danh-gia");
+            exit();
+        } else {
+            header("Location: index.php?action=detail&id=" . $mathang_id . "&msg=danhgia_loi#khung-danh-gia");
+            exit();
         }
         break;
     case "chovaogio":    

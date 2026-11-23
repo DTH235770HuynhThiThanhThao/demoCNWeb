@@ -78,6 +78,20 @@ if(preg_match('/(\d+\s*(?:GB|TB))/i', $ten_may_hientai, $match_dl)){
     $dungluong_hientai = strtoupper(str_replace(' ', '', $match_dl[1]));
 }
 
+// 3. Khởi tạo & nạp dữ liệu đánh giá sản phẩm
+if(!isset($thongke_danhgia)){
+    if(!class_exists('DANHGIA')) require_once("../model/danhgia.php");
+    $dg_tmp = new DANHGIA();
+    $thongke_danhgia = $dg_tmp->tinhdiemdanhgia($mhct["id"]);
+    $ds_danhgia = $dg_tmp->laydanhgiatheomathang($mhct["id"]);
+    $donhang_id_duocdanhgia = false;
+    if(isset($_SESSION["khachhang"]["id"])){
+        $donhang_id_duocdanhgia = $dg_tmp->kiemtraduocphepdanhgia((int)$_SESSION["khachhang"]["id"], $mhct["id"]);
+    }
+}
+$diem_tb = !empty($thongke_danhgia["diemtrungbinh"]) ? number_format($thongke_danhgia["diemtrungbinh"], 1) : "5.0";
+$tong_dg = !empty($thongke_danhgia["tongso"]) ? (int)$thongke_danhgia["tongso"] : 0;
+
 $danh_sach_phienban = array();
 
 // Nếu Admin đã nhập trường phienban (ví dụ: "128GB, 256GB, 512GB")
@@ -176,14 +190,18 @@ if(!empty($mhct["mota"])){
         <div>
             <h1 class="h4 fw-bold text-dark mb-1"><?php echo $mhct["tenmathang"]; ?></h1>
             <div class="d-flex flex-wrap align-items-center gap-3 small text-muted">
-                <div class="d-inline-flex align-items-center text-warning">
-                    <i class="bi bi-star-fill me-1"></i>
-                    <i class="bi bi-star-fill me-1"></i>
-                    <i class="bi bi-star-fill me-1"></i>
-                    <i class="bi bi-star-fill me-1"></i>
-                    <i class="bi bi-star-fill me-2"></i>
-                    <span class="text-dark fw-bold">5.0</span>
-                </div>
+                <a href="#khung-danh-gia" class="text-decoration-none d-inline-flex align-items-center text-warning" title="Xem đánh giá sản phẩm">
+                    <span class="d-inline-flex align-items-center">
+                        <?php 
+                        $diem_so = (float)$diem_tb;
+                        for($i = 1; $i <= 5; $i++): 
+                        ?>
+                            <i class="bi bi-star<?= ($i <= round($diem_so)) ? '-fill' : '' ?> me-1" style="color: #ffc107;"></i>
+                        <?php endfor; ?>
+                    </span>
+                    <span class="text-dark fw-bold ms-1"><?= $diem_tb ?>/5</span>
+                    <span class="text-muted ms-1">• <?= $tong_dg ?> đánh giá</span>
+                </a>
                 <span>•</span>
                 <span><i class="bi bi-eye text-primary me-1"></i><b><?php echo number_format($mhct["luotxem"]); ?></b> lượt xem</span>
                 <span>•</span>
@@ -347,7 +365,6 @@ if(!empty($mhct["mota"])){
                 <div class="promo-gift-body">
                     <ul>
                         <li><b>Bảo hành toàn diện:</b> 12 tháng chính hãng, lỗi 1 đổi 1 trong 30 ngày đầu tiên.</li>
-                        <li><b>Ưu đãi phụ kiện:</b> Giảm thêm <b>200.000đ</b> khi mua kèm củ sạc nhanh 20W/30W hoặc ốp lưng chống sốc.</li>
                         <li><b>Giao hàng siêu tốc:</b> Miễn phí giao hàng 2H toàn quốc, kiểm tra hàng kỹ lưỡng trước khi thanh toán.</li>
                     </ul>
                 </div>
@@ -412,7 +429,7 @@ if(!empty($mhct["mota"])){
                 </div>
                 <div class="text-center mt-2">
                     <small class="text-muted">
-                        <i class="bi bi-telephone-fill text-danger me-1"></i>Hotline tư vấn nhanh: <b>076 3841190</b> (8:00 - 21:30)
+                        <i class="bi bi-telephone-fill text-danger me-1"></i>Hotline tư vấn nhanh: <b><?php echo htmlspecialchars($hotline_shop ?? "0357185269"); ?></b> (8:00 - 21:30)
                     </small>
                 </div>
             </form>
@@ -508,6 +525,262 @@ if(!empty($mhct["mota"])){
     </div>
 </div>
 
+<!-- ================================================================= -->
+<!-- KHUNG ĐÁNH GIÁ & NHẬN XÉT SẢN PHẨM - TÔNG ĐỎ TECH FLAGSHIP #d70018 -->
+<!-- ================================================================= -->
+<div id="khung-danh-gia" class="card border-0 shadow-sm mb-5" style="border-radius: 14px; scroll-margin-top: 90px; overflow: hidden; background: #ffffff;">
+    <!-- Thanh nhấn đỏ Tech Flagship #d70018 ở trên đầu thẻ -->
+    <div style="height: 4px; background: linear-gradient(90deg, #d70018 0%, #ff4d4f 100%);"></div>
+
+    <div class="card-body p-4 p-md-5">
+        <!-- Tiêu đề thẻ -->
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pb-3 mb-4 border-bottom">
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center justify-content-center rounded-3 text-white shadow-sm" style="width: 42px; height: 42px; background-color: #d70018;">
+                    <i class="bi bi-star-half fs-5"></i>
+                </div>
+                <div>
+                    <h3 class="h5 fw-bold mb-0 text-dark" style="letter-spacing: 0.5px;">ĐÁNH GIÁ & NHẬN XÉT SẢN PHẨM</h3>
+                    <div class="text-muted small">Nhận xét khách quan từ khách hàng đã mua và sử dụng tại Thảo Mobile</div>
+                </div>
+            </div>
+            <div>
+                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill fw-semibold">
+                    <i class="bi bi-shield-check me-1"></i>100% đánh giá từ người mua thật
+                </span>
+            </div>
+        </div>
+
+        <!-- Thông báo sau khi gửi đánh giá -->
+        <?php if(isset($_GET["msg"])): ?>
+            <?php if($_GET["msg"] === "danhgia_ok"): ?>
+                <div class="alert alert-dismissible fade show d-flex align-items-center justify-content-between mb-4" 
+                     style="background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; border-radius: 10px; padding: 12px 16px;" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                        <div>
+                            <strong>Cảm ơn bạn đã gửi đánh giá!</strong> Nhận xét của bạn đã được ghi nhận và hiển thị công khai trên hệ thống Thảo Mobile.
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="position: static; padding: 0;"></button>
+                </div>
+            <?php elseif($_GET["msg"] === "danhgia_trong"): ?>
+                <div class="alert alert-warning alert-dismissible fade show mb-4" style="border-radius: 10px;" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Vui lòng nhập nội dung nhận xét của bạn trước khi bấm gửi!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php elseif($_GET["msg"] === "danhgia_loi"): ?>
+                <div class="alert alert-danger alert-dismissible fade show mb-4" style="border-radius: 10px;" role="alert">
+                    <i class="bi bi-x-circle-fill me-2"></i>Chỉ đơn hàng đã giao thành công (Hoàn thành) và chưa từng đánh giá mới có thể gửi nhận xét.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <!-- 1. KHỐI TỔNG QUAN ĐIỂM SAO -->
+        <div class="row g-4 align-items-center p-4 rounded-3 mb-4" style="background-color: #fafafa; border: 1px solid #f0f0f0;">
+            <!-- Cột trái: Điểm số trung bình -->
+            <div class="col-md-4 text-center border-end-md pb-3 pb-md-0">
+                <div class="display-3 fw-bold text-dark lh-1 mb-2"><?= $diem_tb ?></div>
+                <div class="text-warning fs-5 mb-2">
+                    <?php 
+                    $diem_so = (float)$diem_tb;
+                    for($i = 1; $i <= 5; $i++): 
+                    ?>
+                        <i class="bi bi-star<?= ($i <= round($diem_so)) ? '-fill' : '' ?>"></i>
+                    <?php endfor; ?>
+                </div>
+                <div class="text-muted fw-semibold">
+                    <i class="bi bi-person-check me-1"></i><b><?= $tong_dg ?></b> đánh giá & nhận xét
+                </div>
+            </div>
+
+            <!-- Cột phải: Thanh tiến trình 5 sao -> 1 sao -->
+            <div class="col-md-8">
+                <?php 
+                $cac_muc_sao = [
+                    5 => $thongke_danhgia["sao5"] ?? 0,
+                    4 => $thongke_danhgia["sao4"] ?? 0,
+                    3 => $thongke_danhgia["sao3"] ?? 0,
+                    2 => $thongke_danhgia["sao2"] ?? 0,
+                    1 => $thongke_danhgia["sao1"] ?? 0,
+                ];
+                foreach($cac_muc_sao as $so_sao => $so_luong):
+                    $pt = ($tong_dg > 0) ? round(($so_luong / $tong_dg) * 100) : 0;
+                ?>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <div class="d-flex align-items-center text-nowrap" style="width: 55px; font-size: 13px;">
+                        <span class="fw-bold me-1 text-dark"><?= $so_sao ?></span>
+                        <i class="bi bi-star-fill text-warning" style="font-size: 11px;"></i>
+                    </div>
+                    <div class="progress flex-grow-1" style="height: 8px; border-radius: 99px; background-color: #e9ecef;">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: <?= $pt ?>%; background-color: #d70018; border-radius: 99px;" 
+                             aria-valuenow="<?= $pt ?>" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+                    <div class="text-end text-muted small" style="width: 80px; font-size: 12px;">
+                        <span class="fw-bold text-dark"><?= $so_luong ?></span> (<?= $pt ?>%)
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <!-- 2. FORM GỬI ĐÁNH GIÁ (CÓ ĐIỀU KIỆN) -->
+        <div class="mb-5">
+            <?php if($donhang_id_duocdanhgia !== false): ?>
+                <!-- Đủ điều kiện gửi đánh giá -->
+                <div class="p-4 rounded-3 border" style="background-color: #fff9f9; border-color: #ffccd0 !important;">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                        <h6 class="fw-bold text-dark mb-0 d-flex align-items-center">
+                            <i class="bi bi-pencil-square me-2" style="color: #d70018;"></i>
+                            Viết đánh giá cho sản phẩm này (Đơn hàng #<?= sprintf("DH%06d", $donhang_id_duocdanhgia) ?>)
+                        </h6>
+                        <span class="badge bg-success text-white px-2 py-1" style="font-size: 11px;">
+                            <i class="bi bi-patch-check-fill me-1"></i>Đã xác thực đã mua hàng
+                        </span>
+                    </div>
+
+                    <form action="index.php?action=guidanhgia" method="post" id="formDanhGia">
+                        <input type="hidden" name="mathang_id" value="<?= $mhct["id"] ?>">
+                        <input type="hidden" name="sosao" id="inputSoSao" value="5">
+
+                        <!-- Chọn số sao tương tác JS -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary mb-1">Mức độ hài lòng của bạn:</label>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="rating-stars-picker d-flex gap-1" id="starContainer" style="cursor: pointer; font-size: 26px;">
+                                    <i class="bi bi-star-fill text-warning star-item" data-value="1" title="1 sao"></i>
+                                    <i class="bi bi-star-fill text-warning star-item" data-value="2" title="2 sao"></i>
+                                    <i class="bi bi-star-fill text-warning star-item" data-value="3" title="3 sao"></i>
+                                    <i class="bi bi-star-fill text-warning star-item" data-value="4" title="4 sao"></i>
+                                    <i class="bi bi-star-fill text-warning star-item" data-value="5" title="5 sao"></i>
+                                </div>
+                                <span class="badge px-3 py-2 fw-bold text-dark border bg-white" id="starLabel" style="font-size: 13px;">
+                                    Tuyệt vời
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Ô textarea nhập cảm nhận -->
+                        <div class="mb-3">
+                            <label for="txtNoiDungDanhGia" class="form-label small fw-bold text-secondary mb-1">Cảm nhận và nhận xét:</label>
+                            <textarea class="form-control" name="noidung" id="txtNoiDungDanhGia" rows="3" 
+                                      placeholder="Chia sẻ cảm nhận của bạn về sản phẩm này (chất lượng máy, camera, thời lượng pin, dịch vụ giao hàng...)" 
+                                      required style="border-radius: 10px; resize: vertical;"></textarea>
+                        </div>
+
+                        <!-- Nút gửi đánh giá đỏ Tech Flagship -->
+                        <div class="text-end">
+                            <button type="submit" class="btn text-white px-4 py-2 fw-bold shadow-sm d-inline-flex align-items-center gap-2" 
+                                    style="background-color: #d70018; border-radius: 10px; font-size: 14px;">
+                                <i class="bi bi-send-fill"></i>
+                                <span>Gửi đánh giá</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            <?php else: ?>
+                <!-- Chưa mua hoặc chưa có đơn hàng hoàn thành -->
+                <div class="p-3 p-md-4 rounded-3 d-flex align-items-center gap-3" 
+                     style="background-color: #f8f9fa; border: 1px dashed #d0d5dd;">
+                    <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" 
+                         style="width: 44px; height: 44px; background-color: #eef2f6; color: #475467;">
+                        <i class="bi bi-shield-lock fs-4"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold text-dark mb-1" style="font-size: 14px;">
+                            Chỉ khách hàng đã đặt mua và nhận hàng thành công sản phẩm này tại Thảo Mobile mới có thể gửi đánh giá.
+                        </div>
+                        <div class="text-muted small">
+                            Chính sách này nhằm đảm bảo tính khách quan và trải nghiệm thực tế 100% cho cộng đồng khách hàng.
+                        </div>
+                    </div>
+                    <?php if(!isset($_SESSION["khachhang"])): ?>
+                        <a href="index.php?action=dangnhap" class="btn btn-sm btn-outline-danger px-3 py-2 text-nowrap fw-bold" style="border-radius: 8px;">
+                            Đăng nhập
+                        </a>
+                    <?php else: ?>
+                        <a href="index.php?action=lichsumuahang" class="btn btn-sm btn-outline-secondary px-3 py-2 text-nowrap fw-semibold" style="border-radius: 8px;">
+                            Xem đơn hàng
+                        </a>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- 3. DANH SÁCH NHẬN XÉT CỦA KHÁCH HÀNG -->
+        <div>
+            <h6 class="fw-bold text-dark mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+                <i class="bi bi-chat-left-text-fill text-danger"></i>
+                <span>KHÁCH HÀNG NHẬN XÉT (<?= count($ds_danhgia) ?>)</span>
+            </h6>
+
+            <?php if(!empty($ds_danhgia)): ?>
+                <div class="review-list d-flex flex-column gap-3">
+                    <?php foreach($ds_danhgia as $dg_item): 
+                        $avatar_url = !empty($dg_item["hinhanh"]) ? "../" . $dg_item["hinhanh"] : "";
+                        $ten_kh = !empty($dg_item["hoten"]) ? $dg_item["hoten"] : "Khách hàng";
+                        $chu_dau = mb_strtoupper(mb_substr($ten_kh, 0, 1, "UTF-8"), "UTF-8");
+                        $sao = (int)$dg_item["sosao"];
+                    ?>
+                    <div class="p-3 p-md-4 rounded-3 border bg-white shadow-sm" style="border-radius: 12px !important;">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <!-- Avatar -->
+                                <?php if(!empty($avatar_url) && file_exists("../" . $dg_item["hinhanh"])): ?>
+                                    <img src="<?= $avatar_url ?>" alt="<?= htmlspecialchars($ten_kh) ?>" 
+                                         class="rounded-circle object-fit-cover border" style="width: 42px; height: 42px;">
+                                <?php else: ?>
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm" 
+                                         style="width: 42px; height: 42px; background: linear-gradient(135deg, #d70018 0%, #ff4d4f 100%); font-size: 16px;">
+                                        <?= $chu_dau ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div>
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                        <span class="fw-bold text-dark"><?= htmlspecialchars($ten_kh) ?></span>
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-0 fw-semibold" style="font-size: 11px;">
+                                            <i class="bi bi-check-circle-fill me-1"></i>Đã mua hàng tại Thảo Mobile
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2 mt-1">
+                                        <!-- Dãy sao vàng -->
+                                        <div class="text-warning small">
+                                            <?php for($i = 1; $i <= 5; $i++): ?>
+                                                <i class="bi bi-star<?= ($i <= $sao) ? '-fill' : '' ?>"></i>
+                                            <?php endfor; ?>
+                                        </div>
+                                        <span class="text-muted" style="font-size: 11px;">&bull;</span>
+                                        <span class="text-muted" style="font-size: 12px;">
+                                            <i class="bi bi-clock me-1"></i><?= date("d/m/Y H:i", strtotime($dg_item["ngaydanhgia"])) ?>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nội dung nhận xét -->
+                        <div class="text-dark mt-2 ps-md-5 ms-md-2" style="font-size: 14.5px; line-height: 1.6;">
+                            <?= nl2br(htmlspecialchars($dg_item["noidung"])) ?>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="text-center py-5 rounded-3 bg-light border">
+                    <i class="bi bi-chat-square-dots text-muted" style="font-size: 3rem;"></i>
+                    <p class="text-muted fw-semibold mt-2 mb-1">Chưa có đánh giá nào cho sản phẩm này.</p>
+                    <p class="small text-muted mb-0">Hãy là người đầu tiên trải nghiệm và chia sẻ cảm nhận về chiếc điện thoại này nhé!</p>
+                </div>
+            <?php endif; ?>
+        </div>
+
+    </div>
+</div>
+
 <!-- JavaScript thuần tương tác mượt mà chuẩn CellphoneS -->
 <script>
 // Định dạng tiền tệ VNĐ
@@ -600,6 +873,59 @@ function giamSoLuong() {
         if (val > 1) input.value = val - 1;
     }
 }
+
+// 5. JavaScript tương tác chọn số sao đánh giá (1 - 5 sao)
+(function initRatingStars() {
+    var starContainer = document.getElementById('starContainer');
+    if (!starContainer) return;
+
+    var inputSoSao = document.getElementById('inputSoSao');
+    var starLabel = document.getElementById('starLabel');
+    var starItems = starContainer.querySelectorAll('.star-item');
+    var labels = {
+        1: 'Rất tệ',
+        2: 'Tệ',
+        3: 'Bình thường',
+        4: 'Hài lòng',
+        5: 'Tuyệt vời'
+    };
+    var currentRating = parseInt(inputSoSao.value) || 5;
+
+    function renderStars(rating) {
+        starItems.forEach(function(star) {
+            var val = parseInt(star.getAttribute('data-value'));
+            if (val <= rating) {
+                star.classList.remove('bi-star');
+                star.classList.add('bi-star-fill');
+            } else {
+                star.classList.remove('bi-star-fill');
+                star.classList.add('bi-star');
+            }
+        });
+        if (starLabel && labels[rating]) {
+            starLabel.innerText = labels[rating];
+        }
+    }
+
+    starItems.forEach(function(star) {
+        star.addEventListener('mouseenter', function() {
+            var val = parseInt(this.getAttribute('data-value'));
+            renderStars(val);
+        });
+
+        star.addEventListener('click', function() {
+            currentRating = parseInt(this.getAttribute('data-value'));
+            inputSoSao.value = currentRating;
+            renderStars(currentRating);
+        });
+    });
+
+    starContainer.addEventListener('mouseleave', function() {
+        renderStars(currentRating);
+    });
+
+    renderStars(currentRating);
+})();
 </script>
 
 <?php include("inc/bottom.php"); ?>

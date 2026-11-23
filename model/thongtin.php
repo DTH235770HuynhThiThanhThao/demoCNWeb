@@ -38,7 +38,7 @@ class THONGTIN{
             // Nếu chưa có dữ liệu trong bảng, tạo dòng mặc định
             if(!$result){
                 $sql_khoitao = "INSERT INTO thongtin (id, tencuahang, slogan, sodienthoai, email, diachi, giomocua, gioithieu) 
-                                VALUES (1, 'Thảo Mobile', 'Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng', '076 3841190', 'thaomobile@gmail.com', '18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang', '08:00 - 21:30 (Tất cả các ngày trong tuần)', 'Thảo Mobile là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: Apple, Samsung, OPPO và Xiaomi với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.')";
+                                VALUES (1, 'Thảo Mobile', 'Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng', '0357185269', 'thaomobile@gmail.com', 'Số 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp', '08:00 - 21:30 (Tất cả các ngày trong tuần)', 'Thảo Mobile là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: Apple, Samsung, OPPO và Xiaomi với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.')";
                 $cmd_kt = $db->prepare($sql_khoitao);
                 $cmd_kt->execute();
 

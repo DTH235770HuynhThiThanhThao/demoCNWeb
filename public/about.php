@@ -196,7 +196,7 @@ include("inc/top.php");
                 </h5>
                 <div class="contact-info-row">
                     <i class="bi bi-geo-alt-fill"></i>
-                    <span><?php echo htmlspecialchars($diachi_shop ?? "570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp"); ?></span>
+                    <span><?php echo htmlspecialchars($diachi_shop ?? "Số 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp"); ?></span>
                 </div>
                 <div class="contact-info-row">
                     <i class="bi bi-telephone-fill"></i>

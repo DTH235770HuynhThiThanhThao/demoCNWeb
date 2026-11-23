@@ -606,7 +606,7 @@
                                 <i class="bi bi-headset fs-5"></i>
                             </div>
                             <div>
-                                <strong class="text-dark small d-block">Tổng đài hỗ trợ kỹ thuật: <?= htmlspecialchars($hotline_shop ?? "076 3841190") ?></strong>
+                                <strong class="text-dark small d-block">Tổng đài hỗ trợ kỹ thuật: <?= htmlspecialchars($hotline_shop ?? "0357185269") ?></strong>
                                 <span class="text-muted" style="font-size: 0.82rem;">Giải đáp mọi thắc mắc kỹ thuật từ <?= htmlspecialchars($giomocua_shop ?? "8:00 - 21:30") ?> mỗi ngày.</span>
                             </div>
                         </div>

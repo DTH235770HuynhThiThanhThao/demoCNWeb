@@ -1,4 +1,4 @@
-﻿-- ============================================================
+-- ============================================================
 -- Shop quản lý cửa hàng điện thoại
 -- Đồ án Công nghệ Web PHP
 -- ============================================================
@@ -64,14 +64,14 @@ CREATE TABLE `donhang` (
   `trangthai` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0: Chờ xác nhận, 1: Đã duyệt, 2: Đang giao, 3: Hoàn thành, 4: Đã hủy'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `donhang` (`id`, `nguoidung_id`, `diachi_id`, `ngay`, `tongtien`, `ghichu`) VALUES
-(1, 4, 4, '2024-10-01 09:15:00', 29990000, 'Giao hàng giờ hành chính'),
-(2, 4, 4, '2024-10-05 14:30:00', 15990000, NULL),
-(3, 5, 5, '2024-10-10 10:00:00', 22990000, 'Gọi trước khi giao'),
-(4, 5, 5, '2024-10-15 16:45:00', 5990000,  NULL),
-(5, 4, 4, '2024-10-20 08:30:00', 36990000, 'Hàng dễ vỡ, đóng gói cẩn thận'),
-(6, 5, 5, '2024-10-25 13:00:00', 4590000,  NULL),
-(7, 4, 4, '2024-11-01 11:20:00', 17990000, NULL);
+INSERT INTO `donhang` (`id`, `nguoidung_id`, `diachi_id`, `ngay`, `tongtien`, `ghichu`, `trangthai`) VALUES
+(1, 4, 4, '2024-10-01 09:15:00', 29990000, 'Giao hàng giờ hành chính', 3),
+(2, 4, 4, '2024-10-05 14:30:00', 15990000, NULL, 0),
+(3, 5, 5, '2024-10-10 10:00:00', 22990000, 'Gọi trước khi giao', 3),
+(4, 5, 5, '2024-10-15 16:45:00', 5990000,  NULL, 1),
+(5, 4, 4, '2024-10-20 08:30:00', 36990000, 'Hàng dễ vỡ, đóng gói cẩn thận', 3),
+(6, 5, 5, '2024-10-25 13:00:00', 4590000,  NULL, 2),
+(7, 4, 4, '2024-11-01 11:20:00', 17990000, NULL, 0);
 
 -- --------------------------------------------------------
 -- Table: donhangct
@@ -424,17 +424,17 @@ INSERT INTO `phieunhapct` (`id`, `phieunhap_id`, `mathang_id`, `gianhap`, `soluo
 CREATE TABLE IF NOT EXISTS `thongtin` (
   `id` int(11) NOT NULL DEFAULT 1,
   `tencuahang` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Thảo Mobile',
-  `slogan` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng',
-  `sodienthoai` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '076 3841190',
+  `slogan` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng',
+  `sodienthoai` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0357185269',
   `email` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'thaomobile@gmail.com',
-  `diachi` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang',
+  `diachi` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Số 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp',
   `giomocua` varchar(150) COLLATE utf8_unicode_ci DEFAULT '08:00 - 21:30 (Tất cả các ngày trong tuần)',
   `gioithieu` text COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `thongtin` (`id`, `tencuahang`, `slogan`, `sodienthoai`, `email`, `diachi`, `giomocua`, `gioithieu`) VALUES
-(1, 'Thảo Mobile', 'Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng', '076 3841190', 'thaomobile@gmail.com', '18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang', '08:00 - 21:30 (Tất cả các ngày trong tuần)', 'Thảo Mobile là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: Apple, Samsung, OPPO và Xiaomi với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.');
+(1, 'Thảo Mobile', 'Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng', '0357185269', 'thaomobile@gmail.com', 'Số 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp', '08:00 - 21:30 (Tất cả các ngày trong tuần)', 'Thảo Mobile là hệ thống bán lẻ điện thoại di động chính hãng uy tín, chuyên cung cấp các dòng smartphone mới nhất từ 4 thương hiệu hàng đầu: Apple, Samsung, OPPO và Xiaomi với mức giá cạnh tranh cùng dịch vụ hậu mãi tận tâm.');
 
 -- --------------------------------------------------------
 -- Table: hinhanh
@@ -454,7 +454,7 @@ INSERT INTO `hinhanh` (`id`, `tieude`, `duongdan`, `loai`, `thutu`, `trangthai`)
 (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h4.jpg', 'banner_chinh', 1, 1),
 (3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 2, 1),
 (4, 'Ưu đãi trả góp 0% lãi suất - Thủ tục nhanh', 'h6.jpg', 'banner_chinh', 3, 1),
-(5, 'Thu cũ đổi mới trợ giá cực khủng', 'h7.jpg', 'banner_chinh', 4, 1),
+(5, 'Ưu đãi siêu phẩm giá cực khủng', 'h7.jpg', 'banner_chinh', 4, 1),
 (6, 'Điện thoại chính hãng bảo hành 12 tháng', 'h1.jpg', 'banner_phu', 1, 1),
 (7, 'Siêu ưu đãi công nghệ - Mua là có quà', 'h2.jpg', 'banner_phu', 2, 1),
 (8, 'Thảo Mobile Flagship Store', 'h3.jpg', 'banner_phu', 3, 1);
@@ -488,6 +488,31 @@ INSERT INTO `baohanh` (`id`, `donhang_id`, `mathang_id`, `tenkhachhang`, `sodien
 (3, 3, 2, 'Hồ Xuân Minh', '0945678901', NULL, '2024-10-10', '2025-10-10', 'Máy không nhận sạc, cổng Lightning bị lỏng', '2026-11-15 10:15:00', 0, NULL),
 (4, NULL, 38, 'Lê Thị Lan', '0977888999', '860456321098765', '2025-08-20', '2026-08-20', 'Màn hình cảm ứng mất một góc, không phản hồi', '2026-11-18 16:00:00', 3, 'Đã thay màn hình, bàn giao 19/11/2026'),
 (5, NULL, 21, 'Phạm Quốc Dũng', '0966554433', NULL, '2024-02-10', '2025-02-10', 'Pin phồng, máy tắt đột ngột khi dùng', '2026-11-20 08:30:00', 4, 'Hết hạn bảo hành, đề nghị khách trả chi phí sửa chữa');
+
+-- --------------------------------------------------------
+-- Table: danhgia
+-- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `danhgia` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mathang_id` int(11) NOT NULL,
+  `nguoidung_id` int(11) NOT NULL,
+  `donhang_id` int(11) NOT NULL,
+  `sosao` tinyint(4) NOT NULL,
+  `noidung` text COLLATE utf8_unicode_ci NOT NULL,
+  `ngaydanhgia` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `trangthai` tinyint(4) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `mathang_id` (`mathang_id`),
+  KEY `nguoidung_id` (`nguoidung_id`),
+  KEY `donhang_id` (`donhang_id`),
+  CONSTRAINT `danhgia_ibfk_1` FOREIGN KEY (`mathang_id`) REFERENCES `mathang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `danhgia_ibfk_2` FOREIGN KEY (`nguoidung_id`) REFERENCES `nguoidung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `danhgia_ibfk_3` FOREIGN KEY (`donhang_id`) REFERENCES `donhang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `danhgia` (`id`, `mathang_id`, `nguoidung_id`, `donhang_id`, `sosao`, `noidung`, `ngaydanhgia`, `trangthai`) VALUES
+(1, 1, 4, 1, 5, 'Máy đẹp xuất sắc, màu Titan Sa Mạc bên ngoài sang hơn trong ảnh nhiều. Màn hình 120Hz siêu mượt, pin trâu dùng cả ngày không hết. Đóng gói rất kỹ càng, giao hàng nhanh 2h đúng hẹn!', '2024-10-02 15:30:00', 1),
+(2, 2, 5, 3, 5, 'Sản phẩm chính hãng VN/A nguyên seal, kích hoạt bảo hành chuẩn 12 tháng tại Thảo Mobile. Rất hài lòng về chất lượng dịch vụ và tư vấn nhiệt tình.', '2024-10-12 11:15:00', 1);
 
 COMMIT;
 

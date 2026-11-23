@@ -12,7 +12,7 @@ if(empty($ds_hero_banner)){
         array("duongdan" => "h4.jpg", "tieude" => "Siêu phẩm công nghệ mới"),
         array("duongdan" => "h5.jpg", "tieude" => "Lễ hội mua sắm giảm sốc"),
         array("duongdan" => "h6.jpg", "tieude" => "Ưu đãi trả góp 0%"),
-        array("duongdan" => "h7.jpg", "tieude" => "Thu cũ đổi mới trợ giá")
+        array("duongdan" => "h7.jpg", "tieude" => "Ưu đãi siêu phẩm giá sốc")
     );
 }
 ?>

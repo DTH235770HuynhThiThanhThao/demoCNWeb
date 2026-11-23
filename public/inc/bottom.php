@@ -39,11 +39,11 @@
                         
                         <div class="footer-contact-item">
                             <i class="bi bi-geo-alt-fill"></i>
-                            <span><b>Địa chỉ:</b> <?php echo htmlspecialchars($diachi_shop ?? "18 Ung Văn Khiêm, phường Đông Xuyên, TP Long Xuyên, An Giang"); ?></span>
+                            <span><b>Địa chỉ:</b> <?php echo htmlspecialchars($diachi_shop ?? "Số 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp"); ?></span>
                         </div>
                         <div class="footer-contact-item">
                             <i class="bi bi-telephone-fill"></i>
-                            <span><b>Điện thoại:</b> <a href="tel:<?php echo preg_replace('/[^0-9]/', '', $hotline_shop ?? "0763841190"); ?>" class="text-white text-decoration-none"><?php echo htmlspecialchars($hotline_shop ?? "076 3841190"); ?></a> (Hỗ trợ <?php echo htmlspecialchars($giomocua_shop ?? "8:00 - 21:30"); ?>)</span>
+                            <span><b>Điện thoại:</b> <a href="tel:<?php echo preg_replace('/[^0-9]/', '', $hotline_shop ?? "0357185269"); ?>" class="text-white text-decoration-none"><?php echo htmlspecialchars($hotline_shop ?? "0357185269"); ?></a> (Hỗ trợ <?php echo htmlspecialchars($giomocua_shop ?? "8:00 - 21:30"); ?>)</span>
                         </div>
                         <div class="footer-contact-item">
                             <i class="bi bi-envelope-fill"></i>

@@ -21,9 +21,10 @@ if(!isset($thongtin_cuahang)){
 }
 $ten_shop = !empty($thongtin_cuahang["tencuahang"]) ? $thongtin_cuahang["tencuahang"] : "Thảo Mobile";
 $hotline_shop = !empty($thongtin_cuahang["sodienthoai"]) ? $thongtin_cuahang["sodienthoai"] : "0357185269";
-$slogan_shop = !empty($thongtin_cuahang["slogan"]) ? $thongtin_cuahang["slogan"] : "Thu cũ đổi mới trợ giá đến 2 triệu • Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng";
+$slogan_shop = !empty($thongtin_cuahang["slogan"]) ? $thongtin_cuahang["slogan"] : "Giao nhanh 2H miễn phí • Bảo hành chính hãng 12 tháng";
+$slogan_shop = trim(str_ireplace(array("Thu cũ đổi mới trợ giá đến 2 triệu • ", "Thu cũ đổi mới trợ giá đến 2 triệu •", "Thu cũ đổi mới • "), "", $slogan_shop));
 $email_shop = !empty($thongtin_cuahang["email"]) ? $thongtin_cuahang["email"] : "thaohuynh1092005@gmail.com";
-$diachi_shop = !empty($thongtin_cuahang["diachi"]) ? $thongtin_cuahang["diachi"] : "570, ấp An Hòa, xã Lai Vung. tỉnh Đồng Tháp";
+$diachi_shop = !empty($thongtin_cuahang["diachi"]) ? $thongtin_cuahang["diachi"] : "Số 570, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp";
 $giomocua_shop = !empty($thongtin_cuahang["giomocua"]) ? $thongtin_cuahang["giomocua"] : "08:00 - 21:30 (Tất cả các ngày trong tuần)";
 
 // Lấy thông tin Logo cửa hàng từ bảng hinhanh
