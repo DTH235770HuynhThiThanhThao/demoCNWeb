@@ -1,11 +1,22 @@
 <?php include("../inc/top.php"); ?>
+<?php 
+$from_bienthe = (isset($_GET["from"]) && $_GET["from"] === "bienthe"); 
+$url_from_param = $from_bienthe ? "&from=bienthe" : "";
+?>
 
 <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
 	<div>
-		<a href="index.php" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
-			<i class="align-middle" data-feather="arrow-left"></i>
-			<span>Trở về danh sách mặt hàng</span>
-		</a>
+		<?php if($from_bienthe): ?>
+			<a href="index.php?action=bienthe&id=<?= $m['id'] ?>" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
+				<i class="align-middle" data-feather="arrow-left"></i>
+				<span>← Trở về cấu hình biến thể</span>
+			</a>
+		<?php else: ?>
+			<a href="index.php" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
+				<i class="align-middle" data-feather="arrow-left"></i>
+				<span>Trở về danh sách mặt hàng</span>
+			</a>
+		<?php endif; ?>
 	</div>
 	<div class="d-flex align-items-center gap-2">
 		<a href="index.php?action=bienthe&id=<?= $m['id'] ?>" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1">
@@ -120,7 +131,7 @@ if(!empty($m["thuvienanh"])){
 							<div class="col">
 								<div class="card h-100 border text-center p-2 shadow-sm position-relative">
 									<!-- Nút Xóa ảnh phụ -->
-									<a href="index.php?action=xoaanhmau&id=<?= $m['id'] ?>&file=<?= urlencode($file_anh) ?>" 
+									<a href="index.php?action=xoaanhmau&id=<?= $m['id'] ?>&file=<?= urlencode($file_anh) ?><?= $url_from_param ?>" 
 									   class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 rounded-circle p-0 d-flex align-items-center justify-content-center" 
 									   style="width: 26px; height: 26px; line-height: 1;" 
 									   onclick="return confirm('Bạn có chắc muốn xóa ảnh <?= htmlspecialchars($file_anh) ?> khỏi thư viện?');" 
@@ -169,6 +180,9 @@ if(!empty($m["thuvienanh"])){
 				<form method="post" action="index.php" enctype="multipart/form-data">
 					<input type="hidden" name="action" value="themanhmau">
 					<input type="hidden" name="txtid" value="<?= $m["id"] ?>">
+					<?php if($from_bienthe): ?>
+						<input type="hidden" name="from" value="bienthe">
+					<?php endif; ?>
 
 					<div class="mb-3">
 						<label class="form-label fw-bold text-dark">Chọn file ảnh từ máy tính:</label>

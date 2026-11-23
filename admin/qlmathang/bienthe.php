@@ -8,7 +8,7 @@
 		</a>
 	</div>
 	<div class="d-flex align-items-center gap-2">
-		<a href="index.php?action=anhmau&id=<?= $m['id'] ?>" class="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1">
+		<a href="index.php?action=anhmau&id=<?= $m['id'] ?>&from=bienthe" class="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1">
 			<i class="align-middle" data-feather="image"></i>
 			<span>Quản lý ảnh màu</span>
 		</a>
@@ -18,6 +18,18 @@
 		</a>
 	</div>
 </div>
+
+<?php if(isset($_GET["msg"]) && $_GET["msg"] === "saved"): ?>
+	<div class="alert alert-dismissible fade show d-flex align-items-center justify-content-between mb-3" 
+	     style="background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; border-radius: 10px; padding: 12px 16px;" 
+	     role="alert">
+		<div class="d-flex align-items-center">
+			<i class="bi bi-check-circle-fill me-2" data-feather="check-circle"></i>
+			<strong>Đã lưu cấu hình biến thể thành công!</strong>
+		</div>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="position: static; padding: 0;"></button>
+	</div>
+<?php endif; ?>
 
 <!-- Thẻ thông tin nhanh mặt hàng -->
 <div class="card border-0 shadow-sm mb-4">

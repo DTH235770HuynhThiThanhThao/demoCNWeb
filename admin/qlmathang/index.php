@@ -195,8 +195,10 @@ switch($action){
 			$phienban = isset($_POST["txtphienban"]) ? trim($_POST["txtphienban"]) : null;
 			$mausac = isset($_POST["txtmausac"]) ? trim($_POST["txtmausac"]) : null;
 			$mh->capnhatbienthe($id, $phienban, $mausac);
+			header("Location: index.php?action=bienthe&id=" . $id . "&msg=saved");
+			exit();
 		}
-		header("location:index.php?msg=bienthe_ok");
+		header("location:index.php");
 		exit();
 
 	// Quản lý nhanh Thư viện ảnh màu
@@ -214,6 +216,7 @@ switch($action){
 	case "themanhmau":
 		if(isset($_POST["txtid"])){
 			$id = (int)$_POST["txtid"];
+			$from = (isset($_POST["from"]) && $_POST["from"] === "bienthe") ? "&from=bienthe" : "";
 			$m = $mh->laymathangtheoid($id);
 			$ds_thuvien = array();
 			if(!empty($m["thuvienanh"])){
@@ -242,7 +245,7 @@ switch($action){
 
 			$thuvienanh_moi = !empty($ds_thuvien) ? implode(", ", $ds_thuvien) : null;
 			$mh->capnhatthuvienanh($id, $thuvienanh_moi);
-			header("location:index.php?action=anhmau&id=" . $id . "&msg=them_ok");
+			header("Location: index.php?action=anhmau&id=" . $id . $from . "&msg=them_ok");
 			exit();
 		}
 		header("location:index.php");
@@ -251,6 +254,7 @@ switch($action){
 	case "xoaanhmau":
 		if(isset($_GET["id"]) && isset($_GET["file"])){
 			$id = (int)$_GET["id"];
+			$from = (isset($_GET["from"]) && $_GET["from"] === "bienthe") ? "&from=bienthe" : "";
 			$file_xoa = trim($_GET["file"]);
 			$m = $mh->laymathangtheoid($id);
 			$ds_thuvien = array();
@@ -265,7 +269,7 @@ switch($action){
 			}
 			$thuvienanh_moi = !empty($ds_thuvien) ? implode(", ", $ds_thuvien) : null;
 			$mh->capnhatthuvienanh($id, $thuvienanh_moi);
-			header("location:index.php?action=anhmau&id=" . $id . "&msg=xoa_ok");
+			header("Location: index.php?action=anhmau&id=" . $id . $from . "&msg=xoa_ok");
 			exit();
 		}
 		header("location:index.php");
