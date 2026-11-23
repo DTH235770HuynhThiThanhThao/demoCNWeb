@@ -19,11 +19,15 @@ class DANHMUC{
         $this->tendanhmuc = $value;
     }
 
-    // Lấy danh sách
+    // Lấy danh sách kèm số lượng mặt hàng
     public function laydanhmuc(){
         $dbcon = DATABASE::connect();
         try{
-            $sql = "SELECT * FROM danhmuc";
+            $sql = "SELECT d.*, COUNT(m.id) AS somathang 
+                    FROM danhmuc d 
+                    LEFT JOIN mathang m ON d.id = m.danhmuc_id 
+                    GROUP BY d.id 
+                    ORDER BY d.id ASC";
             $cmd = $dbcon->prepare($sql);
             $cmd->execute();
             $result = $cmd->fetchAll();
@@ -33,6 +37,22 @@ class DANHMUC{
             $error_message = $e->getMessage();
             echo "<p>Lỗi truy vấn: $error_message</p>";
             exit();
+        }
+    }
+
+    // Đếm số lượng điện thoại thuộc danh mục
+    public function demsoluongmathang($danhmuc_id){
+        $dbcon = DATABASE::connect();
+        try{
+            $sql = "SELECT COUNT(*) as tong FROM mathang WHERE danhmuc_id=:id";
+            $cmd = $dbcon->prepare($sql);
+            $cmd->bindValue(":id", (int)$danhmuc_id, PDO::PARAM_INT);
+            $cmd->execute();
+            $row = $cmd->fetch();
+            return (int)($row["tong"] ?? 0);
+        }
+        catch(PDOException $e){
+            return 0;
         }
     }
 

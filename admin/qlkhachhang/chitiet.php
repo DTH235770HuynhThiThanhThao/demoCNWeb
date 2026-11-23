@@ -8,12 +8,31 @@ $trangthai = (int)($khachhang["trangthai"] ?? 1);
 $firstChar = mb_strtoupper(mb_substr(trim($khachhang["hoten"] ?? 'K'), 0, 1, "UTF-8"), "UTF-8");
 ?>
 
+<style>
+.breadcrumb-custom {
+    list-style: none !important;
+}
+.breadcrumb-link {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+}
+.breadcrumb-link:hover {
+    color: #d70018 !important;
+}
+</style>
+
 <div class="row align-items-center mb-3">
     <div class="col-12">
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-transparent p-0 mb-2">
-                <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none text-muted">Quản lý khách hàng</a></li>
-                <li class="breadcrumb-item active fw-semibold text-danger" aria-current="page">Chi tiết khách hàng</li>
+            <ol class="breadcrumb breadcrumb-custom d-flex flex-row align-items-center gap-2 list-unstyled p-0 mb-2 small">
+                <li class="d-inline-flex align-items-center">
+                    <a href="index.php" class="breadcrumb-link text-secondary text-decoration-none">Quản lý khách hàng</a>
+                </li>
+                <li class="d-inline-flex align-items-center text-muted" aria-hidden="true">/</li>
+                <li class="d-inline-flex align-items-center fw-semibold" style="color: #d70018;" aria-current="page">
+                    Chi tiết khách hàng
+                </li>
             </ol>
         </nav>
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
