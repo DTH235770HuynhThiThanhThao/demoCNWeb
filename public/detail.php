@@ -94,17 +94,27 @@ $tong_dg = !empty($thongke_danhgia["tongso"]) ? (int)$thongke_danhgia["tongso"] 
 
 $danh_sach_phienban = array();
 
-// Nếu Admin đã nhập trường phienban (ví dụ: "128GB, 256GB, 512GB")
+// Nếu Admin đã nhập trường phienban (hỗ trợ cả "128GB, 256GB" và "256GB:29990000, 512GB:34990000, 1TB:40990000")
 if(!empty($mhct["phienban"])){
     $arr_pb_raw = explode(",", $mhct["phienban"]);
     foreach($arr_pb_raw as $pb_item){
         $pb_item = trim($pb_item);
         if(!empty($pb_item)){
-            $is_cur = (strcasecmp($pb_item, $dungluong_hientai) === 0);
-            $danh_sach_phienban[$pb_item] = array(
+            $dung_luong = $pb_item;
+            $gia_pb = (float)$mhct["giaban"];
+            // Hỗ trợ định dạng DungLượng:GiáBán (ví dụ: "256GB:29990000")
+            if(strpos($pb_item, ":") !== false){
+                $parts = explode(":", $pb_item);
+                $dung_luong = trim($parts[0]);
+                if(isset($parts[1]) && is_numeric(trim($parts[1]))){
+                    $gia_pb = (float)trim($parts[1]);
+                }
+            }
+            $is_cur = (strcasecmp($dung_luong, $dungluong_hientai) === 0);
+            $danh_sach_phienban[$dung_luong] = array(
                 "id" => $is_cur ? $mhct["id"] : 0,
-                "dungluong" => $pb_item,
-                "giaban" => (float)$mhct["giaban"],
+                "dungluong" => $dung_luong,
+                "giaban" => $gia_pb,
                 "is_current" => $is_cur
             );
         }
@@ -128,25 +138,32 @@ if(!empty($mhct["phienban"])){
     );
 }
 
-// Tìm liên kết sang các sản phẩm cùng dòng khác dung lượng trong danh mục nếu có
-$dong_may_base = trim(preg_replace('/(\d+\s*(?:GB|TB)).*$/i', '', $ten_may_hientai));
-if(!empty($dong_may_base) && !empty($mathang)){
-    foreach($mathang as $item_mh){
-        if($item_mh["danhmuc_id"] == $mhct["danhmuc_id"] && $item_mh["id"] != $mhct["id"]){
-            $ten_khac = $item_mh["tenmathang"];
-            if(stripos($ten_khac, $dong_may_base) === 0){
-                if(preg_match('/(\d+\s*(?:GB|TB))/i', $ten_khac, $match_khac)){
-                    $dl_khac = strtoupper(str_replace(' ', '', $match_khac[1]));
-                    if(isset($danh_sach_phienban[$dl_khac])){
-                        $danh_sach_phienban[$dl_khac]["id"] = $item_mh["id"];
-                        $danh_sach_phienban[$dl_khac]["giaban"] = (float)$item_mh["giaban"];
-                    } elseif(empty($mhct["phienban"])) {
-                        $danh_sach_phienban[$dl_khac] = array(
-                            "id" => $item_mh["id"],
-                            "dungluong" => $dl_khac,
-                            "giaban" => (float)$item_mh["giaban"],
-                            "is_current" => false
-                        );
+// Nếu phiên bản đang active có giá riêng, gán giá bán mặc định bằng giá phiên bản đó
+foreach($danh_sach_phienban as $pb){
+    if($pb["is_current"] && $pb["giaban"] > 0){
+        $mhct["giaban"] = $pb["giaban"];
+        break;
+    }
+}
+
+// Tìm liên kết sang các sản phẩm cùng dòng khác dung lượng trong danh mục nếu Admin KHÔNG cấu hình phienban
+if(empty($mhct["phienban"])){
+    $dong_may_base = trim(preg_replace('/(\d+\s*(?:GB|TB)).*$/i', '', $ten_may_hientai));
+    if(!empty($dong_may_base) && !empty($mathang)){
+        foreach($mathang as $item_mh){
+            if($item_mh["danhmuc_id"] == $mhct["danhmuc_id"] && $item_mh["id"] != $mhct["id"]){
+                $ten_khac = $item_mh["tenmathang"];
+                if(stripos($ten_khac, $dong_may_base) === 0){
+                    if(preg_match('/(\d+\s*(?:GB|TB))/i', $ten_khac, $match_khac)){
+                        $dl_khac = strtoupper(str_replace(' ', '', $match_khac[1]));
+                        if(!isset($danh_sach_phienban[$dl_khac])){
+                            $danh_sach_phienban[$dl_khac] = array(
+                                "id" => $item_mh["id"],
+                                "dungluong" => $dl_khac,
+                                "giaban" => (float)$item_mh["giaban"],
+                                "is_current" => false
+                            );
+                        }
                     }
                 }
             }
@@ -154,10 +171,12 @@ if(!empty($dong_may_base) && !empty($mathang)){
     }
 }
 
-// Tính % giảm giá gốc
+// Tính % giảm giá gốc và tỷ lệ giảm giá
 $giamgia_pt = 0;
+$ti_le_giam_gia = 0;
 if($mhct["giagoc"] > $mhct["giaban"] && $mhct["giagoc"] > 0){
-    $giamgia_pt = round((($mhct["giagoc"] - $mhct["giaban"]) / $mhct["giagoc"]) * 100);
+    $ti_le_giam_gia = ($mhct["giagoc"] - $mhct["giaban"]) / $mhct["giagoc"];
+    $giamgia_pt = round($ti_le_giam_gia * 100);
 }
 
 // Xử lý thông số kỹ thuật từ cột mota
@@ -277,9 +296,7 @@ if(!empty($mhct["mota"])){
             <div class="price-hero-box d-flex flex-wrap align-items-baseline justify-content-between">
                 <div>
                     <span class="price-main" id="gia-ban-hien-tai"><?php echo number_format($mhct["giaban"]); ?>đ</span>
-                    <?php if($mhct["giaban"] != $mhct["giagoc"] && $mhct["giagoc"] > 0): ?>
-                        <span class="price-orig" id="gia-goc-hien-tai"><?php echo number_format($mhct["giagoc"]); ?>đ</span>
-                    <?php endif; ?>
+                    <span class="price-orig" id="gia-goc-hien-tai" <?php if($mhct["giaban"] >= $mhct["giagoc"] || $mhct["giagoc"] <= 0) echo 'style="display: none;"'; ?>><?php echo number_format($mhct["giagoc"]); ?>đ</span>
                 </div>
                 <div>
                     <?php if($giamgia_pt > 0): ?>
@@ -287,7 +304,7 @@ if(!empty($mhct["mota"])){
                             Tiết kiệm <?php echo $giamgia_pt; ?>%
                         </span>
                     <?php else: ?>
-                        <span class="badge bg-danger fs-6 px-3 py-2 rounded-pill shadow-sm">
+                        <span class="badge bg-danger fs-6 px-3 py-2 rounded-pill shadow-sm" id="badge-giam-gia" style="display: none;">
                             Giá tốt nhất
                         </span>
                     <?php endif; ?>
@@ -311,7 +328,7 @@ if(!empty($mhct["mota"])){
                                     <div class="fw-bold fs-6"><?php echo htmlspecialchars($pb["dungluong"]); ?></div>
                                     <small class="text-danger fw-semibold capacity-price"><?php echo number_format($pb["giaban"]); ?>đ</small>
                                 </div>
-                            <?php elseif(!empty($pb["id"]) && $pb["id"] != $mhct["id"]): ?>
+                            <?php elseif(empty($mhct["phienban"]) && !empty($pb["id"]) && $pb["id"] != $mhct["id"]): ?>
                                 <a href="index.php?action=detail&id=<?php echo $pb["id"]; ?>" class="text-decoration-none d-block">
                                     <div class="option-capacity-card">
                                         <div class="fw-bold fs-6 text-dark"><?php echo htmlspecialchars($pb["dungluong"]); ?></div>
@@ -814,18 +831,47 @@ function doiAnhChinh(el, srcAnh) {
     });
 }
 
-// 2. Chọn phiên bản dung lượng (Cập nhật giá bán)
+// Tỷ lệ giảm giá và giá gốc ban đầu phục vụ tính toán JavaScript
+var tiLeGiamGia = <?php echo json_encode((float)($ti_le_giam_gia ?? 0)); ?>;
+var giaGocBanDau = <?php echo json_encode((float)($mhct["giagoc"] ?? 0)); ?>;
+var giaBanBanDau = <?php echo json_encode((float)($mhct["giaban"] ?? 0)); ?>;
+
+// 2. Chọn phiên bản dung lượng (Cập nhật giá bán, giá gốc và màu sắc)
 function chonPhienBan(el, giaMoi, dungLuong) {
     document.querySelectorAll('.option-capacity-card').forEach(function(item) {
         item.classList.remove('active');
     });
     el.classList.add('active');
 
+    // 1. Cập nhật giá bán chính
     var giaHienTai = document.getElementById('gia-ban-hien-tai');
     if (giaHienTai) {
         giaHienTai.innerText = dinhDangTien(giaMoi);
     }
 
+    // 2. Cập nhật giá gốc gạch ngang theo tỷ lệ giảm giá hiện tại
+    var giaGocHienTai = document.getElementById('gia-goc-hien-tai');
+    var badgeGiamGia = document.getElementById('badge-giam-gia');
+    if (giaGocHienTai) {
+        if (tiLeGiamGia > 0 && tiLeGiamGia < 1) {
+            // Tính giá gốc tương ứng: giaMoi / (1 - tiLeGiamGia), làm tròn đến 10.000đ
+            var giaGocMoi = Math.round((giaMoi / (1 - tiLeGiamGia)) / 10000) * 10000;
+            giaGocHienTai.innerText = dinhDangTien(giaGocMoi);
+            giaGocHienTai.style.display = '';
+            if (badgeGiamGia) {
+                badgeGiamGia.innerText = 'Tiết kiệm ' + Math.round(tiLeGiamGia * 100) + '%';
+                badgeGiamGia.style.display = '';
+            }
+        } else if (giaGocBanDau > giaBanBanDau) {
+            var chenhLech = giaGocBanDau - giaBanBanDau;
+            giaGocHienTai.innerText = dinhDangTien(giaMoi + chenhLech);
+            giaGocHienTai.style.display = '';
+        } else {
+            giaGocHienTai.style.display = 'none';
+        }
+    }
+
+    // 3. Cập nhật giá hiển thị trên từng ô màu sắc tương ứng
     document.querySelectorAll('.color-price-display').forEach(function(item) {
         item.innerText = dinhDangTien(giaMoi);
     });

@@ -279,25 +279,54 @@ INSERT INTO `mathang` (`id`, `tenmathang`, `mota`, `giagoc`, `giaban`, `soluongt
  '<p><strong>Màn hình:</strong> 6.52 inch IPS LCD, 60Hz</p><p><strong>Chip:</strong> MediaTek Helio G36</p><p><strong>RAM/ROM:</strong> 2GB / 32GB</p><p><strong>Camera:</strong> 8MP chính + 0.08MP AI | Trước 5MP</p><p><strong>Pin:</strong> 5.000 mAh, sạc 10W</p>',
  2490000, 1790000, 80, 'images/products/x10.jpg', 4, 1400, 130);
 
--- Cập nhật dữ liệu mẫu về Phiên bản (dung lượng), Màu sắc và Thư viện ảnh màu cho các dòng máy nổi bật
-UPDATE `mathang` SET `phienban` = '128GB, 256GB, 512GB, 1TB', `mausac` = 'Titan Sa Mạc, Titan Tự Nhiên, Titan Đen, Titan Trắng', `thuvienanh` = 'a1.jpg, a2.jpg, a3.jpg, a4.jpg' WHERE `id` = 1;
-UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Titan Tự Nhiên, Titan Xanh, Titan Đen', `thuvienanh` = 'a2.jpg, a3.jpg, a4.jpg' WHERE `id` = 2;
-UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Titan Sa Mạc, Titan Tự Nhiên, Titan Trắng, Titan Đen', `thuvienanh` = 'a3.jpg, a1.jpg, a5.jpg, a6.jpg' WHERE `id` = 3;
-UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Titan Xanh, Titan Tự Nhiên, Titan Trắng', `thuvienanh` = 'a4.jpg, a6.jpg, a5.jpg' WHERE `id` = 4;
-UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Titan Trắng, Titan Xanh, Titan Tự Nhiên', `thuvienanh` = 'a5.jpg, a4.jpg, a6.jpg' WHERE `id` = 5;
-UPDATE `mathang` SET `phienban` = '128GB, 256GB, 512GB', `mausac` = 'Titan Tự Nhiên, Titan Xanh, Titan Đen, Titan Trắng', `thuvienanh` = 'a6.jpg, a4.jpg, a1.jpg, a5.jpg' WHERE `id` = 6;
-UPDATE `mathang` SET `phienban` = '128GB, 256GB, 512GB', `mausac` = 'Xanh Dương, Hồng, Vàng, Đen', `thuvienanh` = 'a7.jpg, a8.jpg, a9.jpg, a10.jpg' WHERE `id` = 7;
-UPDATE `mathang` SET `phienban` = '128GB, 256GB, 512GB, 1TB', `mausac` = 'Tím Deep Purple, Vàng Gold, Bạc Silver, Đen Space Black', `thuvienanh` = 'a8.jpg, a9.jpg, a10.jpg, a1.jpg' WHERE `id` = 8;
-UPDATE `mathang` SET `phienban` = '256GB, 512GB', `mausac` = 'Xanh Botanic, Đen Phantom, Kem Cotton, Tím Lilac', `thuvienanh` = 's1.jpg, s2.jpg, s3.jpg, s4.jpg' WHERE `id` = 11;
-UPDATE `mathang` SET `phienban` = '256GB, 512GB, 1TB', `mausac` = 'Xanh Icy, Đen Phantom, Kem Ivory', `thuvienanh` = 's2.jpg, s1.jpg, s3.jpg' WHERE `id` = 12;
-UPDATE `mathang` SET `phienban` = '256GB, 512GB', `mausac` = 'Xanh Mint, Tím Fancy, Xám Indie, Kem Latte', `thuvienanh` = 's3.jpg, s4.jpg, s5.jpg, s6.jpg' WHERE `id` = 13;
-UPDATE `mathang` SET `phienban` = '256GB, 512GB', `mausac` = 'Xanh Botanic, Kem Cotton, Đen Phantom', `thuvienanh` = 's4.jpg, s5.jpg, s1.jpg' WHERE `id` = 14;
-UPDATE `mathang` SET `phienban` = '256GB', `mausac` = 'Tím Ánh Sao, Đen Khói', `thuvienanh` = 'o1.jpg, o2.jpg' WHERE `id` = 21;
-UPDATE `mathang` SET `phienban` = '256GB, 512GB', `mausac` = 'Trắng Gốm, Đen Men', `thuvienanh` = 'o2.jpg, o1.jpg' WHERE `id` = 22;
-UPDATE `mathang` SET `phienban` = '256GB', `mausac` = 'Tím Thạch Anh, Xám Ánh Trăng', `thuvienanh` = 'o3.jpg, o4.jpg' WHERE `id` = 23;
-UPDATE `mathang` SET `phienban` = '128GB, 256GB', `mausac` = 'Xanh Tuyết Sơn, Đen Cổ Điển, Xanh Đồng Cỏ', `thuvienanh` = 'x1.jpg, x2.jpg, x3.jpg' WHERE `id` = 31;
-UPDATE `mathang` SET `phienban` = '128GB, 256GB', `mausac` = 'Hồng Lite, Xanh Lite, Đen Lite', `thuvienanh` = 'x2.jpg, x1.jpg, x3.jpg' WHERE `id` = 32;
-UPDATE `mathang` SET `phienban` = '128GB, 256GB', `mausac` = 'Tím Ánh Sao, Xanh Bầu Trời, Đen Nửa Đêm', `thuvienanh` = 'x3.jpg, x4.jpg, x5.jpg' WHERE `id` = 33;
+-- Cập nhật dữ liệu mẫu về Phiên bản (kèm giá bán riêng), Màu sắc và Thư viện ảnh thật 100% (không ghép ảnh dòng máy khác)
+-- 1. APPLE (id = 1..10)
+UPDATE `mathang` SET `phienban` = '256GB:29990000, 512GB:34990000, 1TB:40990000', `mausac` = 'Đỏ Burgundy, Băng Thanh, Bạc, Đen', `thuvienanh` = 'a1.jpg, iphone-18-pro-max-bangthanh.jpg, iphone-18-pro-max-bac.jpg, iphone-18-pro-max-den.jpg' WHERE `id` = 1;
+UPDATE `mathang` SET `phienban` = '256GB:22990000, 512GB:27990000, 1TB:33990000', `mausac` = 'Cam Vũ Trụ, Bạc, Xanh Đen', `thuvienanh` = 'a2.jpg, iphone-17-pro-max.jpg, iphone-17-pro-max-xanh đen.jpg' WHERE `id` = 2;
+UPDATE `mathang` SET `phienban` = '256GB:28990000, 512GB:33990000, 1TB:39990000', `mausac` = 'Titan Sa Mạc, Titan Tự Nhiên, Titan Trắng, Titan Đen', `thuvienanh` = 'a3.jpg, 16promax-titan-tunhien.jpg, 16promax-titan-trag.jpg, apple-iphone-16-pro-max-512gb-đen.jpg' WHERE `id` = 3;
+UPDATE `mathang` SET `phienban` = '256GB:26990000, 512GB:31990000, 1TB:37990000', `mausac` = 'Titan Xanh', `thuvienanh` = 'a4.jpg' WHERE `id` = 4;
+UPDATE `mathang` SET `phienban` = '256GB:31990000, 512GB:36990000, 1TB:42990000', `mausac` = 'Titan Trắng', `thuvienanh` = 'a5.jpg' WHERE `id` = 5;
+UPDATE `mathang` SET `phienban` = '128GB:20990000, 256GB:23990000, 512GB:28990000, 1TB:33990000', `mausac` = 'Titan Tự Nhiên', `thuvienanh` = 'a6.jpg' WHERE `id` = 6;
+UPDATE `mathang` SET `phienban` = '128GB:20990000, 256GB:23990000, 512GB:28990000', `mausac` = 'Xanh Dương', `thuvienanh` = 'a7.jpg' WHERE `id` = 7;
+UPDATE `mathang` SET `phienban` = '128GB:21990000, 256GB:24990000, 512GB:29990000, 1TB:34990000', `mausac` = 'Tím Deep Purple', `thuvienanh` = 'a8.jpg' WHERE `id` = 8;
+UPDATE `mathang` SET `phienban` = '128GB:18990000, 256GB:21990000, 512GB:26990000', `mausac` = 'Xanh Dương', `thuvienanh` = 'a9.jpg' WHERE `id` = 9;
+UPDATE `mathang` SET `phienban` = '128GB:16990000, 256GB:19990000, 512GB:24990000', `mausac` = 'Tím, Xanh Dương, Đen, Đỏ, Trắng, Vàng', `thuvienanh` = 'a10.jpg, 14-xanh.jpg, 14-den.jpg, 14-do.jpg, 14-trang.jpg, 14-vang.jpg' WHERE `id` = 10;
+
+-- 2. SAMSUNG (id = 11..20)
+UPDATE `mathang` SET `phienban` = '256GB:15990000, 512GB:18990000, 1TB:23990000', `mausac` = 'Xanh Botanic', `thuvienanh` = 's1.jpg' WHERE `id` = 11;
+UPDATE `mathang` SET `phienban` = '256GB:36990000, 512GB:40990000, 1TB:46990000', `mausac` = 'Xanh Icy', `thuvienanh` = 's2.jpg' WHERE `id` = 12;
+UPDATE `mathang` SET `phienban` = '256GB:19990000, 512GB:22990000', `mausac` = 'Xanh Mint', `thuvienanh` = 's3.jpg' WHERE `id` = 13;
+UPDATE `mathang` SET `phienban` = '256GB:14490000, 512GB:16990000', `mausac` = 'Kem Cotton', `thuvienanh` = 's4.jpg' WHERE `id` = 14;
+UPDATE `mathang` SET `phienban` = '128GB:11990000, 256GB:13490000', `mausac` = 'Đen Phantom', `thuvienanh` = 's5.jpg' WHERE `id` = 15;
+UPDATE `mathang` SET `phienban` = '128GB:10990000, 256GB:12490000', `mausac` = 'Xanh Mint', `thuvienanh` = 's6.jpg' WHERE `id` = 16;
+UPDATE `mathang` SET `phienban` = '128GB:17990000, 256GB:19990000, 512GB:22990000', `mausac` = 'Đỏ Burgundy', `thuvienanh` = 's7.jpg' WHERE `id` = 17;
+UPDATE `mathang` SET `phienban` = '256GB:24990000, 512GB:27990000', `mausac` = 'Xám Titan', `thuvienanh` = 's8.jpg' WHERE `id` = 18;
+UPDATE `mathang` SET `phienban` = '128GB:8490000, 256GB:9990000', `mausac` = 'Xanh Dũng Mãnh', `thuvienanh` = 's9.jpg' WHERE `id` = 19;
+UPDATE `mathang` SET `phienban` = '128GB:7990000, 256GB:8990000', `mausac` = 'Bạc Kiêu Hãnh', `thuvienanh` = 's10.jpg' WHERE `id` = 20;
+
+-- 3. OPPO (id = 21..30)
+UPDATE `mathang` SET `phienban` = '256GB:17990000', `mausac` = 'Tím Ánh Sao', `thuvienanh` = 'o1.jpg' WHERE `id` = 21;
+UPDATE `mathang` SET `phienban` = '256GB:19990000, 512GB:22990000', `mausac` = 'Trắng Gốm', `thuvienanh` = 'o2.jpg' WHERE `id` = 22;
+UPDATE `mathang` SET `phienban` = '256GB:17990000, 512GB:20990000', `mausac` = 'Tím Thạch Anh', `thuvienanh` = 'o3.jpg' WHERE `id` = 23;
+UPDATE `mathang` SET `phienban` = '256GB:13990000', `mausac` = 'Xám Ánh Trăng', `thuvienanh` = 'o4.jpg' WHERE `id` = 24;
+UPDATE `mathang` SET `phienban` = '128GB:9490000, 256GB:10990000', `mausac` = 'Xanh Băng Tuyết', `thuvienanh` = 'o5.jpg' WHERE `id` = 25;
+UPDATE `mathang` SET `phienban` = '256GB:11990000', `mausac` = 'Xanh Men Ngọc', `thuvienanh` = 'o6.jpg' WHERE `id` = 26;
+UPDATE `mathang` SET `phienban` = '128GB:8490000, 256GB:9490000', `mausac` = 'Vàng Hừng Đông', `thuvienanh` = 'o7.jpg' WHERE `id` = 27;
+UPDATE `mathang` SET `phienban` = '256GB:7990000', `mausac` = 'Xanh Mơ Mộng', `thuvienanh` = 'o8.jpg' WHERE `id` = 28;
+UPDATE `mathang` SET `phienban` = '128GB:5190000, 256GB:5990000', `mausac` = 'Xanh Ngọc', `thuvienanh` = 'o9.jpg' WHERE `id` = 29;
+UPDATE `mathang` SET `phienban` = '128GB:4290000', `mausac` = 'Đen Dạ Quang', `thuvienanh` = 'o10.jpg' WHERE `id` = 30;
+
+-- 4. XIAOMI (id = 31..40)
+UPDATE `mathang` SET `phienban` = '256GB:11990000, 512GB:13490000', `mausac` = 'Xanh Tuyết Sơn', `thuvienanh` = 'x1.jpg' WHERE `id` = 31;
+UPDATE `mathang` SET `phienban` = '128GB:7990000, 256GB:8990000', `mausac` = 'Hồng Lite', `thuvienanh` = 'x2.jpg' WHERE `id` = 32;
+UPDATE `mathang` SET `phienban` = '128GB:6490000, 256GB:7490000', `mausac` = 'Tím Ánh Sao', `thuvienanh` = 'x3.jpg' WHERE `id` = 33;
+UPDATE `mathang` SET `phienban` = '128GB:6490000, 256GB:7490000', `mausac` = 'Xanh Bầu Trời', `thuvienanh` = 'x4.jpg' WHERE `id` = 34;
+UPDATE `mathang` SET `phienban` = '256GB:5490000', `mausac` = 'Xanh Ngọc Trai', `thuvienanh` = 'x5.jpg' WHERE `id` = 35;
+UPDATE `mathang` SET `phienban` = '128GB:3990000, 256GB:4590000', `mausac` = 'Xanh Băng Giá', `thuvienanh` = 'x6.jpg' WHERE `id` = 36;
+UPDATE `mathang` SET `phienban` = '128GB:3690000, 256GB:4190000', `mausac` = 'Xám Khoáng Thạch', `thuvienanh` = 'x7.jpg' WHERE `id` = 37;
+UPDATE `mathang` SET `phienban` = '128GB:3290000', `mausac` = 'Bạc Ánh Cực Quang', `thuvienanh` = 'x8.jpg' WHERE `id` = 38;
+UPDATE `mathang` SET `phienban` = '64GB:2490000, 128GB:2890000', `mausac` = 'Xanh Hải Quân', `thuvienanh` = 'x9.jpg' WHERE `id` = 39;
+UPDATE `mathang` SET `phienban` = '32GB:1790000', `mausac` = 'Đen Cổ Điển', `thuvienanh` = 'x10.jpg' WHERE `id` = 40;
 
 -- --------------------------------------------------------
 -- Table: nguoidung

@@ -272,20 +272,23 @@ class MATHANG{
         }
     }
 
-    // Xóa 
+    // Xóa mặt hàng (Bắt lỗi an toàn ràng buộc khóa ngoại với phiếu nhập, đơn hàng, bảo hành)
     public function xoamathang($mathang){
         $dbcon = DATABASE::connect();
         try{
+            $id = is_object($mathang) ? ($mathang->getid() ?? $mathang->id) : (int)$mathang;
             $sql = "DELETE FROM mathang WHERE id=:id";
             $cmd = $dbcon->prepare($sql);
-            $cmd->bindValue(":id", $mathang->id);
+            $cmd->bindValue(":id", $id);
             $result = $cmd->execute();            
             return $result;
         }
         catch(PDOException $e){
-            $error_message = $e->getMessage();
-            echo "<p>Lỗi truy vấn: $error_message</p>";
-            exit();
+            // Mã lỗi 23000 / 1451: Vi phạm ràng buộc khóa ngoại (sản phẩm đang được tham chiếu)
+            if($e->getCode() == '23000' || strpos($e->getMessage(), '1451') !== false){
+                return "in_use";
+            }
+            return false;
         }
     }
 
