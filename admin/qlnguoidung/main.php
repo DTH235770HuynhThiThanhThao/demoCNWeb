@@ -204,27 +204,29 @@
 
                                 <!-- Cột 6: Thao tác -->
                                 <td class="pe-4 text-center">
-                                    <?php if ($isRootAdmin || $isCurrentAdmin): ?>
-                                        <span class="badge text-secondary border px-2 py-1" style="background-color: #f8fafc; font-size: 11px; font-weight: 500;">
-                                            <i class="align-middle me-1" data-feather="shield" style="width: 11px; height: 11px;"></i>Mặc định
-                                        </span>
-                                    <?php else: ?>
-                                        <?php if ($nd["trangthai"] == 1): ?>
-                                            <a href="index.php?action=khoa&trangthai=0&mand=<?= $nd["id"] ?>" 
-                                               class="btn btn-sm btn-outline-danger d-inline-flex align-items-center py-1 px-2" 
-                                               style="border-radius: 8px; font-size: 12px; font-weight: 500;"
-                                               onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản <?= htmlspecialchars($nd['hoten']) ?> không?');">
-                                                <i class="align-middle me-1" data-feather="lock" style="width: 12px; height: 12px;"></i>Khóa
-                                            </a>
+                                    <div class="d-inline-flex align-items-center justify-content-center gap-2">
+                                        <?php if ($isRootAdmin || $isCurrentAdmin): ?>
+                                            <span class="badge text-secondary border px-2 py-1" style="background-color: #f8fafc; font-size: 11px; font-weight: 500;">
+                                                <i class="align-middle me-1" data-feather="shield" style="width: 11px; height: 11px;"></i>Mặc định
+                                            </span>
                                         <?php else: ?>
-                                            <a href="index.php?action=khoa&trangthai=1&mand=<?= $nd["id"] ?>" 
-                                               class="btn btn-sm btn-outline-success d-inline-flex align-items-center py-1 px-2" 
-                                               style="border-radius: 8px; font-size: 12px; font-weight: 500;"
-                                               onclick="return confirm('Bạn có chắc chắn muốn mở khóa kích hoạt tài khoản <?= htmlspecialchars($nd['hoten']) ?> không?');">
-                                                <i class="align-middle me-1" data-feather="unlock" style="width: 12px; height: 12px;"></i>Mở khóa
-                                            </a>
+                                            <?php if ($nd["trangthai"] == 1): ?>
+                                                <a href="index.php?action=khoa&trangthai=0&mand=<?= $nd["id"] ?>" 
+                                                   class="btn btn-sm btn-outline-danger d-inline-flex align-items-center py-1 px-2" 
+                                                   style="border-radius: 8px; font-size: 12px; font-weight: 500;"
+                                                   onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản <?= htmlspecialchars($nd['hoten']) ?> không?');">
+                                                    <i class="align-middle me-1" data-feather="lock" style="width: 12px; height: 12px;"></i>Khóa
+                                                </a>
+                                            <?php else: ?>
+                                                <a href="index.php?action=khoa&trangthai=1&mand=<?= $nd["id"] ?>" 
+                                                   class="btn btn-sm btn-outline-success d-inline-flex align-items-center py-1 px-2" 
+                                                   style="border-radius: 8px; font-size: 12px; font-weight: 500;"
+                                                   onclick="return confirm('Bạn có chắc chắn muốn mở khóa kích hoạt tài khoản <?= htmlspecialchars($nd['hoten']) ?> không?');">
+                                                    <i class="align-middle me-1" data-feather="unlock" style="width: 12px; height: 12px;"></i>Mở khóa
+                                                </a>
+                                            <?php endif; ?>
                                         <?php endif; ?>
-                                    <?php endif; ?>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

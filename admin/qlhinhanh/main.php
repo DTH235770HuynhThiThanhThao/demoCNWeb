@@ -402,7 +402,7 @@
                                 <?php endif; ?>
                             </td>
                             <td class="text-center pe-3">
-                                <div class="d-flex justify-content-center align-items-center gap-1.5 flex-nowrap">
+                                <div class="d-inline-flex align-items-center justify-content-center gap-2 flex-nowrap">
                                     <?php if($item["trangthai"] == 1): ?>
                                         <a href="index.php?action=doitrangthai&id=<?= $item["id"] ?>&trangthai=0" 
                                            class="btn-action-banner" 

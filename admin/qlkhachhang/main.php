@@ -255,7 +255,7 @@ if (!empty($khachhang)) {
 
                             <!-- Thao tác: Xem chi tiết & Khóa / Mở khóa -->
                             <td class="pe-4 text-center text-nowrap">
-                                <div class="d-flex justify-content-center align-items-center gap-1">
+                                <div class="d-inline-flex align-items-center justify-content-center gap-2">
                                     <a href="index.php?action=chitiet&id=<?= $k["id"] ?>" 
                                        class="btn btn-sm btn-outline-primary d-inline-flex align-items-center justify-content-center p-1" 
                                        title="Xem chi tiết & lịch sử mua" 

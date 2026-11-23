@@ -54,8 +54,9 @@
     background-color: #fee2e2;
 }
 .btn-tool-icon {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
+    padding: 6px 8px;
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
     color: #475569;
@@ -155,7 +156,7 @@
                         <th style="min-width: 260px;" class="ps-3">Sản phẩm</th>
                         <th style="min-width: 140px;">Giá bán</th>
                         <th style="min-width: 150px;">Tồn kho / Biến thể</th>
-                        <th style="min-width: 280px;" class="text-end pe-3">Thao tác nhanh</th>
+                        <th style="min-width: 330px;" class="text-end pe-3">Thao tác nhanh</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -238,7 +239,7 @@
 
                     <!-- Cột 4: Thao tác nhanh tinh gọn (đồng nhất phong cách trung tính sang trọng) -->
                     <td class="pe-3 py-2.5 text-end">
-                        <div class="d-inline-flex align-items-center gap-1.5 flex-nowrap">
+                        <div class="d-inline-flex align-items-center gap-2 flex-nowrap">
                             <!-- Nút Biến thể: mở trang quản lý nhanh phiên bản & màu sắc -->
                             <a class="btn-tool-pill" 
                                href="index.php?action=bienthe&id=<?= $m['id'] ?>" 
@@ -247,8 +248,8 @@
                                 <span>Biến thể (<?= $so_bienthe ?>)</span>
                             </a>
 
-                            <!-- Nút Ảnh màu: mở trang quản lý thư viện ảnh màu -->
-                            <a class="btn-tool-pill" 
+                            <!-- Nút Ảnh màu: mở trang quản lý thư viện ảnh màu (me-2 ngăn cách nhẹ sang cụm nút icon) -->
+                            <a class="btn-tool-pill me-2" 
                                href="index.php?action=anhmau&id=<?= $m['id'] ?>" 
                                title="Quản lý thư viện ảnh theo màu">
                                 <i class="align-middle me-1" data-feather="image" style="width: 12px; height: 12px;"></i>

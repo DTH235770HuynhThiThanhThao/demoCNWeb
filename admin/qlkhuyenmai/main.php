@@ -440,7 +440,7 @@ foreach($dskhuyenmai as $km){
                             <div class="small text-muted mt-1" style="font-size: 12px;">Tiết kiệm <span class="fw-semibold text-danger"><?= number_format($tietkiem, 0, ',', '.') ?>đ</span></div>
                         </td>
                         <td class="text-center pe-4">
-                            <div class="d-flex justify-content-center align-items-center gap-1.5 flex-nowrap">
+                            <div class="d-inline-flex align-items-center justify-content-center gap-2 flex-nowrap">
                                 <a href="../../public/index.php?action=detail&id=<?= $km["id"] ?>" target="_blank" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center justify-content-center" title="Xem trên website (mở tab mới)" style="padding: 5px 8px; border-radius: 7px;">
                                     <i class="align-middle" data-feather="external-link" style="width: 14px; height: 14px;"></i>
                                 </a>

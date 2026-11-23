@@ -304,7 +304,7 @@ if(!empty($donhang)){
 
                         <!-- Cột 6: Thao tác tinh gọn -->
                         <td class="text-center pe-3 text-nowrap">
-                            <div class="d-flex justify-content-center align-items-center gap-1.5 flex-nowrap">
+                            <div class="d-inline-flex align-items-center justify-content-center gap-2 flex-nowrap">
                                 <!-- Nút xem chi tiết -->
                                 <a href="index.php?action=chitiet&id=<?= $d["id"] ?>" class="btn-action-icon" title="Xem chi tiết đơn hàng">
                                     <i class="align-middle" data-feather="eye" style="width: 14px; height: 14px;"></i>

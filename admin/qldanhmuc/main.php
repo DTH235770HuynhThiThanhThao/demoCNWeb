@@ -175,7 +175,7 @@
                                     </span>
                                 </td>
                                 <td class="pe-4 text-center">
-                                    <div class="d-inline-flex align-items-center gap-1.5">
+                                    <div class="d-inline-flex align-items-center gap-2">
                                         <button class="btn btn-sm btn-flagship-red px-2.5 py-1 d-inline-flex align-items-center gap-1 shadow-sm" type="submit" title="Lưu thay đổi">
                                             <i class="align-middle" data-feather="check" style="width: 14px; height: 14px;"></i>
                                             <span>Lưu</span>
@@ -212,7 +212,7 @@
                                 </span>
                             </td>
                             <td class="pe-4 text-center">
-                                <div class="d-inline-flex align-items-center gap-1.5">
+                                <div class="d-inline-flex align-items-center gap-2">
                                     <a class="btn-action-neutral btn-edit" href="index.php?action=sua&id=<?= $d["id"] ?>" title="Sửa tên danh mục">
                                         <i class="align-middle" data-feather="edit-2" style="width: 15px; height: 15px;"></i>
                                     </a>
