@@ -229,7 +229,7 @@
             </div>
             <div class="card-body">
                 <a href="../qlmathang/index.php?action=them" class="btn btn-primary me-2 mb-2">
-                    <i class="align-middle me-1" data-feather="plus-circle"></i> + Thêm điện thoại mới
+                    <i class="align-middle me-1" data-feather="plus-circle"></i> Thêm điện thoại mới
                 </a>
                 <a href="../qldanhmuc/index.php" class="btn btn-outline-primary me-2 mb-2">
                     <i class="align-middle me-1" data-feather="grid"></i> Quản lý danh mục

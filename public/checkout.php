@@ -116,6 +116,99 @@
                         <div class="text-muted small mt-1">Xác nhận nhanh chóng, miễn phí vận chuyển hỏa tốc toàn quốc.</div>
                     </div>
                 </div>
+
+                <!-- Khung VietQR động - mặc định ẩn, trượt mở khi chọn chuyển khoản -->
+                <?php
+                // Cấu hình thông tin tài khoản nhận tiền đồng bộ 100% giữa QR và bảng hiển thị
+                $nganhang_ma = "MB"; // Mã ngân hàng MBBank
+                $nganhang_ten = "MB Bank (Ngân hàng Quân Đội)";
+                $nganhang_stk = "0357185269"; // Số tài khoản nhận tiền
+                $nganhang_chutk = "HUYNH THI THANH THAO";
+                $noidung_ck = "DH THAO MOBILE";
+
+                // Tính tổng tiền đơn hàng
+                $tongtien_qr = (isset($tongtien) && (int)$tongtien > 0) ? (int)$tongtien : 0;
+                if ($tongtien_qr === 0 && !empty($giohang)) {
+                    foreach($giohang as $gh_qr_item) {
+                        $tongtien_qr += $gh_qr_item['thanhtien'];
+                    }
+                }
+
+                // URL VietQR: sử dụng template 'compact' vuông vắn, mã QR to rõ sắc nét, quét cực nhạy trên mọi app ngân hàng
+                $qr_url = "https://img.vietqr.io/image/" . $nganhang_ma . "-" . $nganhang_stk . "-compact.png?amount=" . (int)$tongtien_qr . "&addInfo=" . rawurlencode($noidung_ck) . "&accountName=" . rawurlencode($nganhang_chutk);
+                ?>
+                <div id="khung-qr" style="display:none; overflow:hidden;">
+                    <div class="mt-3 p-3" style="background:#f8fafc; border:2px dashed #d70018; border-radius:12px;">
+                        <div class="d-flex flex-wrap gap-3 align-items-start">
+                            <!-- Bên trái: QR image to rõ, sắc nét -->
+                            <div class="text-center" style="min-width:220px; margin:0 auto;">
+                                <div class="bg-white p-2 rounded-3 shadow-sm border mb-2" style="display:inline-block;">
+                                    <img id="img-vietqr" src="<?= $qr_url ?>" alt="Mã QR VietQR"
+                                         style="width:220px; height:220px; object-fit:contain; display:block;"
+                                         onerror="this.onerror=null; this.src='https://img.vietqr.io/image/<?= $nganhang_ma ?>-<?= $nganhang_stk ?>-qr_only.png?amount=<?= (int)$tongtien_qr ?>&addInfo=<?= rawurlencode($noidung_ck) ?>&accountName=<?= rawurlencode($nganhang_chutk) ?>';">
+                                </div>
+                                <div class="small text-muted fw-semibold" style="font-size:0.8rem;">
+                                    <i class="bi bi-qr-code-scan text-danger me-1"></i>Mở App Ngân hàng bất kỳ để quét
+                                </div>
+                                <div class="mt-1">
+                                    <a href="<?= $qr_url ?>" target="_blank" class="small text-primary text-decoration-none" style="font-size:0.75rem;">
+                                        <i class="bi bi-arrows-fullscreen me-1"></i>Mở ảnh QR kích thước lớn
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- Bên phải: Thông tin chuyển khoản -->
+                            <div class="flex-grow-1" style="min-width:220px;">
+                                <div class="fw-bold text-dark mb-2 pb-1 border-bottom d-flex align-items-center justify-content-between" style="font-size:0.95rem;">
+                                    <span><i class="bi bi-bank me-1 text-primary"></i>Thông tin chuyển khoản</span>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle" style="font-size:0.7rem;">VietQR 24/7</span>
+                                </div>
+                                <table class="table table-sm table-borderless mb-2 small">
+                                    <tr>
+                                        <td class="text-muted fw-semibold" style="width:120px; white-space:nowrap;">Ngân hàng:</td>
+                                        <td class="fw-bold text-dark"><?= $nganhang_ten ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted fw-semibold">Số tài khoản:</td>
+                                        <td>
+                                            <span class="fw-bold text-dark me-2" id="so-tk-qr"><?= $nganhang_stk ?></span>
+                                            <button type="button"
+                                                    onclick="navigator.clipboard.writeText('<?= $nganhang_stk ?>').then(function(){ var b = event.target; b.innerText='✓ Đã copy'; setTimeout(function(){ b.innerText='Copy'; }, 2000); })"
+                                                    class="btn btn-sm btn-outline-secondary py-0 px-2"
+                                                    style="font-size:0.72rem; border-radius:4px;">Copy</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted fw-semibold">Chủ tài khoản:</td>
+                                        <td class="fw-bold text-uppercase text-dark"><?= $nganhang_chutk ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted fw-semibold">Số tiền:</td>
+                                        <td>
+                                            <span class="fw-bold fs-5" style="color:#d70018;"><?= number_format($tongtien_qr) ?>đ</span>
+                                            <button type="button"
+                                                    onclick="navigator.clipboard.writeText('<?= (int)$tongtien_qr ?>').then(function(){ var b = event.target; b.innerText='✓ Đã copy'; setTimeout(function(){ b.innerText='Copy'; }, 2000); })"
+                                                    class="btn btn-sm btn-outline-secondary py-0 px-2 ms-2"
+                                                    style="font-size:0.72rem; border-radius:4px;">Copy số tiền</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted fw-semibold">Nội dung CK:</td>
+                                        <td>
+                                            <span class="fw-bold text-primary me-2"><?= $noidung_ck ?></span>
+                                            <button type="button"
+                                                    onclick="navigator.clipboard.writeText('<?= $noidung_ck ?>').then(function(){ var b = event.target; b.innerText='✓ Đã copy'; setTimeout(function(){ b.innerText='Copy'; }, 2000); })"
+                                                    class="btn btn-sm btn-outline-secondary py-0 px-2"
+                                                    style="font-size:0.72rem; border-radius:4px;">Copy</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="alert alert-success py-2 px-3 mb-0 small" style="border-radius:8px; font-size:0.8rem;">
+                                    <i class="bi bi-check-circle-fill text-success me-1"></i>Hệ thống tự động điền đúng số tiền và nội dung. Vui lòng bấm <strong>"Hoàn tất đặt hàng"</strong> sau khi quét mã.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -204,6 +297,16 @@ function chonPhuongThuc(el, phuongThuc) {
     el.classList.add('active');
     var currentRadio = el.querySelector('input[type="radio"]');
     if (currentRadio) currentRadio.checked = true;
+
+    // Hiện / ẩn khung VietQR
+    var khungQR = document.getElementById('khung-qr');
+    if (khungQR) {
+        if (phuongThuc === 'bank') {
+            khungQR.style.display = 'block';
+        } else {
+            khungQR.style.display = 'none';
+        }
+    }
 }
 </script>
 

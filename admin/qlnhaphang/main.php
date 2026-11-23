@@ -11,7 +11,7 @@ $tab_hien_tai = isset($tab) ? $tab : "tonkho";
 	</div>
 	<a href="index.php?action=them" class="btn btn-primary d-inline-flex align-items-center gap-1 shadow-sm">
 		<i class="align-middle" data-feather="plus-circle"></i> 
-		<span>+ Lập phiếu nhập nhiều máy</span>
+		<span>Lập phiếu nhập mới</span>
 	</a>
 </div>
 
@@ -95,9 +95,9 @@ $tab_hien_tai = isset($tab) ? $tab : "tonkho";
 	</div>
 </div>
 
-<!-- HÀNG 2 — THANH CHUYỂN TAB & NÚT TÁC VỤ -->
+<!-- HÀNG 2 — THANH CHUYỂN TAB -->
 <div class="card border-0 shadow-sm mb-3">
-	<div class="card-body p-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+	<div class="card-body p-2">
 		<!-- Hai nút Tab nổi bật -->
 		<ul class="nav nav-pills" id="tabKhoNhap" role="tablist">
 			<li class="nav-item" role="presentation">
@@ -125,12 +125,6 @@ $tab_hien_tai = isset($tab) ? $tab : "tonkho";
 				</button>
 			</li>
 		</ul>
-
-		<!-- Nút Lập phiếu nhập nhiều máy -->
-		<a href="index.php?action=them" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1 shadow-sm">
-			<i class="align-middle" data-feather="plus" style="width:16px;height:16px;"></i>
-			<span>+ Lập phiếu nhập nhiều máy</span>
-		</a>
 	</div>
 </div>
 
@@ -285,7 +279,7 @@ $tab_hien_tai = isset($tab) ? $tab : "tonkho";
 									   class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 text-nowrap shadow-sm"
 									   title="Lập phiếu nhập thêm hàng cho mẫu máy này">
 										<i class="align-middle" data-feather="plus" style="width: 14px; height: 14px;"></i>
-										<span>+ Nhập thêm</span>
+										<span>Nhập thêm</span>
 									</a>
 								</td>
 							</tr>
@@ -303,14 +297,12 @@ $tab_hien_tai = isset($tab) ? $tab : "tonkho";
 	<!-- ========================================== -->
 	<div class="tab-pane fade <?= $tab_hien_tai === 'phieunhap' ? 'show active' : '' ?>" id="tab-phieunhap" role="tabpanel">
 		<div class="card border-0 shadow-sm">
-			<div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
-				<div class="d-flex align-items-center gap-2">
-					<span class="badge bg-primary fs-6 px-3 py-2 rounded-pill">
-						Lịch sử: <?= count($phieunhap) ?> phiếu nhập kho
-					</span>
-				</div>
-				<div class="d-flex align-items-center gap-2">
-					<input type="text" id="inputTimKiemPN" class="form-control form-control-sm" placeholder="Tìm kiếm nhanh mã phiếu, nhà cung cấp, người lập..." style="min-width: 300px;" onkeyup="locBangPhieuNhap()">
+			<div class="card-header bg-white py-3 border-bottom d-flex justify-content-end align-items-center">
+				<div class="d-flex align-items-center gap-2" style="max-width: 380px; width: 100%;">
+					<div class="input-group input-group-sm">
+						<span class="input-group-text bg-light"><i class="align-middle" data-feather="search" style="width: 14px; height: 14px;"></i></span>
+						<input type="text" id="inputTimKiemPN" class="form-control" placeholder="Tìm kiếm nhanh mã phiếu, nhà cung cấp, người lập..." onkeyup="locBangPhieuNhap()">
+					</div>
 				</div>
 			</div>
 
@@ -334,7 +326,7 @@ $tab_hien_tai = isset($tab) ? $tab : "tonkho";
 								<td colspan="7" class="text-center py-5 text-muted">
 									<i class="align-middle mb-2 text-muted" data-feather="inbox" style="width: 48px; height: 48px; opacity: 0.4;"></i>
 									<div class="fw-semibold">Chưa có phiếu nhập hàng nào.</div>
-									<div class="small">Bấm vào nút "+ Lập phiếu nhập nhiều máy" để tiến hành nhập hàng vào kho.</div>
+									<div class="small">Bấm vào nút "Lập phiếu nhập mới" để tiến hành nhập hàng vào kho.</div>
 								</td>
 							</tr>
 						<?php else: ?>

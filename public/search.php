@@ -1,4 +1,4 @@
-﻿<?php include("inc/top.php"); ?>
+<?php include("inc/top.php"); ?>
 
 <style>
 .search-result-title {
@@ -53,37 +53,38 @@ $tukhoa_hien = htmlspecialchars(trim($_REQUEST["q"] ?? ""));
         <a href="index.php" class="btn btn-navy text-white mt-2"><i class="bi bi-grid-fill me-1"></i> Xem tất cả sản phẩm</a>
     </div>
 <?php else: ?>
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-    <?php foreach($mathang as $m): ?>
-        <div class="col mb-5">
-            <div class="card h-100 shadow">
-                <?php if ($m["giaban"] != $m["giagoc"]): ?>
-                <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Giảm giá</div>
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+    <?php
+    foreach($mathang as $m):
+        $giamgia = 0;
+        if($m["giagoc"] > $m["giaban"] && $m["giagoc"] > 0){
+            $giamgia = round((($m["giagoc"] - $m["giaban"]) / $m["giagoc"]) * 100);
+        }
+    ?>
+        <div class="col">
+            <div class="product-card">
+                <?php if($giamgia > 0): ?>
+                    <div class="product-card-badge">Giảm <?php echo $giamgia; ?>%</div>
+                <?php elseif($m["giaban"] != $m["giagoc"]): ?>
+                    <div class="product-card-badge">Ưu đãi</div>
+                <?php else: ?>
+                    <div class="product-card-badge" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">Hot</div>
                 <?php endif; ?>
-                <a href="index.php?action=detail&id=<?php echo $m["id"]; ?>">
-                    <img class="card-img-top" src="../<?php echo $m["hinhanh"]; ?>" alt="<?php echo htmlspecialchars($m["tenmathang"]); ?>" />
+                <a href="index.php?action=detail&id=<?php echo $m["id"]; ?>" class="product-img-wrap text-decoration-none">
+                    <img class="product-img" src="../<?php echo $m["hinhanh"]; ?>" alt="<?php echo htmlspecialchars($m["tenmathang"]); ?>" loading="lazy" />
                 </a>
-                <div class="card-body p-4">
-                    <div class="text-center">
-                        <a class="text-decoration-none" href="index.php?action=detail&id=<?php echo $m["id"]; ?>">
-                            <h5 class="fw-bolder text-navy"><?php echo htmlspecialchars($m["tenmathang"]); ?></h5>
-                        </a>
-                        <div class="d-flex justify-content-center small text-warning mb-2">
-                            <div class="bi-star-fill"></div>
-                            <div class="bi-star-fill"></div>
-                            <div class="bi-star-fill"></div>
-                            <div class="bi-star-fill"></div>
-                            <div class="bi-star-fill"></div>
-                        </div>
-                        <?php if ($m["giaban"] != $m["giagoc"]): ?>
-                        <span class="text-muted text-decoration-line-through"><?php echo number_format($m["giagoc"]); ?>đ</span>
+                <div class="product-card-body">
+                    <a href="index.php?action=detail&id=<?php echo $m["id"]; ?>" class="product-name text-decoration-none" title="<?php echo htmlspecialchars($m["tenmathang"]); ?>"><?php echo $m["tenmathang"]; ?></a>
+                    <div class="product-price-row">
+                        <span class="product-price-current"><?php echo number_format($m["giaban"]); ?>đ</span>
+                        <?php if($m["giaban"] != $m["giagoc"] && $m["giagoc"] > 0): ?>
+                            <span class="product-price-original"><?php echo number_format($m["giagoc"]); ?>đ</span>
                         <?php endif; ?>
-                        <span class="text-danger fw-bolder"><?php echo number_format($m["giaban"]); ?>đ</span>
                     </div>
-                </div>
-                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                    <div class="text-center">
-                        <a class="btn btn-outline-navy mt-auto" href="index.php?action=chovaogio&id=<?php echo $m["id"]; ?>">Chọn mua</a>
+                    <div class="product-promo-box"><i class="bi bi-gift-fill"></i><span class="text-truncate">Trả góp 0% • Bảo hành 12 tháng</span></div>
+                    <div class="product-card-footer">
+                        <div class="product-rating"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                        <a class="btn btn-buy-tech text-decoration-none" href="index.php?action=chovaogio&id=<?php echo $m["id"]; ?>"><i class="bi bi-cart-plus me-1"></i>Chọn mua</a>
                     </div>
                 </div>
             </div>

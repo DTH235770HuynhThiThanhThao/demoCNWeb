@@ -96,7 +96,7 @@ if($mathang_id_chon > 0 && !empty($mathang)){
 			</div>
 			<button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1" onclick="themDongSanPham()">
 				<i class="align-middle" data-feather="plus"></i>
-				<span>+ Thêm dòng sản phẩm</span>
+				<span>Thêm dòng sản phẩm</span>
 			</button>
 		</div>
 

@@ -14,7 +14,7 @@
 		</button>
 		<a href="index.php?action=them" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
 			<i class="align-middle" data-feather="plus-circle"></i>
-			<span>+ Lập phiếu mới</span>
+			<span>Lập phiếu mới</span>
 		</a>
 	</div>
 </div>

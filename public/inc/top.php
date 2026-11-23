@@ -53,7 +53,7 @@ if(!isset($logo_shop)){
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
         
         <!-- Custom Retail Tech Stylesheet -->
-        <link href="inc/style.css" rel="stylesheet">
+        <link href="inc/style.css?v=2.0" rel="stylesheet">
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     </head>

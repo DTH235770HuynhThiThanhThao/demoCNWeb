@@ -353,6 +353,24 @@ if(!empty($mhct["mota"])){
                 </div>
             </div>
 
+            <!-- CSS tùy chỉnh 2 nút Mua hàng & Thêm vào giỏ với độ ưu tiên cao -->
+            <style>
+            .btn-detail-add-cart:hover {
+                background-color: #d70018 !important;
+                color: #ffffff !important;
+                border-color: #d70018 !important;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 14px rgba(215, 0, 24, 0.25);
+            }
+            .btn-detail-buy-now:hover {
+                background-color: #b80014 !important;
+                border-color: #b80014 !important;
+                color: #ffffff !important;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 22px rgba(215, 0, 24, 0.45);
+            }
+            </style>
+
             <!-- 5. Form Chọn số lượng & Nút Mua hàng (Giữ nguyên 100% action gửi form của giảng viên) -->
             <form method="post" action="index.php" class="mt-3">
                 <input type="hidden" name="action" value="chovaogio">
@@ -369,13 +387,27 @@ if(!empty($mhct["mota"])){
                         </div>
                     </div>
 
-                    <!-- Nút MUA NGAY / THÊM VÀO GIỎ HÀNG -->
+                    <!-- 2 nút: Thêm vào giỏ & Mua ngay -->
                     <div class="flex-grow-1">
                         <label class="small text-muted d-block mb-1 invisible">Mua:</label>
-                        <button type="submit" class="btn btn-buy-now-lg w-100">
-                            <i class="bi bi-cart-plus-fill me-2 fs-5"></i>
-                            <span>MUA NGAY / THÊM VÀO GIỎ HÀNG</span>
-                        </button>
+                        <div class="d-flex gap-2 flex-grow-1">
+                            <!-- Nút 1: Thêm vào giỏ -->
+                            <button type="submit" 
+                                    name="btn_themgio" 
+                                    class="btn-detail-add-cart" 
+                                    style="flex: 1; height: 50px !important; background-color: #fff1f2 !important; border: 2px solid #d70018 !important; color: #d70018 !important; border-radius: 10px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; font-weight: 700 !important; font-size: 0.98rem !important; cursor: pointer !important; text-decoration: none !important; transition: all 0.2s ease !important;">
+                                <i class="bi bi-cart-plus fs-5"></i>
+                                <span>Thêm vào giỏ</span>
+                            </button>
+                            <!-- Nút 2: Mua ngay -->
+                            <button type="submit" 
+                                    name="btn_muangay" 
+                                    class="btn-detail-buy-now" 
+                                    style="flex: 1; height: 50px !important; background-color: #d70018 !important; border: 2px solid #d70018 !important; color: #ffffff !important; border-radius: 10px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; font-weight: 700 !important; font-size: 1.02rem !important; cursor: pointer !important; text-decoration: none !important; box-shadow: 0 4px 12px rgba(215, 0, 24, 0.25) !important; transition: all 0.2s ease !important;">
+                                <i class="bi bi-lightning-charge-fill fs-5"></i>
+                                <span>Mua ngay</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="text-center mt-2">
@@ -388,13 +420,13 @@ if(!empty($mhct["mota"])){
     </div>
 </div>
 
-<!-- 4. KHU VỰC "SẢN PHẨM LIÊN QUAN / CÓ THỂ BẠN CŨNG THÍCH" Ở PHÍA DƯỚI -->
+<!-- 4. KHU VỰC "SẢN PHẨM LIÊN QUAN" Ở PHÍA DƯỚI -->
 <div class="mt-5 pt-3">
     <!-- Tiêu đề Section -->
     <div class="section-brand-header">
         <div class="section-brand-title">
             <span class="brand-accent"></span>
-            <span>SẢN PHẨM LIÊN QUAN / CÓ THỂ BẠN CŨNG THÍCH</span>
+            <span>SẢN PHẨM LIÊN QUAN</span>
         </div>
         <a href="index.php?action=group&id=<?php echo $mhct["danhmuc_id"]; ?>" class="btn-view-all-brand text-decoration-none">
             Xem tất cả <?php echo $tendanhmuc_hien; ?> <i class="bi bi-chevron-right ms-1"></i>

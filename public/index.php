@@ -55,17 +55,50 @@ switch($action){
     	$mathang = $mh->laymathang();	
         include("main.php");
         break;
-    case "group": 
-        if(isset($_REQUEST["id"])){
-            $madm = $_REQUEST["id"];
-            $dmuc = $dm->laydanhmuctheoid($madm);
-            $tendm =  $dmuc["tendanhmuc"];   
-            $mathang = $mh->laymathangtheodanhmuc($madm);
-            include("group.php");
+    case "group":
+        $id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : 0;
+        $sort = $_GET["sort"] ?? "default";
+
+        // Show all products when id is 0, "all", or empty
+        if($id === "0" || $id === 0 || $id === "all" || empty($id)){
+            $id = 0;
+            $tendm = "TẤT CẢ ĐIỆN THOẠI";
+            $mathang = $mh->laymathang(); // all products
+        } else {
+            // Fetch category by id, if not found redirect to home
+            $dmuc = $dm->laydanhmuctheoid($id);
+            if(!$dmuc){
+                header("Location: index.php");
+                exit();
+            }
+            $tendm = $dmuc["tendanhmuc"];
+            $mathang = $mh->laymathangtheodanhmuc($id);
         }
-        else{
-            include("main.php");
+
+        // Sắp xếp danh sách điện thoại hoạt động chính xác 100% bằng PHP
+        if(is_array($mathang) && !empty($mathang)){
+            switch($sort){
+                case 'price_asc':
+                    usort($mathang, function($a, $b){
+                        return $a['giaban'] <=> $b['giaban'];
+                    });
+                    break;
+                case 'price_desc':
+                    usort($mathang, function($a, $b){
+                        return $b['giaban'] <=> $a['giaban'];
+                    });
+                    break;
+                case 'view_desc':
+                case 'most_viewed':
+                    usort($mathang, function($a, $b){
+                        return ($b['luotxem'] ?? 0) <=> ($a['luotxem'] ?? 0);
+                    });
+                    break;
+            }
         }
+        $madm = $id;
+
+        include("group.php");
         break;
     case "detail": 
         if(isset($_GET["id"])){
@@ -108,6 +141,13 @@ switch($action){
             $gh->themvaogio($khachhang_id, $id, $soluong);
         }
         
+        // Nếu người dùng bấm "Mua ngay": chuyển thẳng sang trang thanh toán
+        if(isset($_POST['btn_muangay']) || isset($_GET['muangay'])){
+            $_SESSION["ds_chon_mua"] = array($id);
+            header("Location: index.php?action=thanhtoan");
+            exit();
+        }
+
         $giohang = $gh->laygiohangtheonguoidung($khachhang_id);   
         include("cart.php");
         break;
@@ -294,6 +334,12 @@ switch($action){
 
         // Xóa danh sách đã chọn mua trong session sau khi đặt hàng thành công
         unset($_SESSION["ds_chon_mua"]);
+
+        // Lưu phương thức thanh toán (chỉ dùng để hiển thị trang cảm ơn)
+        $phuongthuc_thanhtoan = isset($_POST['payment_method']) ? trim($_POST['payment_method']) : 'cod';
+        $ten_phuongthuc = ($phuongthuc_thanhtoan === 'bank')
+            ? 'Chuyển khoản ngân hàng / Quét mã QR'
+            : 'Thanh toán khi nhận hàng (COD)';
         
         // chuyển đến trang cảm ơn
         include("message.php");

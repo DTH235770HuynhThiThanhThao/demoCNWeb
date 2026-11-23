@@ -1134,6 +1134,64 @@ a.text-navy:hover { color: var(--primary-red) !important; }
   box-shadow: 0 8px 22px rgba(215, 0, 24, 0.45);
 }
 
+.btn-detail-add-cart,
+.btn-add-cart-detail {
+  background-color: #fff1f2 !important;
+  border: 2px solid var(--primary-red) !important;
+  color: var(--primary-red) !important;
+  height: 50px !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  font-size: 0.98rem;
+  transition: all 0.25s ease;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-detail-add-cart:hover,
+.btn-add-cart-detail:hover {
+  background-color: var(--primary-red) !important;
+  color: #ffffff !important;
+  border-color: var(--primary-red) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(215, 0, 24, 0.25);
+}
+
+.btn-detail-buy-now,
+.btn-buy-now-detail {
+  background-color: #d70018 !important;
+  background: #d70018 !important;
+  border: 2px solid var(--primary-red) !important;
+  color: #ffffff !important;
+  height: 50px !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  font-size: 1.02rem;
+  box-shadow: 0 4px 12px rgba(215, 0, 24, 0.25) !important;
+  transition: all 0.25s ease;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-detail-buy-now:hover,
+.btn-buy-now-detail:hover {
+  background-color: #b80014 !important;
+  background: #b80014 !important;
+  border-color: #b80014 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(215, 0, 24, 0.45);
+  color: #ffffff !important;
+}
+
 /* --------------------------------------------------------------------------
    Cart Page (CellphoneS Style)
    -------------------------------------------------------------------------- */

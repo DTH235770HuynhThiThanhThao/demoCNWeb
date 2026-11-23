@@ -158,7 +158,7 @@
 
 					<button type="submit" class="btn btn-success px-4 py-2 fw-bold shadow-sm d-inline-flex align-items-center gap-2">
 						<i class="align-middle" data-feather="plus"></i>
-						<span>+ Tải lên Banner</span>
+						<span>Tải lên Banner</span>
 					</button>
 				</form>
 			</div>
