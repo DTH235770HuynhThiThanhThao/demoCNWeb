@@ -75,13 +75,14 @@
 					     style="background-color: #d70018; border: 1px solid rgba(0,0,0,0.1);">
 						<div class="d-flex align-items-center">
 							<?php 
-							$logo_file = !empty($logo_info["duongdan"]) ? $logo_info["duongdan"] : "logo1.jpg";
+							$logo_file = !empty($logo_info["duongdan"]) ? $logo_info["duongdan"] : "logo2.jpg";
 							?>
 							<img src="../../images/logo/<?= htmlspecialchars($logo_file) ?>" 
 							     id="previewLogoImg"
 							     alt="Logo Thảo Mobile" 
 							     class="me-2 rounded shadow-sm bg-white p-1" 
-							     style="height: 48px; max-width: 140px; object-fit: contain;">
+							     style="height: 48px; max-width: 140px; object-fit: contain;"
+							     onerror="this.src='../../images/logo/logo2.jpg'">
 							<div class="text-white">
 								<div class="fw-bold fs-6 lh-1">THẢO MOBILE</div>
 								<span class="small opacity-75" style="font-size: 11px;">Mô phỏng thanh Header</span>

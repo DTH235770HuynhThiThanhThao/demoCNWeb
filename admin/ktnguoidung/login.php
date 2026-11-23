@@ -22,7 +22,10 @@
 					<div class="d-table-cell align-middle">
 
 						<div class="text-center mt-4">
-							<h1 class="h2">Xin chào!</h1>
+							<a href="../../public/index.php" class="d-inline-block mb-3" title="Về trang chủ Thảo Mobile">
+								<img src="../../images/logo/logo2.jpg" alt="Logo Thảo Mobile" class="rounded-3 shadow-sm" style="width: 76px; height: 76px; object-fit: cover; border: 2px solid #e9ecef;" onerror="this.src='../../images/logo/logo.jpg'">
+							</a>
+							<h1 class="h2 fw-bold text-dark">Xin chào!</h1>
 							<p class="lead">
 								Vui lòng đăng nhập để tiếp tục
 							</p>

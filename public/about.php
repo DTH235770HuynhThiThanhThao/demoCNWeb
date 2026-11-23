@@ -98,7 +98,7 @@ include("inc/top.php");
 <!-- ===== HERO ===== -->
 <div class="about-hero mb-5 mt-2">
     <div class="d-flex flex-column flex-md-row align-items-center gap-4">
-        <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?>" class="hero-logo flex-shrink-0" onerror="this.src='../images/logo/logo1.jpg';">
+        <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo2.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?>" class="hero-logo flex-shrink-0" onerror="this.src='../images/logo/logo2.jpg';">
         <div>
             <h2 class="fw-bold text-navy mb-2" style="font-size:1.6rem;">
                 VỀ <?php echo mb_strtoupper($ten_shop ?? "Thảo Mobile", 'UTF-8'); ?> – CỬA HÀNG ĐIỆN THOẠI CHÍNH HÃNG
@@ -212,10 +212,10 @@ include("inc/top.php");
                 </div>
             </div>
             <div class="col-md-5 text-center">
-                <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?>"
+                <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo2.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?>"
                      class="rounded-3 shadow mb-3"
                      style="width:100px; height:100px; object-fit:cover; border:3px solid rgba(255,255,255,0.6);"
-                     onerror="this.src='../images/logo/logo1.jpg';">
+                     onerror="this.src='../images/logo/logo2.jpg';">
                 <p class="mb-3 small" style="opacity:0.9;">Chúng tôi luôn sẵn sàng phục vụ bạn với thái độ nhiệt tình và chuyên nghiệp nhất!</p>
                 <a href="index.php" class="btn btn-light fw-bold rounded-pill px-4 shadow-sm">
                     <i class="bi bi-bag-heart-fill me-2 text-navy"></i>Khám phá sản phẩm ngay
@@ -397,8 +397,250 @@ include("inc/top.php");
     </div><!-- /.card -->
 </div>
 
+<!-- ===== CHÍNH SÁCH BẢO HÀNH 1 ĐỔI 1 ===== -->
+<div id="chinh-sach-bao-hanh" style="scroll-margin-top: 90px;" class="mb-5">
+    <div style="
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 3px 14px rgba(0,0,0,0.05);
+        overflow: hidden;
+    ">
+        <!-- Tiêu đề với thanh nhấn đỏ -->
+        <div style="padding: 1.5rem 1.75rem 1rem; border-bottom: 1.5px solid #f1f5f9; display:flex; align-items:flex-start; gap:12px;">
+            <div style="width:5px; min-height:48px; background:#d70018; border-radius:4px; flex-shrink:0; margin-top:2px;"></div>
+            <div>
+                <h4 style="font-weight:800; font-size:1.1rem; color:#1e293b; text-transform:uppercase; letter-spacing:0.4px; margin:0 0 4px 0;">
+                    <i class="bi bi-shield-check me-2" style="color:#d70018;"></i>CHÍNH SÁCH BẢO HÀNH 1 ĐỔI 1 TẠI THẢO MOBILE
+                </h4>
+                <p style="font-size:0.84rem; color:#64748b; margin:0;">Cam kết 100% điện thoại chính hãng • Bảo hành 12 tháng • Đổi mới 30 ngày an tâm tuyệt đối</p>
+            </div>
+        </div>
+
+        <div style="padding: 1.5rem 1.75rem;">
+            <div class="row g-3">
+                <!-- Cột 1: Thời hạn bảo hành -->
+                <div class="col-md-4">
+                    <div style="
+                        background: #fff;
+                        border: 1.5px solid #e5e7eb;
+                        border-radius: 14px;
+                        padding: 1.4rem 1.2rem;
+                        height: 100%;
+                        transition: all 0.2s;
+                    " class="policy-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div style="
+                                width: 44px; height: 44px;
+                                background: rgba(215, 0, 24, 0.1);
+                                border-radius: 12px;
+                                display: flex; align-items: center; justify-content: center;
+                                color: #d70018; font-size: 1.4rem;
+                            ">
+                                <i class="bi bi-patch-check-fill"></i>
+                            </div>
+                            <div>
+                                <h6 style="font-weight:700; color:#1e293b; margin:0;">Bảo hành chính hãng 12T</h6>
+                                <small class="text-muted">Chuẩn nhà sản xuất</small>
+                            </div>
+                        </div>
+                        <p style="font-size:0.85rem; color:#475569; line-height:1.65; margin:0;">
+                            Tất cả điện thoại bán ra tại <strong>Thảo Mobile</strong> đều là máy <strong>mới 100%, nguyên seal hộp</strong>, được bảo hành chính hãng đầy đủ <strong>12 tháng</strong> theo tiêu chuẩn khắt khe từ các thương hiệu hàng đầu: <strong>Apple, Samsung, Xiaomi, OPPO</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Cột 2: Đặc quyền 1 đổi 1 trong 30 ngày -->
+                <div class="col-md-4">
+                    <div style="
+                        background: #fff;
+                        border: 1.5px solid #e5e7eb;
+                        border-radius: 14px;
+                        padding: 1.4rem 1.2rem;
+                        height: 100%;
+                        transition: all 0.2s;
+                    " class="policy-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div style="
+                                width: 44px; height: 44px;
+                                background: rgba(215, 0, 24, 0.1);
+                                border-radius: 12px;
+                                display: flex; align-items: center; justify-content: center;
+                                color: #d70018; font-size: 1.4rem;
+                            ">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </div>
+                            <div>
+                                <h6 style="font-weight:700; color:#1e293b; margin:0;">Lỗi 1 đổi 1 trong 30 ngày</h6>
+                                <small class="text-danger fw-bold">Đặc quyền Thảo Mobile</small>
+                            </div>
+                        </div>
+                        <p style="font-size:0.85rem; color:#475569; line-height:1.65; margin:0;">
+                            Nếu phát sinh lỗi phần cứng từ nhà sản xuất (màn hình, nguồn, loa, mic, camera, pin...) trong vòng <strong>30 ngày đầu</strong> kể từ ngày nhận hàng, quý khách được <strong>đổi ngay máy mới tương đương</strong> miễn phí 100% (giữ nguyên hộp, phụ kiện, máy không rơi vỡ, cấn móp hoặc vào nước).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Cột 3: Tiếp nhận & Tra cứu trực tuyến -->
+                <div class="col-md-4">
+                    <div style="
+                        background: #fff;
+                        border: 1.5px solid #e5e7eb;
+                        border-radius: 14px;
+                        padding: 1.4rem 1.2rem;
+                        height: 100%;
+                        transition: all 0.2s;
+                    " class="policy-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div style="
+                                width: 44px; height: 44px;
+                                background: rgba(215, 0, 24, 0.1);
+                                border-radius: 12px;
+                                display: flex; align-items: center; justify-content: center;
+                                color: #d70018; font-size: 1.4rem;
+                            ">
+                                <i class="bi bi-headset"></i>
+                            </div>
+                            <div>
+                                <h6 style="font-weight:700; color:#1e293b; margin:0;">Hỗ trợ tiếp nhận &amp; Tra cứu</h6>
+                                <small class="text-muted">Đa kênh tiện lợi</small>
+                            </div>
+                        </div>
+                        <p style="font-size:0.85rem; color:#475569; line-height:1.65; margin:0;">
+                            Khách hàng có thể mang máy trực tiếp đến cửa hàng tại <strong>Số 57, ấp An Hòa, xã Lai Vung, tỉnh Đồng Tháp</strong>, gọi hotline <strong>0357185269</strong>, hoặc gửi yêu cầu ngay tại mục <strong>Tra cứu &amp; Gửi yêu cầu bảo hành</strong> trên website.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 p-3 rounded-3 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2" style="background:#fef2f2; border:1px dashed #f87171;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-info-circle-fill text-danger fs-5"></i>
+                    <span style="font-size:0.88rem; color:#991b1b;">Quý khách có thể theo dõi tiến độ bảo hành theo số điện thoại hoặc mã IMEI tại website bất cứ lúc nào.</span>
+                </div>
+                <a href="index.php?action=baohanh" class="btn btn-sm btn-danger fw-bold rounded-pill px-3 py-2 text-nowrap shadow-sm">
+                    <i class="bi bi-search me-1"></i>Tra cứu &amp; Gửi bảo hành
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUY ĐỊNH KIỂM TRA HÀNG KHI NHẬN ===== -->
+<div id="quy-dinh-kiem-tra-hang" style="scroll-margin-top: 90px;" class="mb-5">
+    <div style="
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 3px 14px rgba(0,0,0,0.05);
+        overflow: hidden;
+    ">
+        <!-- Tiêu đề với thanh nhấn đỏ -->
+        <div style="padding: 1.5rem 1.75rem 1rem; border-bottom: 1.5px solid #f1f5f9; display:flex; align-items:flex-start; gap:12px;">
+            <div style="width:5px; min-height:48px; background:#d70018; border-radius:4px; flex-shrink:0; margin-top:2px;"></div>
+            <div>
+                <h4 style="font-weight:800; font-size:1.1rem; color:#1e293b; text-transform:uppercase; letter-spacing:0.4px; margin:0 0 4px 0;">
+                    <i class="bi bi-box-seam me-2" style="color:#d70018;"></i>QUY ĐỊNH KIỂM TRA HÀNG KHI NHẬN (ĐỒNG KIỂM)
+                </h4>
+                <p style="font-size:0.84rem; color:#64748b; margin:0;">Quyền lợi tối đa cho khách hàng – Mở gói hàng kiểm tra ngoại quan trước khi ký nhận &amp; thanh toán!</p>
+            </div>
+        </div>
+
+        <div style="padding: 1.5rem 1.75rem;">
+            <!-- Khối quyền đồng kiểm nổi bật -->
+            <div class="p-3 mb-4 rounded-3 d-flex align-items-center gap-3" style="background: linear-gradient(135deg, rgba(215,0,24,0.05) 0%, rgba(215,0,24,0.12) 100%); border-left: 4px solid #d70018;">
+                <i class="bi bi-shield-lock-fill fs-2" style="color: #d70018;"></i>
+                <div>
+                    <h6 class="fw-bold mb-1" style="color:#1e293b;">Quyền đồng kiểm 100% trước khi thanh toán</h6>
+                    <p class="mb-0" style="font-size:0.86rem; color:#475569; line-height:1.6;">
+                        <strong>Thảo Mobile</strong> hỗ trợ khách hàng <strong>mở gói hàng kiểm tra ngoại quan</strong> cùng nhân viên giao hàng trước khi ký nhận và thanh toán tiền (áp dụng cho cả đơn thanh toán khi nhận hàng COD và chuyển khoản VietQR).
+                    </p>
+                </div>
+            </div>
+
+            <h6 class="fw-bold mb-3" style="color:#1e293b; font-size:0.95rem;">
+                <i class="bi bi-check2-circle text-danger me-1"></i>Các bước kiểm tra tiêu chuẩn:
+            </h6>
+
+            <div class="row g-3 mb-4">
+                <!-- Bước 1 -->
+                <div class="col-md-4">
+                    <div style="
+                        background: #f8fafc;
+                        border: 1.5px solid #e2e8f0;
+                        border-radius: 12px;
+                        padding: 1.2rem;
+                        height: 100%;
+                    " class="policy-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge" style="background:#d70018; font-size:0.8rem; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center;">1</span>
+                            <strong style="color:#1e293b; font-size:0.9rem;">Hộp máy &amp; Tem niêm phong</strong>
+                        </div>
+                        <p style="font-size:0.83rem; color:#475569; line-height:1.6; margin:0;">
+                            Kiểm tra tính nguyên vẹn của hộp sản phẩm, tem niêm phong (seal) của hãng và thông tin tên máy, dung lượng, màu sắc in trên vỏ hộp khớp với đơn đặt hàng.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bước 2 -->
+                <div class="col-md-4">
+                    <div style="
+                        background: #f8fafc;
+                        border: 1.5px solid #e2e8f0;
+                        border-radius: 12px;
+                        padding: 1.2rem;
+                        height: 100%;
+                    " class="policy-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge" style="background:#d70018; font-size:0.8rem; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center;">2</span>
+                            <strong style="color:#1e293b; font-size:0.9rem;">Ngoại quan thân máy</strong>
+                        </div>
+                        <p style="font-size:0.83rem; color:#475569; line-height:1.6; margin:0;">
+                            Kiểm tra ngoại quan thân máy, màn hình, khung viền không bị trầy xước, cấn móp do quá trình vận chuyển.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Bước 3 -->
+                <div class="col-md-4">
+                    <div style="
+                        background: #f8fafc;
+                        border: 1.5px solid #e2e8f0;
+                        border-radius: 12px;
+                        padding: 1.2rem;
+                        height: 100%;
+                    " class="policy-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge" style="background:#d70018; font-size:0.8rem; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center;">3</span>
+                            <strong style="color:#1e293b; font-size:0.9rem;">Phụ kiện chuẩn đi kèm</strong>
+                        </div>
+                        <p style="font-size:0.83rem; color:#475569; line-height:1.6; margin:0;">
+                            Kiểm tra đầy đủ phụ kiện chuẩn đi kèm bên trong hộp theo công bố của hãng (cáp sạc, que chọc sim, tài liệu hướng dẫn...).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Xử lý khi phát hiện bất thường -->
+            <div style="background:#fff1f2; border:1.5px solid #fecdd3; border-radius:12px; padding:1.25rem 1.4rem;">
+                <div class="d-flex align-items-start gap-3">
+                    <div style="width:36px; height:36px; background:#d70018; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; flex-shrink:0; margin-top:2px;">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1" style="color:#9f1239;">Xử lý khi phát hiện bất thường</h6>
+                        <p style="font-size:0.85rem; color:#4c0519; line-height:1.65; margin:0;">
+                            Nếu hộp hàng có dấu hiệu bị rách niêm phong, móp méo hoặc giao sai phiên bản/màu sắc, quý khách vui lòng <strong>từ chối nhận hàng</strong> và liên hệ ngay hotline <strong class="text-danger">0357185269</strong> để cửa hàng đổi gửi lại sản phẩm mới ngay lập tức mà <strong>không phát sinh bất kỳ chi phí nào</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
-.buoc-card:hover {
+.buoc-card:hover, .policy-card:hover {
     border-color: #fecdd3 !important;
     box-shadow: 0 6px 22px rgba(215,0,24,0.10);
     transform: translateY(-4px);

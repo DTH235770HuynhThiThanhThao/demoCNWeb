@@ -39,7 +39,7 @@ class HINHANH{
                 $db->exec($sql_create);
 
                 $sql_seed = "INSERT INTO `hinhanh` (`id`, `tieude`, `duongdan`, `loai`, `thutu`, `trangthai`) VALUES
-                    (1, 'Logo chính Thảo Mobile', 'logo1.jpg', 'logo', 1, 1),
+                    (1, 'Logo chính Thảo Mobile', 'logo2.jpg', 'logo', 1, 1),
                     (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h4.jpg', 'banner_chinh', 1, 1),
                     (3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 2, 1),
                     (4, 'Ưu đãi trả góp 0% lãi suất - Thủ tục nhanh', 'h6.jpg', 'banner_chinh', 3, 1),
@@ -125,12 +125,12 @@ class HINHANH{
             $cmd->execute();
             $result = $cmd->fetch();
             if(!$result){
-                return array("duongdan" => "logo1.jpg", "tieude" => "Thảo Mobile");
+                return array("duongdan" => "logo2.jpg", "tieude" => "Thảo Mobile");
             }
             return $result;
         }
         catch(PDOException $e){
-            return array("duongdan" => "logo1.jpg", "tieude" => "Thảo Mobile");
+            return array("duongdan" => "logo2.jpg", "tieude" => "Thảo Mobile");
         }
     }
 
@@ -211,7 +211,7 @@ class HINHANH{
             $anh = $this->layhinhanhtheoid($id);
             if($anh){
                 // Danh sách ảnh mặc định không được xóa file vật lý
-                $anh_macdinh = array('logo.jpg', 'logo1.jpg', 'h1.jpg', 'h2.jpg', 'h3.jpg', 'h4.jpg', 'h5.jpg', 'h6.jpg', 'h7.jpg');
+                $anh_macdinh = array('logo.jpg', 'logo1.jpg', 'logo2.jpg', 'h1.jpg', 'h2.jpg', 'h3.jpg', 'h4.jpg', 'h5.jpg', 'h6.jpg', 'h7.jpg');
                 $filename = basename($anh["duongdan"]);
                 if(!in_array(strtolower($filename), $anh_macdinh)){
                     $file_carousel = "../../images/carousel/" . $filename;

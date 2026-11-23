@@ -34,7 +34,7 @@ if(!isset($logo_shop)){
     }
     $ha_top = new HINHANH();
     $logo_data = $ha_top->laylogo();
-    $logo_shop = !empty($logo_data["duongdan"]) ? $logo_data["duongdan"] : "logo1.jpg";
+    $logo_shop = !empty($logo_data["duongdan"]) ? $logo_data["duongdan"] : "logo2.jpg";
 }
 ?>
 <!DOCTYPE html>
@@ -79,7 +79,7 @@ if(!isset($logo_shop)){
             <div class="container">
                 <!-- Logo & Brand Name -->
                 <a class="navbar-brand d-flex align-items-center" href="index.php">
-                    <img src="../images/logo/<?php echo htmlspecialchars($logo_shop); ?>" alt="<?php echo htmlspecialchars($ten_shop); ?>" class="me-2" onerror="this.src='../images/logo/logo1.jpg'">
+                    <img src="../images/logo/<?php echo htmlspecialchars($logo_shop); ?>" alt="<?php echo htmlspecialchars($ten_shop); ?>" class="me-2 rounded-3 shadow-sm" style="width: 44px; height: 44px; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.35);" onerror="this.src='../images/logo/logo2.jpg'">
                     <span><?php echo mb_strtoupper($ten_shop, 'UTF-8'); ?></span>
                 </a>
 
@@ -90,19 +90,19 @@ if(!isset($logo_shop)){
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Navigation Menu -->
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-2">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-1 d-flex flex-lg-row align-items-lg-center gap-1 gap-xl-2">
                         <li class="nav-item">
-                            <a class="nav-link px-2<?php if(!isset($action) || $action=='null') echo ' active'; ?>" href="index.php">
+                            <a class="nav-link text-nowrap px-2<?php if(!isset($action) || $action=='null') echo ' active'; ?>" href="index.php">
                                 <i class="bi bi-house-door me-1"></i>Trang chủ
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link px-2<?php if(isset($action) && $action=='gioithieu') echo ' active'; ?>" href="index.php?action=gioithieu">
+                            <a class="nav-link text-nowrap px-2<?php if(isset($action) && $action=='gioithieu') echo ' active'; ?>" href="index.php?action=gioithieu">
                                 <i class="bi bi-info-circle me-1"></i>Giới thiệu
                             </a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle px-2" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-nowrap px-2" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-grid me-1"></i>Danh mục hãng
                             </a>
                             <ul class="dropdown-menu shadow" aria-labelledby="navbarDropdown">                                
@@ -118,14 +118,14 @@ if(!isset($logo_shop)){
                     </ul>
 
                     <!-- Search Form -->
-                    <form class="d-flex mx-lg-3 my-2 my-lg-0 navbar-search-form" action="index.php" method="GET" role="search" autocomplete="off">
+                    <form class="d-flex mx-lg-2 my-2 my-lg-0 navbar-search-form flex-shrink-0" action="index.php" method="GET" role="search" autocomplete="off">
                         <input type="hidden" name="action" value="timkiem">
                         <div class="input-group navbar-search-group w-100">
                             <input
                                 class="form-control navbar-search-input"
                                 type="search"
                                 name="q"
-                                placeholder="Bạn cần tìm điện thoại gì hôm nay? (iPhone 18, Galaxy S26...)"
+                                placeholder="Tìm điện thoại..."
                                 aria-label="Tìm kiếm"
                                 value="<?php echo htmlspecialchars(trim($_REQUEST['q'] ?? '')); ?>"
                             >
@@ -136,9 +136,9 @@ if(!isset($logo_shop)){
                     </form>
 
                     <!-- Right Controls (Cart & User) -->
-                    <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+                    <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0 flex-shrink-0">
                         <!-- Nút Giỏ hàng -->
-                        <a href="index.php?action=giohang" class="btn btn-cart-pill d-inline-flex align-items-center">
+                        <a href="index.php?action=giohang" class="btn btn-cart-pill text-nowrap d-inline-flex align-items-center">
                             <i class="bi bi-cart3 fs-6"></i>
                             <span class="ms-1 d-none d-sm-inline">Giỏ hàng</span>
                             <span class="badge cart-badge"><?php 
@@ -154,9 +154,9 @@ if(!isset($logo_shop)){
                         <!-- Cụm Tài khoản / Đăng nhập -->
                         <?php if(isset($_SESSION["khachhang"]) && !empty($_SESSION["khachhang"]["id"])){ ?>
                         <div class="dropdown">
-                            <a class="user-dropdown-toggle dropdown-toggle text-decoration-none d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="user-dropdown-toggle dropdown-toggle text-decoration-none d-flex align-items-center text-nowrap" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="<?php if (empty($_SESSION["khachhang"]["hinhanh"])) echo "../images/users/user.png"; else echo "../images/users/" . $_SESSION["khachhang"]["hinhanh"]; ?>" alt="Avatar">
-                                <span class="ms-1 text-truncate" style="max-width: 120px;">Chào <?php echo $_SESSION["khachhang"]["hoten"]; ?></span>
+                                <span class="ms-2 text-nowrap">Chào <?php echo htmlspecialchars($_SESSION["khachhang"]["hoten"]); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
                                 <?php if(isset($_SESSION["khachhang"]["loai"]) && in_array($_SESSION["khachhang"]["loai"], [1, 2])){ ?>
@@ -191,7 +191,7 @@ if(!isset($logo_shop)){
                             </ul>
                         </div>
                         <?php } else { ?>
-                            <a href="index.php?action=dangnhap" class="btn btn-cart-pill d-inline-flex align-items-center">
+                            <a href="index.php?action=dangnhap" class="btn btn-cart-pill text-nowrap d-inline-flex align-items-center">
                                 <i class="bi bi-person fs-6 me-1"></i>Đăng nhập
                             </a>
                         <?php } ?>

@@ -450,7 +450,7 @@ CREATE TABLE IF NOT EXISTS `hinhanh` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `hinhanh` (`id`, `tieude`, `duongdan`, `loai`, `thutu`, `trangthai`) VALUES
-(1, 'Logo chính Thảo Mobile', 'logo1.jpg', 'logo', 1, 1),
+(1, 'Logo chính Thảo Mobile', 'logo2.jpg', 'logo', 1, 1),
 (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h4.jpg', 'banner_chinh', 1, 1),
 (3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 2, 1),
 (4, 'Ưu đãi trả góp 0% lãi suất - Thủ tục nhanh', 'h6.jpg', 'banner_chinh', 3, 1),

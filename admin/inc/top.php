@@ -1,3 +1,73 @@
+<?php
+// Khởi tạo các biến thông báo mặc định
+$so_don_moi = 0;
+$so_bh_moi = 0;
+$so_sap_het = 0;
+$ds_don_moi = array();
+$ds_bh_moi = array();
+$ds_sap_het = array();
+$tong_thongbao = 0;
+
+try {
+    if (!class_exists("DATABASE")) {
+        require_once(__DIR__ . "/../../model/database.php");
+    }
+    $db = DATABASE::connect();
+
+    // 1. Đơn hàng mới chờ xác nhận (trangthai = 0)
+    $cmd_dem_don = $db->query("SELECT COUNT(*) FROM donhang WHERE trangthai = 0");
+    $so_don_moi = (int)$cmd_dem_don->fetchColumn();
+
+    if ($so_don_moi > 0) {
+        $cmd_ds_don = $db->query("SELECT d.id, d.ngay AS ngaydat, d.tongtien, n.hoten 
+                                  FROM donhang d 
+                                  LEFT JOIN nguoidung n ON d.nguoidung_id = n.id 
+                                  WHERE d.trangthai = 0 
+                                  ORDER BY d.id DESC 
+                                  LIMIT 5");
+        $ds_don_moi = $cmd_ds_don->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 2. Yêu cầu bảo hành mới tiếp nhận (trangthai = 0)
+    $cmd_dem_bh = $db->query("SELECT COUNT(*) FROM baohanh WHERE trangthai = 0");
+    $so_bh_moi = (int)$cmd_dem_bh->fetchColumn();
+
+    if ($so_bh_moi > 0) {
+        $cmd_ds_bh = $db->query("SELECT b.id, b.tenkhachhang, b.ngaytiepnhan, m.tenmathang AS tenhang 
+                                 FROM baohanh b 
+                                 LEFT JOIN mathang m ON b.mathang_id = m.id 
+                                 WHERE b.trangthai = 0 
+                                 ORDER BY b.id DESC 
+                                 LIMIT 3");
+        $ds_bh_moi = $cmd_ds_bh->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 3. Cảnh báo điện thoại sắp hết hàng (soluongton <= 5)
+    $cmd_dem_het = $db->query("SELECT COUNT(*) FROM mathang WHERE soluongton <= 5");
+    $so_sap_het = (int)$cmd_dem_het->fetchColumn();
+
+    if ($so_sap_het > 0) {
+        $cmd_ds_het = $db->query("SELECT id, tenmathang AS tenhang, soluongton 
+                                  FROM mathang 
+                                  WHERE soluongton <= 5 
+                                  ORDER BY soluongton ASC, id ASC 
+                                  LIMIT 2");
+        $ds_sap_het = $cmd_ds_het->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Tổng số thông báo cần xử lý
+    $tong_thongbao = $so_don_moi + $so_bh_moi + $so_sap_het;
+} catch (Exception $e) {
+    // Bọc trong try...catch an toàn để không bao giờ gây lỗi giao diện
+    $so_don_moi = 0;
+    $so_bh_moi = 0;
+    $so_sap_het = 0;
+    $ds_don_moi = array();
+    $ds_bh_moi = array();
+    $ds_sap_het = array();
+    $tong_thongbao = 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +90,10 @@
 	<div class="wrapper">
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
-				<a class="sidebar-brand" href="../../public/index.php">
-          <span class="align-middle">Thảo Mobile</span>
-        </a>
+				<a class="sidebar-brand d-flex align-items-center" href="../../public/index.php">
+					<img src="../../images/logo/logo2.jpg" alt="Thảo Mobile" class="rounded-2 me-2 shadow-sm" style="width: 32px; height: 32px; object-fit: cover; border: 1px solid rgba(255,255,255,0.25);" onerror="this.src='../../images/logo/logo.jpg'">
+					<span class="align-middle">Thảo Mobile</span>
+				</a>
 
 				<ul class="sidebar-nav">
 					<li class="sidebar-header text-info">
@@ -129,66 +200,87 @@
 				<div class="navbar-collapse collapse">
 					<ul class="navbar-nav navbar-align">
 						<li class="nav-item dropdown">
-							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Thông báo hệ thống">
 								<div class="position-relative">
 									<i class="align-middle" data-feather="bell"></i>
-									<span class="indicator">1</span>
+									<?php if ($tong_thongbao > 0): ?>
+										<span class="indicator" style="background-color: #dc3545; color: #fff; font-weight: 700;"><?= $tong_thongbao ?></span>
+									<?php endif; ?>
 								</div>
 							</a>
-							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
-								<div class="dropdown-menu-header">
-									1 thông báo mới
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0 shadow border-0" aria-labelledby="alertsDropdown" style="min-width: 330px;">
+								<div class="dropdown-menu-header py-2 px-3 fw-bold text-center" style="background-color: #f8f9fa; color: #212529; border-bottom: 1px solid #e9ecef;">
+									<?php if ($tong_thongbao > 0): ?>
+										<span class="text-danger fw-bold"><i class="align-middle me-1" data-feather="alert-circle" style="width: 15px; height: 15px;"></i><?= $tong_thongbao ?> thông báo cần xử lý</span>
+									<?php else: ?>
+										<span class="text-secondary fw-semibold">Thông báo hệ thống</span>
+									<?php endif; ?>
 								</div>
-								<div class="list-group">
-									<a href="#" class="list-group-item">
-										<div class="row g-0 align-items-center">
-											<div class="col-2">
-												<i class="text-danger" data-feather="alert-circle"></i>
-											</div>
-											<div class="col-10">
-												<div class="text-dark">Đơn hàng mới</div>
-												<div class="text-muted small mt-1">Xem danh sách đơn hàng chờ xác nhận.</div>
-												<div class="text-muted small mt-1">5 phút trước</div>
-											</div>
+								<div class="list-group list-group-flush" style="max-height: 380px; overflow-y: auto;">
+									<?php if ($tong_thongbao == 0): ?>
+										<div class="list-group-item text-center py-4 text-muted border-0">
+											<i class="align-middle mb-2 text-success" data-feather="check-circle" style="width: 32px; height: 32px;"></i>
+											<div class="small fw-semibold text-secondary">Hiện không có thông báo mới nào cần xử lý.</div>
 										</div>
+									<?php else: ?>
+										<!-- 1. Đơn hàng mới chờ xác nhận -->
+										<?php foreach ($ds_don_moi as $dh): ?>
+											<a href="../qldonhang/index.php?action=chitiet&id=<?= $dh['id'] ?>" class="list-group-item list-group-item-action py-2">
+												<div class="row g-0 align-items-center">
+													<div class="col-2 text-center">
+														<div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background-color: rgba(215, 0, 24, 0.1);">
+															<i class="align-middle" data-feather="shopping-cart" style="color: #d70018; width: 17px; height: 17px;"></i>
+														</div>
+													</div>
+													<div class="col-10 ps-2">
+														<div class="text-dark fw-bold small">Đơn hàng mới <?= sprintf("#DH%06d", $dh['id']) ?></div>
+														<div class="text-muted small mt-1" style="font-size: 12px;">Khách: <strong><?= htmlspecialchars($dh['hoten'] ?? 'Khách vãng lai') ?></strong> • <span class="text-danger fw-semibold"><?= number_format($dh['tongtien'], 0, ',', '.') ?>đ</span></div>
+														<div class="text-muted small mt-1" style="font-size: 11px;"><i class="align-middle me-1" data-feather="clock" style="width: 11px; height: 11px;"></i><?= date("d/m/Y H:i", strtotime($dh['ngaydat'])) ?></div>
+													</div>
+												</div>
+											</a>
+										<?php endforeach; ?>
+
+										<!-- 2. Yêu cầu bảo hành mới tiếp nhận -->
+										<?php foreach ($ds_bh_moi as $bh): ?>
+											<a href="../qlbaohanh/index.php" class="list-group-item list-group-item-action py-2">
+												<div class="row g-0 align-items-center">
+													<div class="col-2 text-center">
+														<div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background-color: rgba(245, 158, 11, 0.15);">
+															<i class="align-middle" data-feather="shield" style="color: #f59e0b; width: 17px; height: 17px;"></i>
+														</div>
+													</div>
+													<div class="col-10 ps-2">
+														<div class="text-dark fw-bold small">Yêu cầu bảo hành <?= sprintf("#BH%05d", $bh['id']) ?></div>
+														<div class="text-muted small mt-1" style="font-size: 12px;"><strong><?= htmlspecialchars($bh['tenkhachhang']) ?></strong> • Máy: <?= htmlspecialchars($bh['tenhang'] ?? 'Điện thoại') ?></div>
+														<div class="text-muted small mt-1" style="font-size: 11px;"><i class="align-middle me-1" data-feather="clock" style="width: 11px; height: 11px;"></i><?= date("d/m/Y H:i", strtotime($bh['ngaytiepnhan'])) ?></div>
+													</div>
+												</div>
+											</a>
+										<?php endforeach; ?>
+
+										<!-- 3. Cảnh báo tồn kho thấp -->
+										<?php foreach ($ds_sap_het as $sp): ?>
+											<a href="../qlnhaphang/index.php" class="list-group-item list-group-item-action py-2">
+												<div class="row g-0 align-items-center">
+													<div class="col-2 text-center">
+														<div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background-color: rgba(252, 185, 44, 0.18);">
+															<i class="align-middle" data-feather="alert-triangle" style="color: #d97706; width: 17px; height: 17px;"></i>
+														</div>
+													</div>
+													<div class="col-10 ps-2">
+														<div class="text-dark fw-bold small">Sắp hết hàng: <?= htmlspecialchars($sp['tenhang']) ?></div>
+														<div class="text-danger small mt-1 fw-semibold" style="font-size: 12px;">Chỉ còn <?= (int)$sp['soluongton'] ?> chiếc trong kho</div>
+													</div>
+												</div>
+											</a>
+										<?php endforeach; ?>
+									<?php endif; ?>
+								</div>
+								<div class="dropdown-menu-footer text-center py-2 bg-light border-top">
+									<a href="../qldonhang/index.php" class="text-primary fw-semibold small text-decoration-none">
+										Quản lý tất cả đơn hàng <i class="align-middle ms-1" data-feather="chevron-right" style="width: 14px; height: 14px;"></i>
 									</a>
-									
-								</div>
-								<div class="dropdown-menu-footer">
-									<a href="#" class="text-muted">Tất cả thông báo</a>
-								</div>
-							</div>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-bs-toggle="dropdown">
-								<div class="position-relative">
-									<i class="align-middle" data-feather="message-square"></i>
-									<span class="indicator">1</span>
-								</div>
-							</a>
-							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="messagesDropdown">
-								<div class="dropdown-menu-header">
-									<div class="position-relative">
-										1 tin nhắn mới
-									</div>
-								</div>
-								<div class="list-group">
-									<a href="#" class="list-group-item">
-										<div class="row g-0 align-items-center">
-											<div class="col-2">
-												<img src="../../images/users/doraemon.jpg" class="avatar img-fluid rounded-circle" alt="Mèo máy Đô rê mon">
-											</div>
-											<div class="col-10 ps-2">
-												<div class="text-dark">Doraemon</div>
-												<div class="text-muted small mt-1">Mail của mèo máy đến từ tương lai nè ^.^</div>
-												<div class="text-muted small mt-1">15 phút trước</div>
-											</div>
-										</div>
-									</a>
-									
-								</div>
-								<div class="dropdown-menu-footer">
-									<a href="#" class="text-muted">Tất cả tin nhắn</a>
 								</div>
 							</div>
 						</li>

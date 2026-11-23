@@ -26,7 +26,7 @@ if(empty($ds_promo_banner)){
     <div class="carousel-inner h-100">
         <?php foreach($ds_promo_banner as $k => $b): ?>
         <div class="carousel-item <?php echo $k === 0 ? 'active' : ''; ?> h-100">
-            <img src="../images/carousel/<?php echo htmlspecialchars($b['duongdan']); ?>" alt="<?php echo htmlspecialchars($b['tieude']); ?>" class="d-block w-100" style="height: 100%; min-height: 380px; object-fit: cover; object-position: center;" onerror="this.src='../images/carousel/h1.jpg'">
+            <img src="../images/carousel/<?php echo htmlspecialchars($b['duongdan']); ?>" alt="<?php echo htmlspecialchars($b['tieude']); ?>" class="d-block w-100 h-100 promo-carousel-img" style="height: 100%; min-height: 310px; object-fit: fill; object-position: center center; background-color: #1a1025;" onerror="this.src='../images/carousel/h1.jpg'">
         </div>
         <?php endforeach; ?>
     </div>

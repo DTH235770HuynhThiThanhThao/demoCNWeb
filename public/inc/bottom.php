@@ -5,10 +5,10 @@
         <section class="mb-5">            
             <div class="container">
                 <div class="row align-items-stretch g-4">                    
-                    <div class="col-lg-6 mb-3 mb-lg-0 d-flex flex-column">
+                    <div class="col-lg-7 mb-3 mb-lg-0 d-flex flex-column">
                         <?php include("inc/carousel.php"); ?>    
                     </div>
-                    <div class="col-lg-6 d-flex flex-column">
+                    <div class="col-lg-5 d-flex flex-column">
                         <?php include("inc/topview.php"); ?>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                     <!-- Cột 1: Thông tin thương hiệu & Liên hệ -->
                     <div class="col-lg-5 col-md-6">
                         <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3">
-                            <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo1.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?>" class="rounded-3 me-3 shadow-sm" style="height: 52px; width: 52px; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);" onerror="this.src='../images/logo/logo1.jpg'">
+                            <img src="../images/logo/<?php echo htmlspecialchars(!empty($logo_shop) ? $logo_shop : "logo2.jpg"); ?>" alt="<?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?>" class="rounded-3 me-3 shadow-sm" style="height: 52px; width: 52px; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);" onerror="this.src='../images/logo/logo2.jpg'">
                             <div>
                                 <h5 class="mb-0 fw-bold text-white"><?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?></h5>
                                 <small class="text-white-50">Hệ thống bán lẻ điện thoại chính hãng</small>
@@ -70,6 +70,12 @@
                         <a href="index.php?action=gioithieu#huong-dan-mua-hang" class="footer-link">
                             <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Hướng dẫn mua hàng trực tuyến
                         </a>
+                        <a href="index.php?action=about#chinh-sach-bao-hanh" class="footer-link">
+                            <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Chính sách bảo hành 1 đổi 1
+                        </a>
+                        <a href="index.php?action=about#quy-dinh-kiem-tra-hang" class="footer-link">
+                            <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Quy định kiểm tra hàng khi nhận
+                        </a>
                         <a href="index.php?action=gioithieu" class="footer-link">
                             <i class="bi bi-chevron-right me-1" style="font-size: 0.75rem;"></i>Giới thiệu & Liên hệ cửa hàng
                         </a>
@@ -85,13 +91,10 @@
 
                 <hr>
 
-                <div class="row align-items-center">
-                    <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
-                        <p class="m-0 text-white-50 small">&copy; <?php echo date("Y"); ?> <b><?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?></b>. Tất cả quyền được bảo lưu.</p>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <small class="text-white-50">Thương hiệu bán lẻ công nghệ uy tín hàng đầu</small>
-                    </div>
+                <div class="text-center py-1">
+                    <p class="m-0 text-white-50 small">
+                        &copy; <?php echo date("Y"); ?> <b><?php echo htmlspecialchars($ten_shop ?? "Thảo Mobile"); ?></b>. Tất cả quyền được bảo lưu. &bull; Thương hiệu bán lẻ công nghệ uy tín hàng đầu
+                    </p>
                 </div>
             </div>
         </footer>

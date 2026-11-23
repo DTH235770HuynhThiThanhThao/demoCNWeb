@@ -633,6 +633,7 @@ switch($action){
             include("changepass.php");
         }
         break;
+    case "about":
     case "gioithieu":
         include("about.php");
         break;

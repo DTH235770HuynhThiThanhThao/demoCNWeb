@@ -162,7 +162,7 @@
 				<!-- Thẻ mô phỏng danh thiếp cửa hàng -->
 				<div class="p-3 rounded-3 text-white shadow-sm mb-3" style="background: linear-gradient(135deg, #142B4A 0%, #0d1f35 100%);">
 					<div class="d-flex align-items-center gap-3 mb-3">
-						<img src="../../images/logo/logo1.jpg" alt="Logo" class="rounded-3 shadow-sm bg-white p-1" style="width: 52px; height: 52px; object-fit: cover;" onerror="this.src='../../images/products/a1.jpg';">
+						<img src="../../images/logo/logo2.jpg" alt="Logo" class="rounded-3 shadow-sm bg-white p-1" style="width: 52px; height: 52px; object-fit: cover;" onerror="this.src='../../images/logo/logo.jpg';">
 						<div>
 							<h5 class="fw-bold mb-0 text-white" id="pvTenCuaHang"><?= htmlspecialchars($thongtin["tencuahang"] ?? "Thảo Mobile") ?></h5>
 							<small class="text-white-50">Hệ thống bán lẻ chính hãng</small>
