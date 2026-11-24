@@ -9,6 +9,12 @@ if (!isset($_SESSION["nguoidung"])) {
     exit();
 }
 
+// Chặn truy cập nếu không phải là Quản trị viên (loai != 1)
+if ($_SESSION["nguoidung"]["loai"] != 1) {
+    header("Location: ../ktnguoidung/index.php?err=khong_co_quyen");
+    exit();
+}
+
 require("../../model/database.php");
 require("../../model/donhang.php");
 require("../../model/donhangct.php");

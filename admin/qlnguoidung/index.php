@@ -1,9 +1,19 @@
 <?php 
 if (session_status() == PHP_SESSION_NONE) {
- session_start();
+    session_start();
 }
-if(!isset($_SESSION["nguoidung"]))
+
+// Kiểm tra quyền đăng nhập quản trị
+if (!isset($_SESSION["nguoidung"])) {
     header("location:../index.php");
+    exit();
+}
+
+// Chặn truy cập nếu không phải là Quản trị viên (loai != 1)
+if ($_SESSION["nguoidung"]["loai"] != 1) {
+    header("Location: ../ktnguoidung/index.php?err=khong_co_quyen");
+    exit();
+}
 
 require("../../model/database.php");
 require("../../model/nguoidung.php");

@@ -181,6 +181,17 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
     </div>
 </div>
 
+<!-- THÔNG BÁO TỪ CHỐI QUYỀN TRUY CẬP (NẾU CÓ) -->
+<?php if(isset($_GET["err"]) && $_GET["err"] === "khong_co_quyen"): ?>
+    <div class="alert alert-danger border-0 shadow-sm rounded-3 d-flex align-items-center justify-content-between mb-4 py-2.5 px-3" style="background-color: #fee2e2; color: #b91c1c;" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="align-middle me-2 flex-shrink-0" data-feather="alert-triangle" style="width: 18px; height: 18px; color: #d70018;"></i>
+            <span class="fw-semibold" style="font-size: 13.5px;">Bạn không có quyền truy cập chức năng này. Chức năng chỉ dành cho Quản trị viên hệ thống!</span>
+        </div>
+        <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
+
 <!-- ================= 2. 4 THẺ CHỈ SỐ KPI NỔI BẬT (4 CỘT ĐỀU NHAU) ================= -->
 <div class="row g-3 mb-4">
     <!-- Thẻ 1: Tổng doanh thu -->

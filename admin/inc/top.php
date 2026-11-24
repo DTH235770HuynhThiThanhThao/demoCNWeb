@@ -303,11 +303,13 @@ try {
 						</a>
 					</li>
 
+				<?php if(isset($_SESSION["nguoidung"]) && $_SESSION["nguoidung"]["loai"] == 1){ ?>
 					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qldoanhthu") != false) echo "active"; ?>">
 						<a class="sidebar-link" href="../qldoanhthu/index.php">
 						<i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Quản lý doanh thu</span>
 						</a>
 					</li>
+				<?php } ?>
 
 					<li class="sidebar-item <?php if(strpos($_SERVER['REQUEST_URI'],"qlkhuyenmai") != false) echo "active"; ?>">
 						<a class="sidebar-link" href="../qlkhuyenmai/index.php">
