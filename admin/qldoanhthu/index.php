@@ -20,7 +20,15 @@ $dh = new DONHANG();
 // Tiếp nhận các tham số lọc từ form GET
 $tungay = isset($_GET["tungay"]) ? trim($_GET["tungay"]) : "";
 $denngay = isset($_GET["denngay"]) ? trim($_GET["denngay"]) : "";
-$nam = isset($_GET["nam"]) && (int)$_GET["nam"] > 0 ? (int)$_GET["nam"] : (int)date("Y");
+
+// Lấy danh sách các năm và tự động chọn năm gần nhất có đơn hoàn thành nếu chưa chọn năm
+$danhsachnam = $dh->laydanhsachnamdoanhthu();
+if (isset($_GET["nam"]) && (int)$_GET["nam"] > 0) {
+    $nam = (int)$_GET["nam"];
+} else {
+    $nam_gannhat = $dh->laynamgannhatcohoanthanh();
+    $nam = ($nam_gannhat > 0) ? $nam_gannhat : (int)date("Y");
+}
 
 // 1. Thống kê 4 chỉ số tài chính tổng hợp
 $thongke = $dh->thongkedoanhthu($tungay, $denngay);

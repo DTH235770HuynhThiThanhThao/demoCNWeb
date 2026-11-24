@@ -148,7 +148,7 @@ if(empty($ds_hero_banner)){
 </div>
 
 <!-- Danh sách sản phẩm theo danh mục (CellphoneS Product Grid) -->
-<div id="danh-sach-san-pham" style="scroll-margin-top: 80px;">
+<div id="danh-sach-san-pham" style="scroll-margin-top: 90px;">
 <?php 
 foreach($danhmuc as $d){ 
     $i = 0;

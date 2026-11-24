@@ -171,11 +171,11 @@ $currentDateStr = ($daysOfWeek[date('l')] ?? 'Hôm nay') . ', ' . date('d/m/Y');
             </div>
             <a href="../qlnhaphang/index.php?action=them" class="btn-header-nhap shadow-sm">
                 <i class="align-middle me-1" data-feather="download" style="width: 15px; height: 15px;"></i>
-                <span>+ Nhập hàng mới</span>
+                <span>Nhập hàng mới</span>
             </a>
             <a href="../qlmathang/index.php?action=them" class="btn-header-them shadow-sm">
                 <i class="align-middle me-1" data-feather="plus-circle" style="width: 15px; height: 15px;"></i>
-                <span>+ Thêm điện thoại</span>
+                <span>Thêm điện thoại</span>
             </a>
         </div>
     </div>

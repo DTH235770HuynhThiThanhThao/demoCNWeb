@@ -83,6 +83,12 @@ $tong_sl_may = 0;
 foreach($chitiet as $c){
     $tong_sl_may += (int)$c["soluong"];
 }
+
+// Trích xuất các biến thể từ ghi chú nếu có dạng [Tên máy - Phiên bản - Màu sắc x SL]
+$bienthe_tags = array();
+if(!empty($pn["ghichu"]) && preg_match_all('/\[(.*?)\]/', $pn["ghichu"], $matches)){
+    $bienthe_tags = $matches[1];
+}
 ?>
 
 <!-- 1. Thanh tiêu đề & nút điều hướng -->
@@ -132,9 +138,9 @@ foreach($chitiet as $c){
                     <span class="text-muted">Thời gian nhập kho:</span>
                     <strong class="text-dark"><?= date("d/m/Y H:i:s", strtotime($pn["ngaynhap"])) ?></strong>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <span class="text-muted">Ghi chú kho:</span>
-                    <span class="text-dark"><?= !empty($pn["ghichu"]) ? htmlspecialchars($pn["ghichu"]) : "<span class='text-muted fst-italic'>Không có ghi chú</span>" ?></span>
+                <div class="d-flex justify-content-between align-items-start gap-2">
+                    <span class="text-muted text-nowrap">Ghi chú kho:</span>
+                    <span class="text-dark text-end" style="word-break: break-word;"><?= !empty($pn["ghichu"]) ? nl2br(htmlspecialchars($pn["ghichu"])) : "<span class='text-muted fst-italic'>Không có ghi chú</span>" ?></span>
                 </div>
             </div>
         </div>
@@ -163,6 +169,25 @@ foreach($chitiet as $c){
         </div>
     </div>
 </div>
+
+<!-- THẺ CHI TIẾT BIẾN THỂ PHIÊN BẢN & MÀU SẮC (NẾU CÓ) -->
+<?php if(!empty($bienthe_tags)): ?>
+    <div class="card border-0 shadow-sm rounded-4 mb-4" style="border: 1px solid #fecaca !important; background-color: #fffafb;">
+        <div class="card-body p-3.5">
+            <div class="d-flex align-items-center mb-2">
+                <div class="section-accent-bar"></div>
+                <h6 class="fw-bold mb-0 text-dark" style="font-size: 14px;">Chi tiết cấu hình phiên bản dung lượng &amp; màu sắc nhập kho:</h6>
+            </div>
+            <div class="d-flex flex-wrap gap-2 pt-1">
+                <?php foreach($bienthe_tags as $bt): ?>
+                    <span class="badge fw-semibold px-2.5 py-1.5 rounded-3 d-inline-flex align-items-center" style="background-color: #ffffff; color: #d70018; border: 1px solid #fecaca; font-size: 12px; box-shadow: 0 1px 3px rgba(215, 0, 24, 0.08);">
+                        <i class="align-middle me-1.5" data-feather="check-circle" style="width: 13px; height: 13px;"></i><?= htmlspecialchars($bt) ?>
+                    </span>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 
 <!-- 3. BẢNG CHI TIẾT CÁC MẶT HÀNG NHẬP -->
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">

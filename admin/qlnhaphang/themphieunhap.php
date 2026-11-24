@@ -98,7 +98,7 @@ if($mathang_id_chon > 0 && !empty($mathang)){
         <div class="brand-title-bar"></div>
         <div>
             <h3 class="fw-bold mb-0 text-dark" style="letter-spacing: -0.3px;">LẬP PHIẾU NHẬP KHO</h3>
-            <p class="text-muted small mb-0 mt-1">Tạo phiếu nhập hàng, quản lý nhà cung cấp và tự động đồng bộ tồn kho</p>
+            <p class="text-muted small mb-0 mt-1">Tạo phiếu nhập hàng chi tiết phiên bản dung lượng & màu sắc, tự động đồng bộ tồn kho</p>
         </div>
     </div>
     <div>
@@ -167,14 +167,14 @@ if($mathang_id_chon > 0 && !empty($mathang)){
 
                 <!-- Ghi chú nhập kho -->
                 <div class="col-12">
-                    <label class="form-label fw-semibold small text-muted mb-1">Ghi chú nhập kho</label>
-                    <input type="text" class="form-control form-control-flagship" name="txtghichu" placeholder="Ví dụ: Nhập bổ sung tồn kho đợt 1, số hóa đơn VAT, chứng từ kho...">
+                    <label class="form-label fw-semibold small text-muted mb-1">Ghi chú chứng từ kho</label>
+                    <input type="text" class="form-control form-control-flagship" name="txtghichu" placeholder="Ví dụ: Đợt nhập chính hãng, số hóa đơn VAT, chứng từ kho...">
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- KHỐI 2: BẢNG CHỌN DANH SÁCH MẶT HÀNG NHẬP -->
+    <!-- KHỐI 2: BẢNG CHỌN DANH SÁCH MẶT HÀNG NHẬP (CÓ CHỌN PHIÊN BẢN & MÀU SẮC) -->
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
         <div class="card-header bg-white py-3 px-4 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div class="d-flex align-items-center">
@@ -192,12 +192,14 @@ if($mathang_id_chon > 0 && !empty($mathang)){
                 <table class="table table-hover align-middle mb-0" id="bangNhapChiTiet">
                     <thead class="table-flagship-head text-center">
                         <tr>
-                            <th class="ps-4" style="width: 60px;">STT</th>
-                            <th style="min-width: 320px;" class="text-start">CHỌN MẪU ĐIỆN THOẠI</th>
-                            <th style="width: 210px;">GIÁ NHẬP (VNĐ)</th>
-                            <th style="width: 150px;">SỐ LƯỢNG NHẬP</th>
-                            <th style="width: 210px;" class="text-end">THÀNH TIỀN</th>
-                            <th class="pe-4" style="width: 70px;">XÓA</th>
+                            <th class="ps-4" style="width: 50px;">STT</th>
+                            <th style="min-width: 250px;" class="text-start">CHỌN MẪU ĐIỆN THOẠI</th>
+                            <th style="width: 140px;">PHIÊN BẢN</th>
+                            <th style="width: 160px;">MÀU SẮC</th>
+                            <th style="width: 175px;">GIÁ NHẬP (VNĐ)</th>
+                            <th style="width: 120px;">SỐ LƯỢNG</th>
+                            <th style="width: 165px;" class="text-end">THÀNH TIỀN</th>
+                            <th class="pe-4" style="width: 60px;">XÓA</th>
                         </tr>
                     </thead>
                     <tbody id="thanBangNhap">
@@ -205,7 +207,7 @@ if($mathang_id_chon > 0 && !empty($mathang)){
                     </tbody>
                     <tfoot style="background-color: #f8fafc; border-top: 1px solid #e2e8f0;">
                         <tr>
-                            <td colspan="3" class="text-end fw-bold py-3 text-secondary ps-4">
+                            <td colspan="5" class="text-end fw-bold py-3 text-secondary ps-4">
                                 TỔNG CỘNG PHIẾU NHẬP:
                             </td>
                             <td class="text-center fw-bold py-3">
@@ -224,7 +226,7 @@ if($mathang_id_chon > 0 && !empty($mathang)){
         <div class="card-footer bg-white p-3.5 px-4 border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
             <button type="button" class="btn btn-sm btn-outline-flagship d-inline-flex align-items-center gap-1.5 px-3 py-2" onclick="themDongSanPham()">
                 <i class="align-middle" data-feather="plus-circle" style="width: 15px; height: 15px;"></i>
-                <span>Thêm một mẫu điện thoại khác</span>
+                <span>Thêm dòng sản phẩm / biến thể khác</span>
             </button>
 
             <div class="d-flex align-items-center gap-2">
@@ -243,24 +245,77 @@ if($mathang_id_chon > 0 && !empty($mathang)){
 var danhSachSanPhamData = [
     <?php foreach($mathang as $m): ?>
     {
-        id: <?= $m["id"] ?>,
+        id: <?= (int)$m["id"] ?>,
         ten: <?= json_encode($m["tenmathang"]) ?>,
         hang: <?= json_encode($m["tendanhmuc"] ?? "") ?>,
         ton: <?= (int)$m["soluongton"] ?>,
         giagoc: <?= (float)$m["giagoc"] ?>,
-        giaban: <?= (float)$m["giaban"] ?>
+        giaban: <?= (float)$m["giaban"] ?>,
+        phienban: <?= json_encode($m["phienban"] ?? "") ?>,
+        mausac: <?= json_encode($m["mausac"] ?? "") ?>
     },
     <?php endforeach; ?>
 ];
 
 var sanPhamIdChonTruoc = <?= (int)$mathang_id_chon ?>;
 
+function escapeHtml(text) {
+    if (text === null || text === undefined) return "";
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function escapeAttr(text) {
+    return escapeHtml(text);
+}
+
 function ganNCC(ten) {
     document.getElementById("txtnhacungcap").value = ten;
 }
 
+// Hàm phân tách chuỗi phiên bản thành mảng các object
+function parsePhienBan(phienbanStr) {
+    if (!phienbanStr || typeof phienbanStr !== 'string') return [];
+    var rawList = phienbanStr.split(',');
+    var result = [];
+    rawList.forEach(function(item) {
+        var trimmed = item.trim();
+        if (trimmed.length > 0) {
+            // Hỗ trợ dạng: "256GB:22990000" hoặc "512GB:27990000:12GB" hoặc "256GB"
+            var parts = trimmed.split(':');
+            var dungluong = parts[0].trim();
+            var giaban = parts[1] ? parseFloat(parts[1].trim()) : null;
+            var ram = parts[2] ? parts[2].trim() : null;
+            result.push({
+                dungluong: dungluong,
+                giaban: giaban,
+                ram: ram
+            });
+        }
+    });
+    return result;
+}
+
+// Hàm phân tách chuỗi màu sắc thành mảng tên màu
+function parseMauSac(mausacStr) {
+    if (!mausacStr || typeof mausacStr !== 'string') return [];
+    var rawList = mausacStr.split(',');
+    var result = [];
+    rawList.forEach(function(item) {
+        var trimmed = item.trim();
+        if (trimmed.length > 0) {
+            result.push(trimmed);
+        }
+    });
+    return result;
+}
+
 // Hàm thêm một dòng mới vào bảng
-function themDongSanPham(sanPhamIdDefault = 0) {
+function themDongSanPham(sanPhamIdDefault = 0, pbDefault = '', msDefault = '') {
     var tbody = document.getElementById("thanBangNhap");
     var rowIndex = tbody.children.length;
 
@@ -271,8 +326,14 @@ function themDongSanPham(sanPhamIdDefault = 0) {
     var optionsHtml = '<option value="">-- Chọn điện thoại cần nhập --</option>';
     danhSachSanPhamData.forEach(function(sp) {
         var selected = (sp.id === sanPhamIdDefault) ? 'selected' : '';
-        optionsHtml += '<option value="' + sp.id + '" data-giagoc="' + sp.giagoc + '" data-giaban="' + sp.giaban + '" data-ton="' + sp.ton + '" ' + selected + '>' +
-            sp.ten + ' (Tồn: ' + sp.ton + ' | Giá bán: ' + dinhDangTien(sp.giaban) + ')' +
+        optionsHtml += '<option value="' + sp.id + '" ' +
+            'data-giagoc="' + sp.giagoc + '" ' +
+            'data-giaban="' + sp.giaban + '" ' +
+            'data-ton="' + sp.ton + '" ' +
+            'data-phienban="' + escapeAttr(sp.phienban) + '" ' +
+            'data-mausac="' + escapeAttr(sp.mausac) + '" ' +
+            selected + '>' +
+            escapeHtml(sp.ten) + ' (Tồn: ' + sp.ton + ' | Giá bán: ' + dinhDangTien(sp.giaban) + ')' +
             '</option>';
     });
 
@@ -281,6 +342,16 @@ function themDongSanPham(sanPhamIdDefault = 0) {
         '<td>' +
             '<select class="form-select form-select-flagship select-mathang" name="optmathang[]" required onchange="doiMatHang(this)">' +
                 optionsHtml +
+            '</select>' +
+        '</td>' +
+        '<td>' +
+            '<select class="form-select form-select-flagship select-phienban" name="optphienban[]" onchange="doiPhienBan(this)">' +
+                '<option value="Mặc định">Mặc định</option>' +
+            '</select>' +
+        '</td>' +
+        '<td>' +
+            '<select class="form-select form-select-flagship select-mausac" name="optmausac[]">' +
+                '<option value="Mặc định">Mặc định</option>' +
             '</select>' +
         '</td>' +
         '<td>' +
@@ -303,31 +374,90 @@ function themDongSanPham(sanPhamIdDefault = 0) {
 
     tbody.appendChild(tr);
 
-    // Tự động kích hoạt đổi mặt hàng nếu có chọn mặc định
+    // Tự động kích hoạt nạp phiên bản & màu sắc nếu có chọn máy
     if (sanPhamIdDefault > 0) {
         var selectEl = tr.querySelector(".select-mathang");
-        doiMatHang(selectEl);
+        doiMatHang(selectEl, pbDefault, msDefault);
     }
 
     capNhatTongCong();
 }
 
 // Khi người dùng chọn một sản phẩm trong dropdown
-function doiMatHang(selectEl) {
+function doiMatHang(selectEl, pbChon = '', msChon = '') {
     var tr = selectEl.closest("tr");
-    var selectedOpt = selectEl.options[selectEl.selectedIndex];
-    var giaGoc = parseFloat(selectedOpt.getAttribute("data-giagoc")) || 0;
-    var giaBan = parseFloat(selectedOpt.getAttribute("data-giaban")) || 0;
+    var spId = parseInt(selectEl.value) || 0;
+    var sp = danhSachSanPhamData.find(function(item) { return item.id === spId; });
 
+    var selectPB = tr.querySelector(".select-phienban");
+    var selectMS = tr.querySelector(".select-mausac");
     var inputGiaNhap = tr.querySelector(".input-gianhap");
-    // Gợi ý giá nhập: ưu tiên giagoc nếu có, nếu chưa có thì gợi ý khoảng 85% giá bán
+
+    if (!sp) {
+        selectPB.innerHTML = '<option value="Mặc định">Mặc định</option>';
+        selectMS.innerHTML = '<option value="Mặc định">Mặc định</option>';
+        inputGiaNhap.value = "";
+        tinhThanhTienDong(selectEl);
+        return;
+    }
+
+    // 1. Nạp danh sách Phiên bản dung lượng tương ứng của máy
+    var pbList = parsePhienBan(sp.phienban);
+    var pbHtml = "";
+    if (pbList.length === 0) {
+        pbHtml = '<option value="Mặc định">Mặc định</option>';
+    } else {
+        pbList.forEach(function(item) {
+            var isSelected = (pbChon && pbChon === item.dungluong) ? 'selected' : '';
+            var label = item.dungluong;
+            if (item.ram) label += ' (' + item.ram + ')';
+            pbHtml += '<option value="' + escapeAttr(item.dungluong) + '" data-giaban="' + (item.giaban || 0) + '" ' + isSelected + '>' + escapeHtml(label) + '</option>';
+        });
+    }
+    selectPB.innerHTML = pbHtml;
+
+    // 2. Nạp danh sách Màu sắc tương ứng của máy
+    var msList = parseMauSac(sp.mausac);
+    var msHtml = "";
+    if (msList.length === 0) {
+        msHtml = '<option value="Mặc định">Mặc định</option>';
+    } else {
+        msList.forEach(function(item) {
+            var isSelected = (msChon && msChon === item) ? 'selected' : '';
+            msHtml += '<option value="' + escapeAttr(item) + '" ' + isSelected + '>' + escapeHtml(item) + '</option>';
+        });
+    }
+    selectMS.innerHTML = msHtml;
+
+    // 3. Gợi ý giá nhập: ưu tiên giá gốc, nếu có giá bán riêng theo phiên bản thì gợi ý 85% giá phiên bản
+    var giaGoc = sp.giagoc || 0;
+    var optFirstPB = selectPB.options[selectPB.selectedIndex];
+    var giaBanPB = optFirstPB ? (parseFloat(optFirstPB.getAttribute("data-giaban")) || 0) : 0;
+    var giaBanChung = sp.giaban || 0;
+
     if (giaGoc > 0) {
         inputGiaNhap.value = giaGoc;
-    } else if (giaBan > 0) {
-        inputGiaNhap.value = Math.round(giaBan * 0.85);
+    } else if (giaBanPB > 0) {
+        inputGiaNhap.value = Math.round(giaBanPB * 0.85);
+    } else if (giaBanChung > 0) {
+        inputGiaNhap.value = Math.round(giaBanChung * 0.85);
     }
 
     tinhThanhTienDong(selectEl);
+}
+
+// Khi người dùng đổi Phiên bản dung lượng: cập nhật gợi ý giá nếu có
+function doiPhienBan(selectPB) {
+    var tr = selectPB.closest("tr");
+    var opt = selectPB.options[selectPB.selectedIndex];
+    if (opt) {
+        var giaBanPB = parseFloat(opt.getAttribute("data-giaban")) || 0;
+        if (giaBanPB > 0) {
+            var inputGiaNhap = tr.querySelector(".input-gianhap");
+            inputGiaNhap.value = Math.round(giaBanPB * 0.85);
+            tinhThanhTienDong(selectPB);
+        }
+    }
 }
 
 // Tính thành tiền cho 1 dòng
@@ -416,8 +546,13 @@ document.addEventListener("DOMContentLoaded", function() {
     if (sanPhamIdChonTruoc > 0) {
         themDongSanPham(sanPhamIdChonTruoc);
     } else {
-        themDongSanPham(1);
-        themDongSanPham(3);
+        // Mở sẵn 2 dòng mẫu linh hoạt
+        if (danhSachSanPhamData.length > 0) {
+            themDongSanPham(danhSachSanPhamData[0].id);
+        }
+        if (danhSachSanPhamData.length > 1) {
+            themDongSanPham(danhSachSanPhamData[1].id);
+        }
     }
 });
 </script>

@@ -254,6 +254,52 @@ class DONHANG{
 		}
 	}
 
+	// Lấy năm gần nhất có phát sinh đơn hàng hoàn thành (trangthai = 3)
+	public function laynamgannhatcohoanthanh(){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT YEAR(ngay) AS nam FROM donhang WHERE trangthai = 3 ORDER BY ngay DESC LIMIT 1";
+			$cmd = $db->prepare($sql);
+			$cmd->execute();
+			$row = $cmd->fetch(PDO::FETCH_ASSOC);
+			if($row && !empty($row["nam"])){
+				return (int)$row["nam"];
+			}
+			return (int)date("Y");
+		}
+		catch(PDOException $e){
+			return (int)date("Y");
+		}
+	}
+
+	// Lấy danh sách các năm có phát sinh đơn hàng hoàn thành
+	public function laydanhsachnamdoanhthu(){
+		$db = DATABASE::connect();
+		try{
+			$sql = "SELECT DISTINCT YEAR(ngay) AS nam FROM donhang WHERE trangthai = 3 ORDER BY nam DESC";
+			$cmd = $db->prepare($sql);
+			$cmd->execute();
+			$years = $cmd->fetchAll(PDO::FETCH_COLUMN);
+			$current_year = (int)date("Y");
+			if(empty($years)){
+				$years = [$current_year];
+			}
+			if(!in_array($current_year, $years)){
+				array_unshift($years, $current_year);
+			}
+			for($y = $current_year; $y >= $current_year - 3; $y--){
+				if(!in_array($y, $years)){
+					$years[] = $y;
+				}
+			}
+			rsort($years);
+			return array_unique($years);
+		}
+		catch(PDOException $e){
+			return [(int)date("Y")];
+		}
+	}
+
 	// 3. Thống kê doanh thu và số máy bán ra theo từng hãng điện thoại
 	public function doanhthutheohang($tungay = '', $denngay = ''){
 		$db = DATABASE::connect();

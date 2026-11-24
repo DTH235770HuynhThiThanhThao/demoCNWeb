@@ -22,16 +22,25 @@ if(empty($ds_promo_banner)){
         <?php endforeach; ?>
     </div>
 
-    <!-- The slideshow/carousel -->
+    <!-- Danh sách slide -->
     <div class="carousel-inner h-100">
         <?php foreach($ds_promo_banner as $k => $b): ?>
         <div class="carousel-item <?php echo $k === 0 ? 'active' : ''; ?> h-100">
-            <img src="../images/carousel/<?php echo htmlspecialchars($b['duongdan']); ?>" alt="<?php echo htmlspecialchars($b['tieude']); ?>" class="d-block w-100 h-100 promo-carousel-img" style="height: 100%; min-height: 310px; object-fit: fill; object-position: center center; background-color: #1a1025;" onerror="this.src='../images/carousel/h1.jpg'">
+            <a href="#danh-sach-san-pham"
+               class="d-block scroll-to-products"
+               style="cursor: pointer;"
+               title="Xem danh sách điện thoại chính hãng">
+                <img src="../images/carousel/<?php echo htmlspecialchars($b['duongdan']); ?>"
+                     alt="<?php echo htmlspecialchars($b['tieude']); ?>"
+                     class="d-block w-100 h-100 promo-carousel-img"
+                     style="height: 100%; min-height: 310px; object-fit: fill; object-position: center center; background-color: #1a1025;"
+                     onerror="this.src='../images/carousel/h1.jpg'">
+            </a>
         </div>
         <?php endforeach; ?>
     </div>
 
-    <!-- Left and right controls/icons -->
+    <!-- Nút điều hướng trái / phải -->
     <button class="carousel-control-prev" type="button" data-bs-target="#promoCarouselBottom" data-bs-slide="prev" aria-label="Trước">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     </button>
@@ -39,3 +48,56 @@ if(empty($ds_promo_banner)){
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
     </button>
 </div>
+
+<script>
+// Cuộn mượt lên khu vực danh sách sản phẩm khi click vào banner phụ
+(function () {
+    function bindSmoothScroll() {
+        document.querySelectorAll('a.scroll-to-products').forEach(function (link) {
+            // Tránh gắn listener trùng lặp
+            if (link.dataset.smoothBound) return;
+            link.dataset.smoothBound = '1';
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var target = document.getElementById('danh-sach-san-pham');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    }
+    // Chạy ngay sau khi DOM sẵn sàng
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindSmoothScroll);
+    } else {
+        bindSmoothScroll();
+    }
+})();
+</script>
+
+
+<script>
+// Cuộn mượt lên khu vực danh sách sản phẩm khi click vào banner phụ
+(function () {
+    function bindSmoothScroll() {
+        document.querySelectorAll('a.scroll-to-products').forEach(function (link) {
+            // Tránh gắn listener trùng lặp
+            if (link.dataset.smoothBound) return;
+            link.dataset.smoothBound = '1';
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var target = document.getElementById('danh-sach-san-pham');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    }
+    // Chạy ngay sau khi DOM sẵn sàng
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindSmoothScroll);
+    } else {
+        bindSmoothScroll();
+    }
+})();
+</script>
