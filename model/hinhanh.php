@@ -39,14 +39,14 @@ class HINHANH{
                 $db->exec($sql_create);
 
                 $sql_seed = "INSERT INTO `hinhanh` (`id`, `tieude`, `duongdan`, `loai`, `thutu`, `trangthai`) VALUES
-                    (1, 'Logo chính Thảo Mobile', 'logo2.jpg', 'logo', 1, 1),
-                    (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h6.jpg', 'banner_chinh', 2, 1),
-                    (3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 3, 1),
-                    (4, 'Ưu đãi thanh toán VietQR và COD nhận hàng tiện lợi', 'h6.jpg', 'banner_chinh', 4, 1),
-                    (5, 'Ưu đãi siêu phẩm giá cực khủng', 'h7.jpg', 'banner_chinh', 1, 1),
-                    (6, 'Điện thoại chính hãng bảo hành 12 tháng', 'h1.jpg', 'banner_phu', 1, 1),
-                    (7, 'Siêu ưu đãi công nghệ - Mua là có quà', 'h2.jpg', 'banner_phu', 2, 1),
-                    (8, 'Thảo Mobile Flagship Store', 'h3.jpg', 'banner_phu', 3, 1);";
+                    (1,  'Logo chính Thảo Mobile',                        'logo2.jpg', 'logo',         1, 1),
+                    (11, 'Siêu phẩm công nghệ mới - Ưu đãi đặc quyền',   'h8.jpg',   'banner_chinh', 1, 1),
+                    (12, 'Lễ hội mua sắm smartphone chính hãng',          'h9.jpg',   'banner_chinh', 2, 1),
+                    (13, 'Flash Sale giá sốc - Giao nhanh 2H',            'h10.jpg',  'banner_chinh', 3, 1),
+                    (14, 'Thu cũ đổi mới - Trợ giá cực hấp dẫn',         'h11.jpg',  'banner_chinh', 4, 1),
+                    (6,  'Điện thoại chính hãng bảo hành 12 tháng',       'h1.jpg',   'banner_phu',   1, 1),
+                    (7,  'Siêu ưu đãi công nghệ - Mua là có quà',         'h2.jpg',   'banner_phu',   2, 1),
+                    (8,  'Thảo Mobile Flagship Store',                     'h3.jpg',   'banner_phu',   3, 1);";
                 $db->exec($sql_seed);
             }
         }
