@@ -9,10 +9,10 @@ $ha_main = new HINHANH();
 $ds_hero_banner = $ha_main->layhinhanhhienthi("banner_chinh");
 if(empty($ds_hero_banner)){
     $ds_hero_banner = array(
+        array("duongdan" => "h7.jpg", "tieude" => "Ưu đãi siêu phẩm giá sốc"),
         array("duongdan" => "h4.jpg", "tieude" => "Siêu phẩm công nghệ mới"),
         array("duongdan" => "h5.jpg", "tieude" => "Lễ hội mua sắm giảm sốc"),
-        array("duongdan" => "h6.jpg", "tieude" => "Ưu đãi thanh toán linh hoạt"),
-        array("duongdan" => "h7.jpg", "tieude" => "Ưu đãi siêu phẩm giá sốc")
+        array("duongdan" => "h6.jpg", "tieude" => "Ưu đãi thanh toán linh hoạt")
     );
 }
 ?>

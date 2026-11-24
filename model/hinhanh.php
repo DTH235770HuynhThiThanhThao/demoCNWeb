@@ -40,10 +40,10 @@ class HINHANH{
 
                 $sql_seed = "INSERT INTO `hinhanh` (`id`, `tieude`, `duongdan`, `loai`, `thutu`, `trangthai`) VALUES
                     (1, 'Logo chính Thảo Mobile', 'logo2.jpg', 'logo', 1, 1),
-                    (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h4.jpg', 'banner_chinh', 1, 1),
-                    (3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 2, 1),
-                    (4, 'Ưu đãi thanh toán VietQR và COD nhận hàng tiện lợi', 'h6.jpg', 'banner_chinh', 3, 1),
-                    (5, 'Ưu đãi siêu phẩm giá cực khủng', 'h7.jpg', 'banner_chinh', 4, 1),
+                    (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h4.jpg', 'banner_chinh', 2, 1),
+                    (3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 3, 1),
+                    (4, 'Ưu đãi thanh toán VietQR và COD nhận hàng tiện lợi', 'h6.jpg', 'banner_chinh', 4, 1),
+                    (5, 'Ưu đãi siêu phẩm giá cực khủng', 'h7.jpg', 'banner_chinh', 1, 1),
                     (6, 'Điện thoại chính hãng bảo hành 12 tháng', 'h1.jpg', 'banner_phu', 1, 1),
                     (7, 'Siêu ưu đãi công nghệ - Mua là có quà', 'h2.jpg', 'banner_phu', 2, 1),
                     (8, 'Thảo Mobile Flagship Store', 'h3.jpg', 'banner_phu', 3, 1);";
@@ -61,12 +61,12 @@ class HINHANH{
         $db = DATABASE::connect();
         try{
             if(!empty($loai)){
-                $sql = "SELECT * FROM hinhanh WHERE loai = :loai ORDER BY thutu ASC, id DESC";
+                $sql = "SELECT * FROM hinhanh WHERE loai = :loai ORDER BY thutu ASC, id ASC";
                 $cmd = $db->prepare($sql);
                 $cmd->bindValue(":loai", $loai);
             }
             else{
-                $sql = "SELECT * FROM hinhanh ORDER BY thutu ASC, id DESC";
+                $sql = "SELECT * FROM hinhanh ORDER BY thutu ASC, id ASC";
                 $cmd = $db->prepare($sql);
             }
             $cmd->execute();
@@ -84,7 +84,7 @@ class HINHANH{
         self::khoitaobang();
         $db = DATABASE::connect();
         try{
-            $sql = "SELECT * FROM hinhanh WHERE loai = :loai AND trangthai = 1 ORDER BY thutu ASC, id DESC";
+            $sql = "SELECT * FROM hinhanh WHERE loai = :loai AND trangthai = 1 ORDER BY thutu ASC, id ASC";
             $cmd = $db->prepare($sql);
             $cmd->bindValue(":loai", $loai);
             $cmd->execute();
@@ -120,7 +120,7 @@ class HINHANH{
         self::khoitaobang();
         $db = DATABASE::connect();
         try{
-            $sql = "SELECT * FROM hinhanh WHERE loai = 'logo' AND trangthai = 1 ORDER BY thutu ASC, id DESC LIMIT 1";
+            $sql = "SELECT * FROM hinhanh WHERE loai = 'logo' AND trangthai = 1 ORDER BY thutu ASC, id ASC LIMIT 1";
             $cmd = $db->prepare($sql);
             $cmd->execute();
             $result = $cmd->fetch();
