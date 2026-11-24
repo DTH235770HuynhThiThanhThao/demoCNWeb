@@ -109,6 +109,35 @@ switch($action){
         header("location:index.php");
         exit();
 
+    case "doithutu":
+        // Nhập số thứ tự trực tiếp
+        if(isset($_POST["id"]) && isset($_POST["thutu"])){
+            $id    = intval($_POST["id"]);
+            $thutu = intval($_POST["thutu"]);
+            if($id > 0 && $thutu >= 1){
+                $ha->capnhatthutu($id, $thutu);
+            }
+            // Giữ tab lọc nếu được truyền kèm
+            $tab = isset($_POST["tab"]) ? "&tab=" . urlencode($_POST["tab"]) : "";
+            header("location:index.php?msg=thutu_ok" . $tab);
+            exit();
+        }
+        header("location:index.php");
+        exit();
+
+    case "doivitri":
+        // Mũi tên Lên / Xuống
+        if(isset($_GET["id"]) && isset($_GET["huong"])){
+            $id    = intval($_GET["id"]);
+            $huong = ($_GET["huong"] === "up") ? "up" : "down";
+            $ha->doivitri($id, $huong);
+            $tab = isset($_GET["tab"]) ? "&tab=" . urlencode($_GET["tab"]) : "";
+            header("location:index.php?msg=thutu_ok" . $tab);
+            exit();
+        }
+        header("location:index.php");
+        exit();
+
     case "xoa":
         if(isset($_GET["id"])){
             $id = intval($_GET["id"]);

@@ -116,6 +116,52 @@
     padding-top: 12px !important;
     padding-bottom: 12px !important;
 }
+/* ── Cụm điều khiển Thứ Tự ── */
+.order-ctrl {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.order-input {
+    width: 54px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e293b;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    padding: 0 4px;
+}
+.order-input:focus {
+    border-color: #d70018;
+    box-shadow: 0 0 0 3px rgba(215,0,24,0.10);
+}
+.btn-order-arrow {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    background: #fff;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.btn-order-arrow:hover {
+    border-color: #d70018;
+    color: #d70018;
+    background: #fff5f5;
+}
 </style>
 
 <!-- 1. Thanh tiêu đề & Nút xem trang chủ -->
@@ -167,6 +213,13 @@
         <div class="alert alert-warning alert-dismissible fade show shadow-sm rounded-3 d-flex align-items-center mb-3" role="alert">
             <i class="align-middle me-2" data-feather="trash-2" style="width: 20px; height: 20px;"></i>
             <div><strong>Đã xóa!</strong> Banner quảng cáo đã được gỡ khỏi danh sách.</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php elseif($_GET["msg"] == "thutu_ok"): ?>
+        <div class="alert alert-dismissible fade show shadow-sm rounded-3 d-flex align-items-center mb-3" role="alert"
+             style="background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d;">
+            <i class="align-middle me-2" data-feather="check-circle" style="width: 20px; height: 20px;"></i>
+            <div><strong>Đã cập nhật!</strong> Thứ tự hiển thị banner đã được lưu thành công.</div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
@@ -330,7 +383,7 @@
                         <th style="width: 150px;">Hình ảnh xem trước</th>
                         <th>Tiêu đề & Tên file</th>
                         <th style="width: 210px;">Vị trí hiển thị</th>
-                        <th class="text-center" style="width: 90px;">Thứ tự</th>
+                        <th class="text-center" style="width: 130px;">Thứ tự</th>
                         <th class="text-center" style="width: 150px;">Trạng thái</th>
                         <th class="text-center pe-3" style="width: 120px;">Thao tác</th>
                     </tr>
@@ -387,8 +440,32 @@
                                     </span>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-center fw-bold text-dark">
-                                <?= $item["thutu"] ?>
+                            <td class="text-center">
+                                <!-- Nút mũi tên Lên -->
+                                <div class="order-ctrl justify-content-center">
+                                    <a href="index.php?action=doivitri&id=<?= $item["id"] ?>&huong=up&tab=<?= urlencode($item["loai"]) ?>"
+                                       class="btn-order-arrow"
+                                       title="Đẩy lên trên">▲</a>
+
+                                    <!-- Form nhập số thứ tự, submit ngay khi thay đổi -->
+                                    <form action="index.php" method="post" style="margin:0; padding:0; display:inline;">
+                                        <input type="hidden" name="action" value="doithutu">
+                                        <input type="hidden" name="id"    value="<?= $item["id"] ?>">
+                                        <input type="hidden" name="tab"   value="<?= htmlspecialchars($item["loai"]) ?>">
+                                        <input type="number"
+                                               name="thutu"
+                                               class="order-input"
+                                               value="<?= intval($item["thutu"]) ?>"
+                                               min="1" max="999"
+                                               title="Nhập số rồi nhấn Enter hoặc rời khỏi ô để lưu"
+                                               onchange="this.form.submit()">
+                                    </form>
+
+                                    <!-- Nút mũi tên Xuống -->
+                                    <a href="index.php?action=doivitri&id=<?= $item["id"] ?>&huong=down&tab=<?= urlencode($item["loai"]) ?>"
+                                       class="btn-order-arrow"
+                                       title="Đẩy xuống dưới">▼</a>
+                                </div>
                             </td>
                             <td class="text-center">
                                 <?php if($item["trangthai"] == 1): ?>

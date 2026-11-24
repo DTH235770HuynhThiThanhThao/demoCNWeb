@@ -40,7 +40,7 @@ class HINHANH{
 
                 $sql_seed = "INSERT INTO `hinhanh` (`id`, `tieude`, `duongdan`, `loai`, `thutu`, `trangthai`) VALUES
                     (1, 'Logo chính Thảo Mobile', 'logo2.jpg', 'logo', 1, 1),
-                    (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h4.jpg', 'banner_chinh', 2, 1),
+                    (2, 'Siêu phẩm công nghệ mới - Đặt trước ngay', 'h6.jpg', 'banner_chinh', 2, 1),
                     (3, 'Lễ hội mua sắm giảm sốc đến 50%', 'h5.jpg', 'banner_chinh', 3, 1),
                     (4, 'Ưu đãi thanh toán VietQR và COD nhận hàng tiện lợi', 'h6.jpg', 'banner_chinh', 4, 1),
                     (5, 'Ưu đãi siêu phẩm giá cực khủng', 'h7.jpg', 'banner_chinh', 1, 1),
@@ -202,7 +202,71 @@ class HINHANH{
         }
     }
 
-    // 6. Xóa banner khỏi CSDL (và xóa file ảnh nếu không phải ảnh mặc định)
+    // 6. Cập nhật thứ tự trực tiếp (nhập số)
+    public function capnhatthutu($id, $thutu){
+        self::khoitaobang();
+        $db = DATABASE::connect();
+        try{
+            $sql = "UPDATE hinhanh SET thutu = :thutu WHERE id = :id";
+            $cmd = $db->prepare($sql);
+            $cmd->bindValue(":thutu", intval($thutu), PDO::PARAM_INT);
+            $cmd->bindValue(":id",    intval($id),    PDO::PARAM_INT);
+            return $cmd->execute();
+        }
+        catch(PDOException $e){
+            echo "<p>Lỗi cập nhật thứ tự: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    // 7. Hoán đổi thứ tự với banner liền kề cùng loại (huong = 'up' hoặc 'down')
+    public function doivitri($id, $huong){
+        self::khoitaobang();
+        $db = DATABASE::connect();
+        try{
+            // Lấy thông tin banner hiện tại
+            $cur = $this->layhinhanhtheoid($id);
+            if(!$cur) return false;
+
+            $thutu_cur = intval($cur['thutu']);
+            $loai_cur  = $cur['loai'];
+
+            // Tìm banner liền kề: nếu 'up' → tìm banner có thutu nhỏ hơn gần nhất,
+            // nếu 'down' → tìm banner có thutu lớn hơn gần nhất (cùng loại)
+            if($huong === 'up'){
+                $sql = "SELECT * FROM hinhanh WHERE loai = :loai AND thutu < :thutu ORDER BY thutu DESC, id DESC LIMIT 1";
+            } else {
+                $sql = "SELECT * FROM hinhanh WHERE loai = :loai AND thutu > :thutu ORDER BY thutu ASC, id ASC LIMIT 1";
+            }
+            $cmd = $db->prepare($sql);
+            $cmd->bindValue(":loai",  $loai_cur);
+            $cmd->bindValue(":thutu", $thutu_cur, PDO::PARAM_INT);
+            $cmd->execute();
+            $neighbor = $cmd->fetch();
+
+            if(!$neighbor) return false; // Đã ở đầu/cuối, không làm gì
+
+            // Hoán đổi giá trị thutu giữa 2 banner
+            $sql2 = "UPDATE hinhanh SET thutu = :thutu WHERE id = :id";
+            $cmd2 = $db->prepare($sql2);
+
+            $cmd2->bindValue(":thutu", intval($neighbor['thutu']), PDO::PARAM_INT);
+            $cmd2->bindValue(":id",    intval($id),               PDO::PARAM_INT);
+            $cmd2->execute();
+
+            $cmd2->bindValue(":thutu", $thutu_cur,                 PDO::PARAM_INT);
+            $cmd2->bindValue(":id",    intval($neighbor['id']),    PDO::PARAM_INT);
+            $cmd2->execute();
+
+            return true;
+        }
+        catch(PDOException $e){
+            echo "<p>Lỗi đổi vị trí: " . $e->getMessage() . "</p>";
+            exit();
+        }
+    }
+
+    // 8. Xóa banner khỏi CSDL (và xóa file ảnh nếu không phải ảnh mặc định)
     public function xoahinhanh($id){
         self::khoitaobang();
         $db = DATABASE::connect();
