@@ -157,13 +157,12 @@ switch($action){
         break;
     case "chovaogio":    
         if(!kiemtra_khachhang_hople()){
-            $thongbao = "Vui lòng đăng nhập hoặc đăng ký tài khoản để thêm sản phẩm vào giỏ hàng!";
+            $thongbao = "Vui lòng đăng nhập hoặc đăng ký tài khoản để mua hàng!";
             include("loginform.php");
             break;
         }
 
         $khachhang_id = (int)$_SESSION["khachhang"]["id"];
-        $gh = new GIOHANG();
 
         if(isset($_REQUEST["id"]))
             $id = intval($_REQUEST["id"]);
@@ -185,18 +184,55 @@ switch($action){
         $hinhanh = isset($_REQUEST["hinhanh"]) ? trim($_REQUEST["hinhanh"]) : "";
         $giaban = isset($_REQUEST["giaban"]) ? (float)$_REQUEST["giaban"] : 0;
 
-        $giohang_id = 0;
-        if($id > 0){
-            $giohang_id = $gh->themvaogio($khachhang_id, $id, $soluong, $phienban, $mausac, $hinhanh, $giaban);
-        }
-        
-        // Nếu người dùng bấm "Mua ngay": chuyển thẳng sang trang thanh toán
+        // Nếu người dùng bấm "Mua ngay": lưu vào $_SESSION["mua_ngay_item"] và đi thẳng tới trang thanh toán, KHÔNG thêm vào bảng giohang
         if(isset($_POST['btn_muangay']) || isset($_GET['muangay'])){
-            if($giohang_id > 0){
-                $_SESSION["ds_chon_mua"] = array($giohang_id);
+            if($id > 0){
+                $mh_model = new MATHANG();
+                $mh_info = $mh_model->laymathangtheoid($id);
+                if($mh_info){
+                    if($giaban <= 0){
+                        $giaban = (float)$mh_info["giaban"];
+                    }
+                    if(empty($hinhanh)){
+                        $hinhanh = $mh_info["hinhanh"];
+                    }
+                    if(empty($phienban)){
+                        $phienban = "Tiêu chuẩn";
+                    }
+                    if(empty($mausac)){
+                        $mausac = "Màu tiêu chuẩn";
+                    }
+                    $thanhtien = round($giaban * $soluong, 2);
+
+                    $_SESSION["mua_ngay_item"] = array(
+                        "muangay" => array(
+                            "id" => "muangay",
+                            "giohang_id" => 0,
+                            "mathang_id" => (int)$id,
+                            "tenmathang" => $mh_info["tenmathang"],
+                            "tenhang" => $mh_info["tenmathang"],
+                            "hinhanh" => $hinhanh,
+                            "phienban" => $phienban,
+                            "mausac" => $mausac,
+                            "giaban" => $giaban,
+                            "gia" => $giaban,
+                            "soluong" => $soluong,
+                            "soluongton" => (int)($mh_info["soluongton"] ?? 99),
+                            "thanhtien" => $thanhtien
+                        )
+                    );
+                    unset($_SESSION["ds_chon_mua"]);
+                }
             }
             header("Location: index.php?action=thanhtoan");
             exit();
+        }
+
+        // Nếu bấm "Thêm vào giỏ" thông thường (không phải btn_muangay):
+        unset($_SESSION["mua_ngay_item"]);
+        $gh = new GIOHANG();
+        if($id > 0){
+            $gh->themvaogio($khachhang_id, $id, $soluong, $phienban, $mausac, $hinhanh, $giaban);
         }
 
         $giohang = $gh->laygiohangtheonguoidung($khachhang_id);   
@@ -210,6 +246,7 @@ switch($action){
             break;
         }
 
+        unset($_SESSION["mua_ngay_item"]);
         $khachhang_id = (int)$_SESSION["khachhang"]["id"];
         $gh = new GIOHANG();
         $giohang = $gh->laygiohangtheonguoidung($khachhang_id);   
@@ -273,35 +310,46 @@ switch($action){
         }
 
         $khachhang_id = (int)$_SESSION["khachhang"]["id"];
-        $gh = new GIOHANG();
-        $giohang_toanbo = $gh->laygiohangtheonguoidung($khachhang_id);
 
-        if(isset($_REQUEST["chon_mathang"]) && is_array($_REQUEST["chon_mathang"])){
-            $_SESSION["ds_chon_mua"] = array_map("intval", $_REQUEST["chon_mathang"]);
-        }
-
-        if(empty($_SESSION["ds_chon_mua"])){
-            $thongbao = "Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán!";
-            $giohang = $giohang_toanbo;
-            include("cart.php");
-            break;
-        }
-
-        // Lọc giỏ hàng chỉ lấy các mặt hàng đã được tích chọn
-        $giohang = array();
-        $tongtien = 0;
-        foreach($_SESSION["ds_chon_mua"] as $chon_id){
-            if(isset($giohang_toanbo[$chon_id])){
-                $giohang[$chon_id] = $giohang_toanbo[$chon_id];
-                $tongtien += $giohang_toanbo[$chon_id]["thanhtien"];
+        // Nếu là luồng "Mua ngay", lấy thẳng sản phẩm từ $_SESSION["mua_ngay_item"]
+        if(isset($_SESSION["mua_ngay_item"]) && !empty($_SESSION["mua_ngay_item"])){
+            $giohang = $_SESSION["mua_ngay_item"];
+            $tongtien = 0;
+            foreach($giohang as $item){
+                $tongtien += $item["thanhtien"];
             }
         }
+        else{
+            $gh = new GIOHANG();
+            $giohang_toanbo = $gh->laygiohangtheonguoidung($khachhang_id);
 
-        if(empty($giohang)){
-            $thongbao = "Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán!";
-            $giohang = $giohang_toanbo;
-            include("cart.php");
-            break;
+            if(isset($_REQUEST["chon_mathang"]) && is_array($_REQUEST["chon_mathang"])){
+                $_SESSION["ds_chon_mua"] = array_map("intval", $_REQUEST["chon_mathang"]);
+            }
+
+            if(empty($_SESSION["ds_chon_mua"])){
+                $thongbao = "Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán!";
+                $giohang = $giohang_toanbo;
+                include("cart.php");
+                break;
+            }
+
+            // Lọc giỏ hàng chỉ lấy các mặt hàng đã được tích chọn
+            $giohang = array();
+            $tongtien = 0;
+            foreach($_SESSION["ds_chon_mua"] as $chon_id){
+                if(isset($giohang_toanbo[$chon_id])){
+                    $giohang[$chon_id] = $giohang_toanbo[$chon_id];
+                    $tongtien += $giohang_toanbo[$chon_id]["thanhtien"];
+                }
+            }
+
+            if(empty($giohang)){
+                $thongbao = "Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán!";
+                $giohang = $giohang_toanbo;
+                include("cart.php");
+                break;
+            }
         }
 
         $dc = new DIACHI();
@@ -329,38 +377,51 @@ switch($action){
         }
         
         $gh = new GIOHANG();
-        $giohang_toanbo = $gh->laygiohangtheonguoidung($khachhang_id);
+        $is_mua_ngay = (isset($_SESSION["mua_ngay_item"]) && !empty($_SESSION["mua_ngay_item"]));
 
-        // Lấy danh sách mặt hàng được tích chọn mua từ POST hoặc SESSION
-        $ds_chon = array();
-        if(isset($_POST["chon_mathang"]) && is_array($_POST["chon_mathang"])){
-            $ds_chon = array_map("intval", $_POST["chon_mathang"]);
-        }
-        elseif(isset($_SESSION["ds_chon_mua"]) && is_array($_SESSION["ds_chon_mua"])){
-            $ds_chon = array_map("intval", $_SESSION["ds_chon_mua"]);
-        }
-
-        $giohang_mua = array();
-        $tongtien = 0;
-
-        if(!empty($ds_chon)){
-            foreach($ds_chon as $chon_id){
-                if(isset($giohang_toanbo[$chon_id])){
-                    $giohang_mua[$chon_id] = $giohang_toanbo[$chon_id];
-                    $tongtien += $giohang_toanbo[$chon_id]["thanhtien"];
-                }
+        if($is_mua_ngay){
+            // Đặt hàng từ luồng Mua ngay
+            $giohang_mua = $_SESSION["mua_ngay_item"];
+            $tongtien = 0;
+            foreach($giohang_mua as $item){
+                $tongtien += $item["thanhtien"];
             }
         }
         else{
-            $giohang_mua = $giohang_toanbo;
-            $tongtien = $gh->tinhtiengiohang($khachhang_id);
-        }
+            // Đặt hàng từ Giỏ hàng thực tế
+            $giohang_toanbo = $gh->laygiohangtheonguoidung($khachhang_id);
 
-        if(empty($giohang_mua)){
-            $thongbao = "Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán!";
-            $giohang = $giohang_toanbo;
-            include("cart.php");
-            break;
+            // Lấy danh sách mặt hàng được tích chọn mua từ POST hoặc SESSION
+            $ds_chon = array();
+            if(isset($_POST["chon_mathang"]) && is_array($_POST["chon_mathang"])){
+                $ds_chon = array_map("intval", $_POST["chon_mathang"]);
+            }
+            elseif(isset($_SESSION["ds_chon_mua"]) && is_array($_SESSION["ds_chon_mua"])){
+                $ds_chon = array_map("intval", $_SESSION["ds_chon_mua"]);
+            }
+
+            $giohang_mua = array();
+            $tongtien = 0;
+
+            if(!empty($ds_chon)){
+                foreach($ds_chon as $chon_id){
+                    if(isset($giohang_toanbo[$chon_id])){
+                        $giohang_mua[$chon_id] = $giohang_toanbo[$chon_id];
+                        $tongtien += $giohang_toanbo[$chon_id]["thanhtien"];
+                    }
+                }
+            }
+            else{
+                $giohang_mua = $giohang_toanbo;
+                $tongtien = $gh->tinhtiengiohang($khachhang_id);
+            }
+
+            if(empty($giohang_mua)){
+                $thongbao = "Vui lòng tích chọn ít nhất 1 sản phẩm để thanh toán!";
+                $giohang = $giohang_toanbo;
+                include("cart.php");
+                break;
+            }
         }
 
         // lưu đơn hàng
@@ -382,13 +443,20 @@ switch($action){
 
             $ct->themchitietdonhang($donhang_id, $mathang_id, $dongia, $soluong, $thanhtien, $phienban, $mausac, $hinhanh);
             $mh_model->capnhatsoluong($mathang_id, $soluong);
-            $ds_xoa[] = (int)$gh_id;
+            if(!$is_mua_ngay && is_numeric($gh_id) && (int)$gh_id > 0){
+                $ds_xoa[] = (int)$gh_id;
+            }
         }
         
-        // Chỉ xóa khỏi bảng giohang những sản phẩm đã thanh toán
-        $gh->xoacacmathang($khachhang_id, $ds_xoa);
+        // Chỉ xóa khỏi bảng giohang khi đặt hàng từ Giỏ hàng thực tế (KHÔNG xóa nếu là Mua ngay)
+        if(!$is_mua_ngay && !empty($ds_xoa)){
+            $gh->xoacacmathang($khachhang_id, $ds_xoa);
+        }
 
-        // Xóa danh sách đã chọn mua trong session sau khi đặt hàng thành công
+        // Xóa session Mua ngay và ds_chon_mua sau khi đặt hàng thành công
+        if($is_mua_ngay){
+            unset($_SESSION["mua_ngay_item"]);
+        }
         unset($_SESSION["ds_chon_mua"]);
 
         // Lưu phương thức thanh toán (chỉ dùng để hiển thị trang cảm ơn)

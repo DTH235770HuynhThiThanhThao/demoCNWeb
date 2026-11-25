@@ -1,16 +1,32 @@
-<?php include("inc/top.php"); ?>
+<?php 
+include("inc/top.php"); 
+
+// Kiểm tra luồng Mua ngay qua session riêng
+$is_mua_ngay_view = (isset($_SESSION["mua_ngay_item"]) && !empty($_SESSION["mua_ngay_item"]));
+if($is_mua_ngay_view){
+    $giohang = $_SESSION["mua_ngay_item"];
+    $first_mn = reset($giohang);
+    $back_url = !empty($first_mn["mathang_id"]) ? "index.php?action=detail&id=" . (int)$first_mn["mathang_id"] : "index.php";
+    $back_text = "Quay lại chi tiết sản phẩm";
+} else {
+    $back_url = "index.php?action=giohang";
+    $back_text = "Quay lại giỏ hàng";
+}
+?>
 
 <!-- 1. Thanh điều hướng Breadcrumb trên cùng -->
 <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-shop mb-0">
             <li class="breadcrumb-item"><a href="index.php"><i class="bi bi-house-door me-1"></i>Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="index.php?action=giohang">Giỏ hàng</a></li>
+            <?php if(!$is_mua_ngay_view): ?>
+                <li class="breadcrumb-item"><a href="index.php?action=giohang">Giỏ hàng</a></li>
+            <?php endif; ?>
             <li class="breadcrumb-item active" aria-current="page">Thanh toán đơn hàng</li>
         </ol>
     </nav>
-    <a href="index.php?action=giohang" class="text-decoration-none small fw-semibold text-danger">
-        <i class="bi bi-arrow-left me-1"></i>Quay lại giỏ hàng
+    <a href="<?php echo $back_url; ?>" class="text-decoration-none small fw-semibold text-danger">
+        <i class="bi bi-arrow-left me-1"></i><?php echo $back_text; ?>
     </a>
 </div>
 
