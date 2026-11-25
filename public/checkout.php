@@ -239,6 +239,20 @@
                             <div class="fw-bold text-dark text-truncate small" title="<?php echo htmlspecialchars($mh["tenmathang"]); ?>">
                                 <?php echo $mh["tenmathang"]; ?>
                             </div>
+                            <?php if(!empty($mh["phienban"]) || !empty($mh["mausac"])): ?>
+                            <div class="d-flex align-items-center gap-1 flex-wrap my-1">
+                                <?php if(!empty($mh["phienban"])): ?>
+                                    <span class="badge text-dark border" style="background-color: #fff1f2; border-color: #fecdd3 !important; font-size: 0.68rem; padding: 2px 6px;">
+                                        <i class="bi bi-hdd-network text-danger me-1"></i><b><?php echo htmlspecialchars($mh["phienban"]); ?></b>
+                                    </span>
+                                <?php endif; ?>
+                                <?php if(!empty($mh["mausac"])): ?>
+                                    <span class="badge text-dark border" style="background-color: #f8fafc; border-color: #e2e8f0 !important; font-size: 0.68rem; padding: 2px 6px;">
+                                        <i class="bi bi-palette text-danger me-1"></i><?php echo htmlspecialchars($mh["mausac"]); ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            <?php endif; ?>
                             <div class="text-muted" style="font-size: 0.74rem;">
                                 <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-1 py-0" style="font-size: 0.68rem;">Chính hãng VN/A</span>
                             </div>

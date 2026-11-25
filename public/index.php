@@ -179,13 +179,22 @@ switch($action){
             $soluong = 1;
         }
 
+        // Nhận các thông số biến thể màu sắc & dung lượng
+        $phienban = isset($_REQUEST["phienban"]) ? trim($_REQUEST["phienban"]) : "";
+        $mausac = isset($_REQUEST["mausac"]) ? trim($_REQUEST["mausac"]) : "";
+        $hinhanh = isset($_REQUEST["hinhanh"]) ? trim($_REQUEST["hinhanh"]) : "";
+        $giaban = isset($_REQUEST["giaban"]) ? (float)$_REQUEST["giaban"] : 0;
+
+        $giohang_id = 0;
         if($id > 0){
-            $gh->themvaogio($khachhang_id, $id, $soluong);
+            $giohang_id = $gh->themvaogio($khachhang_id, $id, $soluong, $phienban, $mausac, $hinhanh, $giaban);
         }
         
         // Nếu người dùng bấm "Mua ngay": chuyển thẳng sang trang thanh toán
         if(isset($_POST['btn_muangay']) || isset($_GET['muangay'])){
-            $_SESSION["ds_chon_mua"] = array($id);
+            if($giohang_id > 0){
+                $_SESSION["ds_chon_mua"] = array($giohang_id);
+            }
             header("Location: index.php?action=thanhtoan");
             exit();
         }
@@ -362,13 +371,18 @@ switch($action){
         $ct = new DONHANGCT();      
         $mh_model = new MATHANG();
         $ds_xoa = array();
-        foreach($giohang_mua as $id => $mh_item){
+        foreach($giohang_mua as $gh_id => $mh_item){
+            $mathang_id = (int)$mh_item["mathang_id"];
             $dongia = $mh_item["giaban"];
             $soluong = $mh_item["soluong"];
             $thanhtien = $mh_item["thanhtien"];
-            $ct->themchitietdonhang($donhang_id, (int)$id, $dongia, $soluong, $thanhtien);
-            $mh_model->capnhatsoluong((int)$id, $soluong);
-            $ds_xoa[] = (int)$id;
+            $phienban = $mh_item["phienban"] ?? "";
+            $mausac = $mh_item["mausac"] ?? "";
+            $hinhanh = $mh_item["hinhanh"] ?? "";
+
+            $ct->themchitietdonhang($donhang_id, $mathang_id, $dongia, $soluong, $thanhtien, $phienban, $mausac, $hinhanh);
+            $mh_model->capnhatsoluong($mathang_id, $soluong);
+            $ds_xoa[] = (int)$gh_id;
         }
         
         // Chỉ xóa khỏi bảng giohang những sản phẩm đã thanh toán

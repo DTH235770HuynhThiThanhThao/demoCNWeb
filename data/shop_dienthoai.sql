@@ -196,6 +196,9 @@ CREATE TABLE `donhangct` (
   `dongia` float NOT NULL DEFAULT 0,
   `soluong` int(11) NOT NULL DEFAULT 1,
   `thanhtien` float NOT NULL DEFAULT 0,
+  `phienban` varchar(100) DEFAULT NULL,
+  `mausac` varchar(100) DEFAULT NULL,
+  `hinhanh` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `donhang_id` (`donhang_id`),
   KEY `mathang_id` (`mathang_id`),
@@ -210,7 +213,7 @@ CREATE TABLE `donhangct` (
 
 LOCK TABLES `donhangct` WRITE;
 /*!40000 ALTER TABLE `donhangct` DISABLE KEYS */;
-INSERT INTO `donhangct` VALUES (1,1,1,29990000,1,29990000),(2,2,11,15990000,1,15990000),(3,3,2,22990000,1,22990000),(4,4,38,5990000,1,5990000),(5,5,7,36990000,1,36990000),(6,6,39,4590000,1,4590000),(7,7,21,17990000,1,17990000);
+INSERT INTO `donhangct` (`id`, `donhang_id`, `mathang_id`, `dongia`, `soluong`, `thanhtien`) VALUES (1,1,1,29990000,1,29990000),(2,2,11,15990000,1,15990000),(3,3,2,22990000,1,22990000),(4,4,38,5990000,1,5990000),(5,5,7,36990000,1,36990000),(6,6,39,4590000,1,4590000),(7,7,21,17990000,1,17990000);
 /*!40000 ALTER TABLE `donhangct` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,9 +228,13 @@ CREATE TABLE `giohang` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nguoidung_id` int(11) NOT NULL,
   `mathang_id` int(11) NOT NULL,
+  `phienban` varchar(100) NOT NULL DEFAULT '',
+  `mausac` varchar(100) NOT NULL DEFAULT '',
+  `hinhanh` varchar(255) DEFAULT NULL,
+  `giaban` decimal(15,2) NOT NULL DEFAULT 0.00,
   `soluong` int(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uq_nguoidung_mathang` (`nguoidung_id`,`mathang_id`),
+  UNIQUE KEY `uq_nguoidung_bienthe` (`nguoidung_id`,`mathang_id`,`phienban`,`mausac`),
   KEY `mathang_id` (`mathang_id`),
   CONSTRAINT `giohang_ibfk_1` FOREIGN KEY (`nguoidung_id`) REFERENCES `nguoidung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `giohang_ibfk_2` FOREIGN KEY (`mathang_id`) REFERENCES `mathang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

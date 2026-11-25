@@ -160,6 +160,35 @@ foreach($danh_sach_phienban as $pb){
     }
 }
 
+// Xác định phiên bản dung lượng & giá bán mặc định ban đầu cho form
+$phienban_macdinh = $dungluong_hientai;
+$giaban_macdinh = (float)$mhct["giaban"];
+foreach($danh_sach_phienban as $pb){
+    if($pb["is_current"]){
+        $phienban_macdinh = $pb["dungluong"];
+        if(!empty($pb["giaban"]) && $pb["giaban"] > 0){
+            $giaban_macdinh = (float)$pb["giaban"];
+        }
+        break;
+    }
+}
+if(empty($phienban_macdinh) && !empty($danh_sach_phienban)){
+    $first_pb = reset($danh_sach_phienban);
+    $phienban_macdinh = $first_pb["dungluong"];
+    if(!empty($first_pb["giaban"]) && $first_pb["giaban"] > 0){
+        $giaban_macdinh = (float)$first_pb["giaban"];
+    }
+}
+
+// Xác định màu sắc & hình ảnh mặc định ban đầu (từ màu sắc active đầu tiên)
+$mausac_macdinh = !empty($danh_sach_mau_render[0]["ten"]) ? $danh_sach_mau_render[0]["ten"] : "Màu tiêu chuẩn";
+$hinhanh_macdinh = !empty($danh_sach_mau_render[0]["img"]) ? $danh_sach_mau_render[0]["img"] : (!empty($mhct["hinhanh"]) ? $mhct["hinhanh"] : "images/products/a1.jpg");
+// Đảm bảo đường dẫn chuẩn lưu DB không dính dấu ../
+$hinhanh_macdinh = preg_replace('/^(\.\.\/)+/', '', $hinhanh_macdinh);
+if(strpos($hinhanh_macdinh, "images/") !== 0 && strpos($hinhanh_macdinh, "http") !== 0){
+    $hinhanh_macdinh = "images/products/" . $hinhanh_macdinh;
+}
+
 // Tìm liên kết sang các sản phẩm cùng dòng khác dung lượng trong danh mục nếu Admin KHÔNG cấu hình phienban
 if(empty($mhct["phienban"])){
     $dong_may_base = trim(preg_replace('/(\d+\s*(?:GB|TB)).*$/i', '', $ten_may_hientai));
@@ -281,7 +310,7 @@ if(!empty($dungluong_hientai) && $dungluong_hientai != "Tiêu chuẩn"){
             <?php if($giamgia_pt > 0): ?>
                 <div class="product-card-badge">Giảm <?php echo $giamgia_pt; ?>%</div>
             <?php endif; ?>
-            <img id="anh-san-pham-chinh" src="../<?php echo $mhct["hinhanh"]; ?>" alt="<?php echo htmlspecialchars($mhct["tenmathang"]); ?>">
+            <img id="anh-san-pham-chinh" src="../<?php echo $hinhanh_macdinh; ?>" alt="<?php echo htmlspecialchars($mhct["tenmathang"]); ?>">
         </div>
 
         <!-- Dải ảnh nhỏ Gallery bên dưới -->
@@ -406,10 +435,14 @@ if(!empty($dungluong_hientai) && $dungluong_hientai != "Tiêu chuẩn"){
                     foreach($danh_sach_mau_render as $idx_c => $mau_item):
                         $is_active_color = ($idx_c === 0);
                         $src_mau = (strpos($mau_item["img"], "images/") === 0) ? "../" . $mau_item["img"] : "../images/products/" . $mau_item["img"];
+                        $db_img_path = preg_replace('/^(\.\.\/)+/', '', $mau_item["img"]);
+                        if(strpos($db_img_path, "images/") !== 0 && strpos($db_img_path, "http") !== 0){
+                            $db_img_path = "images/products/" . $db_img_path;
+                        }
                     ?>
                     <div class="col-6 col-md-6">
                         <div class="color-option-card <?php if($is_active_color) echo 'active'; ?>" 
-                             onclick="chonMau(this, '<?php echo $src_mau; ?>')">
+                             onclick="chonMau(this, '<?php echo $src_mau; ?>', '<?php echo htmlspecialchars($mau_item['ten'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($db_img_path, ENT_QUOTES); ?>')">
                             <span class="badge-check"><i class="bi bi-check"></i></span>
                             <img src="<?php echo $src_mau; ?>" alt="<?php echo htmlspecialchars($mau_item["ten"]); ?>" class="color-thumb" onerror="this.src='../images/products/a1.jpg';">
                             <div class="overflow-hidden">
@@ -458,6 +491,10 @@ if(!empty($dungluong_hientai) && $dungluong_hientai != "Tiêu chuẩn"){
             <form method="post" action="index.php" class="mt-3">
                 <input type="hidden" name="action" value="chovaogio">
                 <input type="hidden" name="id" value="<?php echo $mhct["id"]; ?>">
+                <input type="hidden" name="phienban" id="input-phienban" value="<?php echo htmlspecialchars($phienban_macdinh); ?>">
+                <input type="hidden" name="giaban" id="input-giaban" value="<?php echo $giaban_macdinh; ?>">
+                <input type="hidden" name="mausac" id="input-mausac" value="<?php echo htmlspecialchars($mausac_macdinh); ?>">
+                <input type="hidden" name="hinhanh" id="input-hinhanh" value="<?php echo htmlspecialchars($hinhanh_macdinh); ?>">
 
                 <div class="d-flex align-items-center gap-3">
                     <!-- Ô tăng giảm số lượng -->
@@ -870,14 +907,29 @@ function doiAnhChinh(el, srcAnh) {
     if (el) el.classList.add('active');
 
     // Đồng bộ highlight với ô màu tương ứng nếu có
+    var matchedMau = null;
     document.querySelectorAll('.color-option-card').forEach(function(item) {
         var cardImg = item.querySelector('.color-thumb');
         if (cardImg && (cardImg.src === srcAnh || cardImg.getAttribute('src') === srcAnh)) {
             item.classList.add('active');
+            var tenMauEl = item.querySelector('.overflow-hidden .fw-bold');
+            if (tenMauEl) {
+                matchedMau = tenMauEl.textContent.trim();
+            }
         } else {
             item.classList.remove('active');
         }
     });
+
+    if (matchedMau) {
+        var inputMau = document.getElementById('input-mausac');
+        if (inputMau) inputMau.value = matchedMau;
+    }
+    var inputHinh = document.getElementById('input-hinhanh');
+    if (inputHinh) {
+        var cleanPath = srcAnh.replace(/^(\.\.\/)+/, '');
+        inputHinh.value = cleanPath;
+    }
 }
 
 // Tỷ lệ giảm giá và giá gốc ban đầu phục vụ tính toán JavaScript
@@ -1015,6 +1067,16 @@ function chonPhienBan(el, giaMoi, dungLuong, ramMoi) {
     });
     el.classList.add('active');
 
+    // Cập nhật input ẩn cho form mua hàng
+    var inputGia = document.getElementById('input-giaban');
+    if (inputGia) {
+        inputGia.value = giaMoi;
+    }
+    var inputPB = document.getElementById('input-phienban');
+    if (inputPB && dungLuong) {
+        inputPB.value = dungLuong;
+    }
+
     // 1. Cập nhật giá bán chính
     var giaHienTai = document.getElementById('gia-ban-hien-tai');
     if (giaHienTai) {
@@ -1086,8 +1148,8 @@ function chonPhienBan(el, giaMoi, dungLuong, ramMoi) {
     }
 }
 
-// 3. Chọn màu sắc (Đổi ảnh lớn và viền đỏ ô màu)
-function chonMau(el, srcAnh) {
+// 3. Chọn màu sắc (Đổi ảnh lớn, viền đỏ ô màu và cập nhật input ẩn)
+function chonMau(el, srcAnh, tenMau, dbImgPath) {
     document.querySelectorAll('.color-option-card').forEach(function(item) {
         item.classList.remove('active');
     });
@@ -1110,6 +1172,21 @@ function chonMau(el, srcAnh) {
             item.classList.remove('active');
         }
     });
+
+    // Cập nhật input ẩn cho form mua hàng
+    var inputMau = document.getElementById('input-mausac');
+    if (inputMau && tenMau) {
+        inputMau.value = tenMau;
+    }
+    var inputHinh = document.getElementById('input-hinhanh');
+    if (inputHinh) {
+        if (dbImgPath) {
+            inputHinh.value = dbImgPath;
+        } else {
+            var cleanPath = srcAnh.replace(/^(\.\.\/)+/, '');
+            inputHinh.value = cleanPath;
+        }
+    }
 }
 
 // 4. Tăng / Giảm số lượng

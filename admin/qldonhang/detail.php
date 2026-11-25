@@ -70,7 +70,19 @@
 						<td class="text-center">
 							<img class="img-thumbnail rounded" style="width: 55px; height: 55px; object-fit: contain;" src="../../<?= $ct["hinhanh"] ?>" alt="<?= htmlspecialchars($ct["tenmathang"]) ?>">
 						</td>
-						<td><strong><?= htmlspecialchars($ct["tenmathang"]) ?></strong></td>
+						<td>
+							<strong><?= htmlspecialchars($ct["tenmathang"]) ?></strong>
+							<?php if(!empty($ct["phienban"]) || !empty($ct["mausac"])): ?>
+								<div class="mt-1 small">
+									<?php if(!empty($ct["phienban"])): ?>
+										<span class="badge bg-light text-dark border me-1"><i class="align-middle me-1" data-feather="cpu"></i><?= htmlspecialchars($ct["phienban"]) ?></span>
+									<?php endif; ?>
+									<?php if(!empty($ct["mausac"])): ?>
+										<span class="badge bg-light text-danger border"><i class="align-middle me-1" data-feather="disc"></i><?= htmlspecialchars($ct["mausac"]) ?></span>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
+						</td>
 						<td class="text-end"><?= number_format($ct["dongia"]) ?>đ</td>
 						<td class="text-center fw-semibold"><?= $ct["soluong"] ?></td>
 						<td class="text-end fw-bold text-primary"><?= number_format($ct["thanhtien"]) ?>đ</td>

@@ -80,15 +80,32 @@ include("inc/top.php");
                     </div>
 
                     <!-- Ảnh sản phẩm -->
-                    <a href="index.php?action=detail&id=<?= $id ?>" class="flex-shrink-0">
+                    <a href="index.php?action=detail&id=<?= $mh["mathang_id"] ?>" class="flex-shrink-0">
                         <img src="../<?= $mh["hinhanh"] ?>" alt="<?= htmlspecialchars($mh["tenmathang"]) ?>" class="cart-item-thumb">
                     </a>
 
                     <!-- Thông tin máy -->
                     <div class="flex-grow-1 overflow-hidden">
-                        <a href="index.php?action=detail&id=<?= $id ?>" class="fw-bold text-dark text-decoration-none d-block mb-1 hover-red text-truncate" title="<?= htmlspecialchars($mh["tenmathang"]) ?>">
+                        <a href="index.php?action=detail&id=<?= $mh["mathang_id"] ?>" class="fw-bold text-dark text-decoration-none d-block mb-1 hover-red text-truncate" title="<?= htmlspecialchars($mh["tenmathang"]) ?>">
                             <?= $mh["tenmathang"] ?>
                         </a>
+
+                        <!-- Nhãn biến thể Phiên bản & Màu sắc -->
+                        <?php if(!empty($mh["phienban"]) || !empty($mh["mausac"])): ?>
+                        <div class="d-flex align-items-center gap-1 flex-wrap mb-1">
+                            <?php if(!empty($mh["phienban"])): ?>
+                                <span class="badge px-2 py-1 text-dark border" style="background-color: #fff1f2; border-color: #fecdd3 !important; font-size: 0.72rem;">
+                                    <i class="bi bi-hdd-network text-danger me-1"></i><b><?= htmlspecialchars($mh["phienban"]) ?></b>
+                                </span>
+                            <?php endif; ?>
+                            <?php if(!empty($mh["mausac"])): ?>
+                                <span class="badge px-2 py-1 text-dark border" style="background-color: #f8fafc; border-color: #e2e8f0 !important; font-size: 0.72rem;">
+                                    <i class="bi bi-palette text-danger me-1"></i><?= htmlspecialchars($mh["mausac"]) ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
+                        <?php endif; ?>
+
                         <div class="d-flex align-items-center gap-2 flex-wrap">
                             <span class="fw-bold text-danger fs-6"><?= number_format($mh["giaban"]) ?>đ</span>
                             <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-0" style="font-size: 0.72rem;">Chính hãng VN/A</span>
